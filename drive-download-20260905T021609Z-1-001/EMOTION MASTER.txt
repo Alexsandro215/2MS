@@ -1,0 +1,536 @@
+@startuml
+title E.N.M.A — SISTEMA DE EMOCIONES (ON-GAME / OFF-GAME) [CORREGIDO]
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam classAttributeIconSize 0
+left to right direction
+
+package "NUCLEO DEL SISTEMA EMOCIONAL" {
+
+class SistemaEmocional {
+  +evaluarInicioDelDia()
+  +evaluarEventoOffGame()
+  +evaluarEventoOnGame()
+  +activarEmocion()
+  +limpiarEmocion()
+  +pasarANeutral()
+  +aplicarManifestacionDeCombate()
+  +resolverVentanaEmocional()
+  +limpiarFinDelDia()
+  +integrarCalculusMaster()
+}
+
+class EstadoEmocionalActual {
+  +emocionActual
+  +origen = OFF_GAME / ON_GAME
+  +estadoBase = NEUTRAL
+  +activa = true/false
+  +duracion = DIA_RUN
+  +ventanaCombate = definidaPorLaEmocion
+  +snapshotCombate = true/false
+  +requiereNeutralParaCambiar = true
+}
+
+class PerfilEmocionalPersonaje {
+  +idPersonaje
+  +nombrePersonaje
+  +permiteEmociones = true
+  +reglasOffGame[]
+  +reglasOnGame[]
+  +reglasLimpieza[]
+}
+
+class ReglaEmocional {
+  +id
+  +tipo = ACTIVACION / LIMPIEZA
+  +modo = OFF_GAME / ON_GAME
+  +personajeObjetivo
+  +condicion
+  +emocionResultado
+  +prioridadInterna
+  +descripcion
+}
+
+class CondicionadorEmocional {
+  +tipoFuente
+  +subtipo
+  +valor
+  +comparador
+  +contexto
+}
+
+class EventoEmocional {
+  +id
+  +modo = OFF_GAME / ON_GAME
+  +nombre
+  +descripcion
+  +turno
+  +dia
+  +runActiva
+}
+
+class ResolucionEmocional {
+  +soloUnaEmocionActiva = true
+  +noPuedeSerSuprimidaDirectamente = true
+  +debePasarPorNeutral = true
+  +persistencia = DIA_RUN
+  +limpiezaFinDeDia = true
+}
+
+class VentanaAplicacionCombate {
+  +modo = APERTURA / TEMPORAL / TODO_COMBATE / PERSISTENCIA_DIA_RUN
+  +duracionTurnos = variable
+  +snapshotInicioCombate = true/false
+  +recalculoDuranteCombate = false
+}
+
+class IntegracionCalculusMaster {
+  +modificadoresStats[]
+  +modificadoresConducta[]
+  +modificadoresAccion[]
+  +modificadoresTurno[]
+  +modificadoresCargaMusical[]
+  +aplicarBonos()
+}
+
+SistemaEmocional --> EstadoEmocionalActual
+SistemaEmocional --> PerfilEmocionalPersonaje
+SistemaEmocional --> ReglaEmocional
+SistemaEmocional --> EventoEmocional
+SistemaEmocional --> ResolucionEmocional
+SistemaEmocional --> VentanaAplicacionCombate
+SistemaEmocional --> IntegracionCalculusMaster
+
+ReglaEmocional --> CondicionadorEmocional
+EventoEmocional --> CondicionadorEmocional
+PerfilEmocionalPersonaje --> ReglaEmocional
+EstadoEmocionalActual --> VentanaAplicacionCombate
+EstadoEmocionalActual --> IntegracionCalculusMaster
+}
+
+package "CICLO DIARIO EMOCIONAL" {
+
+class InicioDelDia {
+  +limpiarEstadoResidual = true
+  +evaluarCircunstanciasOffGame()
+  +asignarEmocionONeutral()
+}
+
+class DuranteElDia {
+  +mantenerEmocionActiva()
+  +permitirLimpiezaEspecifica()
+  +permitirNuevaEmocionSoloDesdeNeutral()
+}
+
+class InicioDeRun {
+  +conservarEmocionActual
+  +llevarEstadoALaRun = true
+}
+
+class Combate {
+  +aplicarManifestacionEmocional()
+  +resolverVentanaSegunEmocion()
+  +permitirEventosOnGame()
+  +permitirLimpiezaOnGame()
+}
+
+class FinDeRun {
+  +mantenerEstadoHastaFinDelDia = true
+}
+
+class FinDelDia {
+  +removerTodasLasEmociones()
+  +volverANeutral()
+}
+
+InicioDelDia --> DuranteElDia
+DuranteElDia --> InicioDeRun
+InicioDeRun --> Combate
+Combate --> FinDeRun
+FinDeRun --> FinDelDia
+FinDelDia --> InicioDelDia : siguiente dia
+}
+
+package "ORIGEN DE EVENTOS OFF-GAME" {
+
+class Calendario {
+  +diaSemana
+  +festivalActivo
+  +fechaEspecial
+}
+
+class Clima {
+  +calor
+  +lluvia
+  +frio
+  +tormenta
+}
+
+class RutinaSocial {
+  +salidaConLazo
+  +diasSinSalir
+  +compromisos
+  +actividadPendiente
+}
+
+class ComidaBebida {
+  +consumioPostre
+  +consumioDemasiado
+  +consumioFavorito
+  +heladoFavorito
+}
+
+class EstadoFisicoFueraDeCombate {
+  +enfermedad
+  +cansancio
+  +malestar
+}
+
+Calendario --> EventoEmocional
+Clima --> EventoEmocional
+RutinaSocial --> EventoEmocional
+ComidaBebida --> EventoEmocional
+EstadoFisicoFueraDeCombate --> EventoEmocional
+}
+
+package "ORIGEN DE EVENTOS ON-GAME" {
+
+class EstadoDeBatalla {
+  +turnoActual
+  +vidaActual
+  +vidaRelativaEquipo
+  +vidaRelativaEnemigo
+  +runActiva
+}
+
+class AccionesDeCombate {
+  +ataqueBasico
+  +habilidad
+  +defensa
+  +relevo
+  +usoConsumible
+  +fallaAccion
+}
+
+class SucesosDeCombate {
+  +aliadoKO
+  +enemigoKO
+  +golpesRecibidos
+  +efectoElementoAplicado
+  +buffRecibido
+  +debuffRecibido
+}
+
+class EntornoCombate {
+  +zona
+  +climaCombate
+  +objetoEscenico
+  +elementoDominante
+  +lugarConocido
+}
+
+EstadoDeBatalla --> EventoEmocional
+AccionesDeCombate --> EventoEmocional
+SucesosDeCombate --> EventoEmocional
+EntornoCombate --> EventoEmocional
+}
+
+package "REGLAS MAESTRAS DEL SISTEMA" {
+
+class Regla1 {
+  +nombre = "Solo una emocion activa a la vez"
+}
+
+class Regla2 {
+  +nombre = "No se reemplaza directamente"
+}
+
+class Regla3 {
+  +nombre = "Para cambiar, primero debe pasar a neutral"
+}
+
+class Regla4 {
+  +nombre = "La emocion dura todo el dia / run"
+}
+
+class Regla5 {
+  +nombre = "Cada emocion define su propia ventana de aplicacion al entrar en combate"
+}
+
+class Regla6 {
+  +nombre = "Se limpia por evento especifico ON/OFF GAME"
+}
+
+class Regla7 {
+  +nombre = "Al final del dia todas las emociones se eliminan"
+}
+
+ResolucionEmocional --> Regla1
+ResolucionEmocional --> Regla2
+ResolucionEmocional --> Regla3
+ResolucionEmocional --> Regla4
+ResolucionEmocional --> Regla5
+ResolucionEmocional --> Regla6
+ResolucionEmocional --> Regla7
+}
+
+package "EMOCIONES DISPONIBLES" {
+
+enum EmocionTipo {
+  FURIA
+  ALEGRIA
+  TRISTEZA
+  MIEDO
+  ENAMORADO
+  ALTERADO
+  SERIO
+  ENFERMO
+  NEUTRAL
+}
+
+class Furia {
+  +bonusDanioFisico = +50% del total actual
+  +restriccion = no elige target durante 1 turno
+  +naturaleza = agresiva / impulsiva
+}
+
+class Alegria {
+  +bonus = gana 1 turno extra al inicio de cada batalla
+}
+
+class Tristeza {
+  +restriccionTurno1 = no puede atacar ni defender
+  +bonusPasivasYGadgets = +10% a +40% segun nivel
+  +baseDeEscalado = stats base afectadas en ese momento
+}
+
+class Miedo {
+  +accionAutomaticaTurno1 = DEFENSA
+  +bonus = la defensa no se rompe al primer impacto
+  +duracionInterna = todo el turno 1
+}
+
+class Enamorado {
+  +penalizacion = pierde el primer turno
+  +snapshotInicioCombate = true
+  +calculoOcultoAlInicio = true
+  +seleccion = villano aleatorio
+  +regla = toma la stat secundaria mas alta del villano seleccionado
+  +bonus = obtiene 50% de esa categoria usando sus propias stats base
+  +duracion = todo el combate
+  +recalculo = no
+}
+
+class Alterado {
+  +penalizacionPunteriaTurno1 = -50% del total actual
+  +bonusActivacionElemento = +50% relativo sobre la probabilidad base actual
+}
+
+class Serio {
+  +bonusCritico = +5% por cada 10% de vida base faltante
+}
+
+class Enfermo {
+  +penalizacionStats = todas las stats a 2/3 durante los primeros 3 turnos
+  +excepciones = vida y desgaste no cuentan
+  +bonusCargaMusical = x1.5 sobre toda fuente de obtencion de CM
+  +aplicacionCM = por cada fuente de forma independiente
+}
+
+EmocionTipo --> Furia
+EmocionTipo --> Alegria
+EmocionTipo --> Tristeza
+EmocionTipo --> Miedo
+EmocionTipo --> Enamorado
+EmocionTipo --> Alterado
+EmocionTipo --> Serio
+EmocionTipo --> Enfermo
+}
+
+package "EJEMPLOS DE LOGICA POR PERSONAJE" {
+
+class Itzela {
+  +ejemplosOffGame
+  +ejemplosOnGame
+  +eventosLimpieza
+}
+
+class Ren {
+  +ejemplosOffGame
+  +ejemplosOnGame
+  +eventosLimpieza
+}
+
+class Alextsu {
+  +ejemplosOnGame
+}
+
+class Dorokan {
+  +ejemplosOnGame
+  +ejemplosEntorno
+}
+
+class Haruka {
+  +ejemplosOnGame
+}
+
+class Kali {
+  +ejemplosOnGame
+}
+
+class EjemploItzela1 {
+  +off = dia de festival
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploItzela2 {
+  +off = calor
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploItzela3 {
+  +off = no salir con lazo en 2 semanas
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploItzela4 {
+  +limpieza = helado favorito de Riko
+  +resultado = NEUTRAL
+}
+
+class EjemploItzela5 {
+  +limpiezaOnGame = galletas especificas de Ren
+  +resultado = NEUTRAL
+}
+
+class EjemploRen1 {
+  +on = recibe elemento L2 3 veces en la run
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploRen2 {
+  +off = compromiso con administracion
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploRen3 {
+  +off = no comprar postres en 1 semana
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploRen4 {
+  +limpiezaOnGame = recibir 5 buffs
+  +resultado = NEUTRAL
+}
+
+class EjemploAlextsu1 {
+  +on = enemigos con ventaja de vida >50% relacionada al equipo
+  +resultado = emocion definida por regla personal
+}
+
+class EjemploDorokan1 {
+  +on = Kali KO
+  +resultado = SERIO
+}
+
+class EjemploDorokan2 {
+  +entorno = arbol ancestral del siglo XVII
+  +resultado = ENAMORADO
+}
+
+class EjemploHaruka1 {
+  +on = relevo con Richard por 3era vez
+  +resultado = emocion personalizada futura
+}
+
+class EjemploKali1 {
+  +on = enemigo muy superior
+  +resultado = MIEDO
+}
+
+Itzela --> EjemploItzela1
+Itzela --> EjemploItzela2
+Itzela --> EjemploItzela3
+Itzela --> EjemploItzela4
+Itzela --> EjemploItzela5
+
+Ren --> EjemploRen1
+Ren --> EjemploRen2
+Ren --> EjemploRen3
+Ren --> EjemploRen4
+
+Alextsu --> EjemploAlextsu1
+Dorokan --> EjemploDorokan1
+Dorokan --> EjemploDorokan2
+Haruka --> EjemploHaruka1
+Kali --> EjemploKali1
+}
+
+package "FLUJO DE RESOLUCION" {
+
+class Paso1 {
+  +detectarEvento
+}
+
+class Paso2 {
+  +buscarReglasDelPersonaje
+}
+
+class Paso3 {
+  +verificarSiEstaEnNeutral
+}
+
+class Paso4 {
+  +siNoEstaEnNeutral = bloquear nueva emocion
+}
+
+class Paso5 {
+  +siEventoEsLimpieza = pasar a neutral
+}
+
+class Paso6 {
+  +siEstaEnNeutral y reglaCoincide = activar emocion
+}
+
+class Paso7 {
+  +registrarEstadoParaTodaLaRun
+}
+
+class Paso8 {
+  +aplicarManifestacionEmocionalSegunVentana
+}
+
+Paso1 --> Paso2
+Paso2 --> Paso3
+Paso3 --> Paso4
+Paso3 --> Paso5
+Paso5 --> Paso6
+Paso6 --> Paso7
+Paso7 --> Paso8
+}
+
+SistemaEmocional ..> InicioDelDia
+SistemaEmocional ..> DuranteElDia
+SistemaEmocional ..> Combate
+SistemaEmocional ..> FinDelDia
+
+EstadoEmocionalActual --> EmocionTipo
+ReglaEmocional --> EmocionTipo
+IntegracionCalculusMaster ..> EmocionTipo
+EntornoCombate ..> EjemploDorokan2
+
+note right of SistemaEmocional
+- El sistema maneja emociones ON-GAME y OFF-GAME
+- Cada personaje posee reglas propias
+- La emocion activa dura el dia / run
+- Cada emocion define su propia ventana de aplicacion al entrar en combate
+- No existe una potenciacion general compartida de 3 turnos
+- Para cambiar de emocion primero debe limpiarse y pasar a NEUTRAL
+- Al final del dia todas las emociones se eliminan
+- Los modificadores se integran al Calculus Master
+end note
+
+@enduml

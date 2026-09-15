@@ -1,0 +1,868 @@
+@startuml
+title E.N.M.A — BASE DIRECTA (Cálculos + Motor) — TODO EN 1 SOLO PLANTUML (CANÓNICO SIN AMBIGÜEDADES) [PATCH FINAL]
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontSize 12
+
+' =========================================================
+' 0) CONSTANTES / CAPS (CANÓNICO)
+' =========================================================
+legend top
+<b>CONSTANTES (ajustables)</b>
+HIT_MIN=5, HIT_MAX=95
+CRIT_CAP=100
+ARM_CAP=90, RM_CAP=90
+PEN_CAP=80
+DV_CAP=100
+endlegend
+
+' =========================================================
+' 1) MODELO DE DATOS (ESQUELETO)
+' =========================================================
+package "Modelo" {
+
+  enum DamageType {
+    PHYSICAL
+    MAGICAL
+    TRUE
+  }
+
+  enum ActionType {
+    BASIC
+    SKILL_Q
+    SKILL_W
+    SKILL_E
+    SKILL_R
+    SKILL_QT1
+    SKILL_QT2
+    DEFEND
+    GADGET
+    ITEM
+    FOOD
+    HIDE
+    SWAP
+    ESCAPE
+    CHARGE
+  }
+
+  enum LifeState {
+    ACTIVE
+    KO
+    DEAD
+  }
+
+  enum ElementType {
+    DARK
+    ICE
+    ELEC
+    NATURE
+    WIND
+    LIGHT
+    FIRE
+    SOUL
+    CRYSTAL
+  }
+
+  enum EmotionType {
+    FURY
+    JOY
+    SADNESS
+    FEAR
+    LOVER
+    ALTERED
+    SERIOUS
+    SICK
+  }
+
+  enum ModifierMode {
+    FLAT
+    PCT_ADD
+    MULT_FINAL
+    OVERRIDE
+  }
+
+  enum TriggerType {
+    ALWAYS
+    SELF_HP_BELOW_50
+    SELF_HP_ABOVE_50
+    TARGET_HP_ABOVE_50
+    TARGET_HP_BELOW_50
+    ON_HIT
+    ON_CRIT
+    ON_BEING_HIT
+    ON_DEFEND
+    ON_PREPARING
+    ON_KO_DEALT
+    ON_ELEMENT_TARGET
+    ON_EMOTION_SELF
+    ON_EMOTION_TARGET
+    ON_ENVIRONMENT
+    ON_WEAPON_CLASS
+    ON_ACTION_TAG
+  }
+
+  enum SourceType {
+    BASE_CHARACTER
+    LEVEL_SCALING
+    WEAPON
+    ARMOR
+    ACCESSORY
+    EMBLEM
+    MEMORY
+    GADGET
+    PASSIVE_CHARACTER
+    PASSIVE_WEAPON
+    PASSIVE_ARMOR
+    PASSIVE_GADGET
+    TRAIT
+    BUFF
+    DEBUFF
+    EMOTION
+    ELEMENT
+    ENVIRONMENT
+    TEMP_STATE
+  }
+
+  class StatsBase {
+    +hpBase : double
+    +physAtk : double
+    +magAtk : double
+    +armorValue : double
+    +resistValue : double
+    +accuracy : double
+    +evasion : double
+    +critPct : double  '0..100
+
+    ..Secundarias Ofensivas..
+    +prepPct : double
+    +atkSpeed : double
+    +tempoPct : double
+    +penArmor : double
+    +penResist : double
+    +lifeStealPct : double
+    +weaponMastery : double
+    +itemMastery : double
+    +areaDmgPct : double
+    +explosiveDmgPct : double
+    +lastBulletPct : double
+    +reboundPct : double
+
+    ..Secundarias Defensivas..
+    +regenPct : double
+    +medicMastery : double
+    +fatigueResistPct : double  '0..1
+    +unbreakablePct : double
+    +shieldEffPct : double
+    +invulnExtendPct : double
+    +tenacityPct : double
+    +augmenterPct : double
+    +diminisherPct : double
+    +tasterPct : double
+    +reflexesPct : double
+  }
+
+  class ModifierRule {
+    +id : String
+    +sourceType : SourceType
+    +sourceId : String
+    +trigger : TriggerType
+    +mode : ModifierMode
+    +statKey : String
+    +value : double
+    +priority : int
+    +extra : Map<String,String>
+  }
+
+  class Modifiers {
+    +flat : Map<String,double>
+    +pctAdd : Map<String,double>
+    +multFinal : Map<String,double>
+    +flags : Set<String>
+    +conditionalRules : List<ModifierRule>
+  }
+
+  class DerivedStats {
+    +hpBase : double
+    +physAtk : double
+    +magAtk : double
+
+    +armorValue : double
+    +resistValue : double
+    +armorReduction : double
+    +resistReduction : double
+
+    +accuracy : double
+    +evasion : double
+    +evasionStacksPenalty : int
+    +evasionEffective : double
+    +critPct : double
+
+    +prepPct : double
+    +atkSpeed : double
+    +tempoPct : double
+    +penArmor : double
+    +penResist : double
+    +lifeStealPct : double
+    +weaponMastery : double
+    +itemMastery : double
+    +areaDmgPct : double
+    +explosiveDmgPct : double
+    +lastBulletPct : double
+    +reboundPct : double
+
+    +regenPct : double
+    +medicMastery : double
+    +fatigueResistPct : double
+    +unbreakablePct : double
+    +shieldEffPct : double
+    +invulnExtendPct : double
+    +tenacityPct : double
+    +augmenterPct : double
+    +diminisherPct : double
+    +tasterPct : double
+    +reflexesPct : double
+
+    +prepDefBonusPct : double
+    +prepAccEvaBonusPct : double
+
+    +damagePhysicalFinalMult : double
+    +damageMagicalFinalMult : double
+    +damageTrueFinalMult : double
+    +healingOutFinalMult : double
+    +healingInFinalMult : double
+    +cmGainFinalMult : double
+  }
+
+  class Cooldowns {
+    +cdFoodById : Map<String,int>
+    +cdItemById : Map<String,int>
+    +cdGadgetById : Map<String,int>
+    +cdPrep : int
+  }
+
+  class ElementStatus {
+    +type : ElementType
+    +level : int
+    +turnsLeft : int
+  }
+
+  class EmotionStatus {
+    +type : EmotionType
+    +turnsLeft : int
+  }
+
+  class Combatant {
+    +id : String
+    +base : StatsBase
+    +state : LifeState
+    +hpCurrent : double
+    +shieldCurrent : double
+    +fatiguePct : double  '0..1
+    +cmStorage : double
+    +weaponClass : String 'LIGHT/MEDIUM/HEAVY
+    +statuses : Set<String>
+    +emotion : EmotionStatus
+    +element : ElementStatus
+    +cds : Cooldowns
+
+    +fastHealAccum : double
+
+    +isDefending : boolean
+    +defendConsumedThisTurn : boolean
+  }
+
+  class TeamState {
+    +cmCurrent : double
+    +cmMax : double
+    +freeFoodAvailable : boolean
+    +freeItemAvailable : boolean
+    +freeFoodCD : int
+    +freeItemCD : int
+  }
+
+  class CycleState {
+    +elementSuccessActorsThisCycle : Map<String, Set<String>>
+    +cycleId : int
+  }
+
+  class SkillRef {
+    +id : String
+    +damageType : DamageType
+    +multDamage : double
+    +trueDamagePct : double '0..1
+    +hasElement : boolean
+    +elementType : ElementType
+    +canCrit : boolean
+    +multiHitCount : int
+    +hitCheckPerHit : boolean
+    +applyEffectsOnMiss : boolean
+  }
+
+  class Action {
+    +type : ActionType
+    +actor : Combatant
+    +target : Combatant
+    +skill : SkillRef
+    +isTempoHit : boolean
+    +flags : Set<String>
+  }
+
+  class DamageResult {
+    +hitSuccessful : boolean
+    +critWouldApply : boolean
+    +critApplied : boolean
+
+    +PenArmor_eff : double
+    +PenRM_eff : double
+    +Armor_f : double
+    +RM_f : double
+    +Red_f : double
+
+    +D_raw : double
+    +D_true : double
+    +D_red_saved : double
+    +D_red_final : double
+    +D_final : double
+  }
+}
+
+' =========================================================
+' 2) SERVICIOS DEL MOTOR
+' =========================================================
+package "Servicios (Motor)" {
+
+  class StatService {
+    +collectAllModifiers(c, ctx) : Modifiers
+    +applyConditionalRules(m, c, ctx) : Modifiers
+    +effectiveFatigue(c, derived) : double
+    +buildDerivedStats(c, ctx) : DerivedStats
+  }
+
+  class HitService {
+    +calcHitChance(att, def) : double
+    +rollHit(hitChance) : boolean
+  }
+
+  class DamageService {
+    +rollCritIfPossible(skill, atk, def) : boolean
+    +computeDamageOneHit(a, atk, def, isDefendActiveThisHit) : DamageResult
+    +applyDamageOneHit(target, D_final)
+  }
+
+  class CMService {
+    +cmGainPerHit(weaponClass, isTempo) : double
+    +cmGainModifiers(c) : double
+    +recalcTeamCMMax(team, roster)
+    +clampTeamCM(team)
+    +applyCMOnHit(a, dmg, teamAtk, teamDef)
+  }
+
+  class ElementService {
+    +tryApplyElement(actor, target, elementType, cycleState, ctx)
+    +resetWindow(cycleState)
+  }
+
+  class StatusService {
+    +computeLocks(c) : Set<String>
+    +tickStartOfTurn(c, team, ctx)
+    +applyKO(target)
+    +applyDeath(target)
+    +isTargetable(target) : boolean
+    +checkVillainRemateWindow(target, phase) : boolean
+    +applyLastBulletIfAny(attacker, target, derivedTarget)
+  }
+
+  class ItemService {
+    +canUseFreeFood(team) : boolean
+    +useFreeFood(team)
+    +canUseFreeItem(team) : boolean
+    +useFreeItem(team)
+    +tickFreeCooldowns(team)
+    +applyFastHeal(target, healAmount, derivedTarget)
+  }
+
+  class CombatResolver {
+    +resolveAction(a, teamAtk, teamDef, cycleState, ctx)
+  }
+}
+
+CombatResolver --> StatService
+CombatResolver --> HitService
+CombatResolver --> DamageService
+CombatResolver --> CMService
+CombatResolver --> ElementService
+CombatResolver --> StatusService
+CombatResolver --> ItemService
+
+' =========================================================
+' 3) ESPECIFICACIÓN EJECUTABLE (PSEUDO-CÓDIGO + FÓRMULAS)
+' =========================================================
+
+note right of StatService
+<b>collectAllModifiers(c, ctx)</b>
+
+Objetivo:
+Centralizar TODAS las fuentes de modificación del combate
+y devolver una estructura estándar:
+
+- flat
+- pctAdd
+- multFinal
+- flags
+- conditionalRules
+
+<b>Orden recomendado de lectura</b>
+1) Base del personaje / nivel
+2) Arma equipada
+3) Armadura equipada
+4) Accesorios / recuerdos / emblemas
+5) Gadgets equipados
+6) Pasivas del personaje
+7) Pasivas de arma
+8) Pasivas de armadura
+9) Pasivas de gadgets
+10) Rasgos
+11) Buffs / debuffs
+12) Emoción
+13) Elemento
+14) Entorno / clima / música / tempo
+15) Estados temporales (PREPARING / DEFENDING / etc.)
+
+<b>Convención de almacenamiento</b>
+flat["physAtk"] += 30
+pctAdd["critPct"] += 0.20
+multFinal["damage.physical"] *= 1.25
+flags += "IMMUNE_MAGICAL"
+
+conditionalRules += Rule(
+  trigger=SELF_HP_BELOW_50,
+  statKey="critPct",
+  mode=PCT_ADD,
+  value=0.45
+)
+
+<b>applyConditionalRules(m, c, ctx)</b>
+- Evalúa las conditionalRules activas según contexto
+- Lo que se cumpla se integra a flat / pctAdd / multFinal / flags
+- Luego buildDerivedStats() consume el resultado consolidado
+end note
+
+note right of StatService
+<b>buildDerivedStats(c, ctx)</b>
+
+1) m = collectAllModifiers(c, ctx)
+2) m = applyConditionalRules(m, c, ctx)
+
+3) Plantilla base:
+   stat = (base + flat) * (1 + pctAdd)
+
+   hpBase      = (HP_base + flatHP) * (1 + pctHP)
+   physAtk     = (DF_base + flatDF) * (1 + pctDF)
+   magAtk      = (DM_base + flatDM) * (1 + pctDM)
+
+   armorValue  = max(0, (ARM_base + flatARM) * (1 + pctARM))
+   resistValue = max(0, (RM_base  + flatRM ) * (1 + pctRM))
+
+   accuracy    = max(0, (ACC_base + flatACC) * (1 + pctACC))
+   evasion     = max(0, (EVA_base + flatEVA) * (1 + pctEVA))
+   critPct     = clamp((CRIT_base + flatCRIT) * (1 + pctCRIT), 0, CRIT_CAP)
+
+   prepPct         = max(0, (PREP_base + flatPREP) * (1 + pctPREP))
+   atkSpeed        = max(0, (AS_base + flatAS) * (1 + pctAS))
+   tempoPct        = max(0, (TMP_base + flatTMP) * (1 + pctTMP))
+   penArmor        = max(0, (PEN_ARM_base + flatPenARM) * (1 + pctPenARM))
+   penResist       = max(0, (PEN_RM_base + flatPenRM) * (1 + pctPenRM))
+   lifeStealPct    = max(0, (LS_base + flatLS) * (1 + pctLS))
+   weaponMastery   = max(0, (WM_base + flatWM) * (1 + pctWM))
+   itemMastery     = max(0, (IM_base + flatIM) * (1 + pctIM))
+   areaDmgPct      = max(0, (AOE_base + flatAOE) * (1 + pctAOE))
+   explosiveDmgPct = max(0, (EXPL_base + flatEXPL) * (1 + pctEXPL))
+   lastBulletPct   = max(0, (LB_base + flatLB) * (1 + pctLB))
+   reboundPct      = max(0, (RB_base + flatRB) * (1 + pctRB))
+
+   regenPct          = max(0, (RGN_base + flatRGN) * (1 + pctRGN))
+   medicMastery      = max(0, (MM_base + flatMM) * (1 + pctMM))
+   fatigueResistPct  = max(0, (FR_base + flatFR) * (1 + pctFR))
+   unbreakablePct    = max(0, (UNB_base + flatUNB) * (1 + pctUNB))
+   shieldEffPct      = max(0, (SHD_base + flatSHD) * (1 + pctSHD))
+   invulnExtendPct   = max(0, (INV_base + flatINV) * (1 + pctINV))
+   tenacityPct       = max(0, (TNC_base + flatTNC) * (1 + pctTNC))
+   augmenterPct      = max(0, (AUG_base + flatAUG) * (1 + pctAUG))
+   diminisherPct     = max(0, (DIM_base + flatDIM) * (1 + pctDIM))
+   tasterPct         = max(0, (DGS_base + flatDGS) * (1 + pctDGS))
+   reflexesPct       = max(0, (RFX_base + flatRFX) * (1 + pctRFX))
+
+4) FATIGA GLOBAL (canon real):
+   fatigueEff  = clamp(c.fatiguePct * (1 - fatigueResistPct), 0, 1)
+   fatigueMult = 1 - fatigueEff
+
+   hpBase          *= fatigueMult
+   physAtk         *= fatigueMult
+   magAtk          *= fatigueMult
+   armorValue      *= fatigueMult
+   resistValue     *= fatigueMult
+   accuracy        *= fatigueMult
+   evasion         *= fatigueMult
+   critPct         *= fatigueMult
+
+   prepPct         *= fatigueMult
+   atkSpeed        *= fatigueMult
+   tempoPct        *= fatigueMult
+   penArmor        *= fatigueMult
+   penResist       *= fatigueMult
+   lifeStealPct    *= fatigueMult
+   weaponMastery   *= fatigueMult
+   itemMastery     *= fatigueMult
+   areaDmgPct      *= fatigueMult
+   explosiveDmgPct *= fatigueMult
+   lastBulletPct   *= fatigueMult
+   reboundPct      *= fatigueMult
+
+   regenPct          *= fatigueMult
+   medicMastery      *= fatigueMult
+   fatigueResistPct  *= fatigueMult
+   unbreakablePct    *= fatigueMult
+   shieldEffPct      *= fatigueMult
+   invulnExtendPct   *= fatigueMult
+   tenacityPct       *= fatigueMult
+   augmenterPct      *= fatigueMult
+   diminisherPct     *= fatigueMult
+   tasterPct         *= fatigueMult
+   reflexesPct       *= fatigueMult
+
+5) Clamps finales recomendados:
+   armorValue        = max(0, armorValue)
+   resistValue       = max(0, resistValue)
+   accuracy          = max(0, accuracy)
+   evasion           = max(0, evasion)
+   critPct           = clamp(critPct, 0, CRIT_CAP)
+
+   prepPct           = max(0, prepPct)
+   atkSpeed          = max(0, atkSpeed)
+   tempoPct          = max(0, tempoPct)
+   penArmor          = clamp(penArmor, 0, PEN_CAP * armorValue)
+   penResist         = clamp(penResist, 0, PEN_CAP * resistValue)
+   lifeStealPct      = max(0, lifeStealPct)
+   weaponMastery     = max(0, weaponMastery)
+   itemMastery       = max(0, itemMastery)
+   areaDmgPct        = max(0, areaDmgPct)
+   explosiveDmgPct   = max(0, explosiveDmgPct)
+   lastBulletPct     = max(0, lastBulletPct)
+   reboundPct        = max(0, reboundPct)
+
+   regenPct          = max(0, regenPct)
+   medicMastery      = max(0, medicMastery)
+   fatigueResistPct  = clamp(fatigueResistPct, 0, 1)
+   unbreakablePct    = max(0, unbreakablePct)
+   shieldEffPct      = max(0, shieldEffPct)
+   invulnExtendPct   = max(0, invulnExtendPct)
+   tenacityPct       = max(0, tenacityPct)
+   augmenterPct      = max(0, augmenterPct)
+   diminisherPct     = max(0, diminisherPct)
+   tasterPct         = max(0, tasterPct)
+   reflexesPct       = max(0, reflexesPct)
+
+6) EVASIÓN efectiva (alineado a STATS MASTER):
+   evasionStacksPenalty = max(0, stacksEvasionDown)
+   evasionEffective = evasion * max(0.10, 1 - 0.01 * evasionStacksPenalty)
+
+7) PREPARING formalizado:
+   prepDefBonusPct    = 0
+   prepAccEvaBonusPct = 0
+
+   si c.statuses contiene "PREPARING":
+      prepDefBonusPct    += 0.50
+      prepAccEvaBonusPct += 0.20
+
+      armorValue  = armorValue  * (1 + prepDefBonusPct)
+      resistValue = resistValue * (1 + prepDefBonusPct)
+      accuracy    = accuracy    * (1 + prepAccEvaBonusPct)
+      evasion     = evasion     * (1 + prepAccEvaBonusPct)
+
+      evasionEffective = evasion * max(0.10, 1 - 0.01 * evasionStacksPenalty)
+
+8) Reducción defensiva derivada:
+   armorReduction  = min(ARM_CAP/100, armorValue  / (armorValue  + 100))
+   resistReduction = min(RM_CAP /100, resistValue / (resistValue + 100))
+
+9) Multiplicadores finales:
+   damagePhysicalFinalMult = 1.0
+   damageMagicalFinalMult  = 1.0
+   damageTrueFinalMult     = 1.0
+   healingOutFinalMult     = 1.0
+   healingInFinalMult      = 1.0
+   cmGainFinalMult         = 1.0
+
+   Si existe multFinal["damage.physical"] -> usarlo
+   Si existe multFinal["damage.magical"]  -> usarlo
+   Si existe multFinal["damage.true"]     -> usarlo
+   Si existe multFinal["healing.out"]     -> usarlo
+   Si existe multFinal["healing.in"]      -> usarlo
+   Si existe multFinal["cm.gain"]         -> usarlo
+
+<b>effectiveFatigue(c)</b>
+fatigueEff = clamp(c.fatiguePct * (1 - derived.fatigueResistPct), 0, 1)
+end note
+
+note right of HitService
+<b>Hit check (canónico alineado a STATS MASTER)</b>
+
+EVA_eff = def.evasionEffective
+
+Si (att.accuracy + EVA_eff) <= 0:
+   Hit% = HIT_MIN
+Si no:
+   Hit% = 5 + 90 * (att.accuracy / (att.accuracy + EVA_eff))
+
+Hit% = clamp(Hit%, HIT_MIN, HIT_MAX)
+hit  = RNG(0..100) < Hit%
+
+Regla:
+- fallo NO corta secuencia
+- si falla un hit: no aplica daño/elemento/on-hit de ese impacto
+- si la acción consume recurso, se consume aunque falle
+end note
+
+note right of DamageService
+<b>computeDamageOneHit(a, atk, def, isDefendActiveThisHit)</b>
+
+<b>0) CRIT (snap previo)</b>
+critWouldApply = (a.skill.canCrit) AND (RNG(0..100) < atk.critPct)
+
+<b>1) Daño bruto + penetración + reducción (alineado a STATS MASTER)</b>
+
+Si PHYSICAL:
+  D_raw = atk.physAtk * multSkill * multContext
+  D_raw = D_raw * atk.damagePhysicalFinalMult
+
+  PenArmor_eff = min(atk.penArmor, 0.8 * def.armorValue)
+  Armor_f = max(0, def.armorValue - PenArmor_eff)
+  Red_f = min(ARM_CAP/100, Armor_f / (Armor_f + 100))
+
+Si MAGICAL:
+  D_raw = atk.magAtk * multSkill * multContext
+  D_raw = D_raw * atk.damageMagicalFinalMult
+
+  PenRM_eff = min(atk.penResist, 0.8 * def.resistValue)
+  RM_f = max(0, def.resistValue - PenRM_eff)
+  Red_f = min(RM_CAP/100, RM_f / (RM_f + 100))
+
+Si TRUE:
+  D_raw = (atk.physAtk o atk.magAtk según skill/base) * multSkill * multContext
+  D_raw = D_raw * atk.damageTrueFinalMult
+
+  PenArmor_eff = 0
+  PenRM_eff = 0
+  Armor_f = 0
+  RM_f = 0
+  Red_f = 0
+
+<b>2) DV% (daño verdadero separado)</b>
+DV = clamp(a.skill.trueDamagePct, 0, 1)
+D_true = D_raw * DV
+D_norm = D_raw - D_true
+
+<b>3) Reducción SOLO al normal</b>
+D_red_saved = D_norm * (1 - Red_f)
+
+<b>4) Aplicar crítico DESPUÉS de reducción</b>
+D_red_candidate = (critWouldApply ? D_red_saved * 1.8 : D_red_saved)
+
+<b>5) DEFEND anula crítico en el primer impacto</b>
+Si isDefendActiveThisHit == true:
+   D_red_final = D_red_saved
+   critApplied = false
+Si no:
+   D_red_final = D_red_candidate
+   critApplied = critWouldApply
+
+<b>6) Total por hit</b>
+D_final = max(0, D_red_final + D_true)
+
+<b>applyDamageOneHit</b>
+- D_final primero a shield, sobrante a HP
+- DV NO ignora escudos
+end note
+
+note right of CMService
+<b>CM: Reglas canónicas</b>
+
+CM_max = Σ storage(Activos) + 0.5×Σ storage(KO)
+Clamp: si CM_current > CM_max se pierde excedente
+
+<b>Ganancia por atacar (por hit)</b>
+LIGHT:  1/8  (tempo: 2/8)
+MEDIUM: 1/4  (tempo: 2/4)
+HEAVY:  1/2 a 1 (según diseño)
+gainAtk *= modificadores (Enfermo×2, Terror×0.75, traits, etc.)
+
+<b>Ganancia por recibir daño</b>
+- Basado en arma del atacante
+- Tempo NO aplica al recibir
+- Si DEFEND activo en ese hit: duplica
+- Si invulnerable: no aplica
+gainDef = 0.5 * cmGainPerHit(armaAtacante, false)
+gainDef *= (DEFEND?2:1) * modificadores
+
+<b>KO/Muerte</b>
+- Al pasar a KO o DEAD: recalcular CM_max y clamp inmediato
+end note
+
+note right of ElementService
+<b>Sistema elemental (canónico)</b>
+
+- P_element = base n% + modificadores
+- L1: 1 turno
+- L2: 3 turnos
+
+<b>Bloqueo por L2</b>
+- Si target tiene L2 activo: se IGNORAN nuevos elementos
+
+<b>Ventana por ciclo</b>
+- Ciclo = turno completo de ambos equipos
+- elementSuccessActorsThisCycle[targetId] = {actorIds con éxito}
+- L2 ocurre si hay 2 éxitos en el MISMO ciclo por 2 PJs distintos al mismo target
+
+<b>Regla L1 -> L2</b>
+- Si hay L1 activo, se sigue intentando completar condición de L2
+- Si no se cumple, se mantiene L1 hasta expirar
+
+Reset ventana: al terminar el turno del villano
+end note
+
+note right of ItemService
+<b>Curación rápida → Desgaste (canónico)</b>
+- Cada 50% de HP_base restaurada (acumulada) => +1% desgaste
+
+applyFastHeal(target, healAmount):
+  hpCurrent = min(hpCurrent + healAmount, hpBase_eff)
+  fastHealAccum += healAmount
+  step = 0.5 * hpBase_eff
+  while fastHealAccum >= step:
+     fastHealAccum -= step
+     fatiguePct += 0.01 (clamp 0..1)
+
+<b>Comida/Consumible gratis</b>
+- Solo ANTES de ofensiva
+- 1 gratis por equipo (FOOD) y 1 gratis por equipo (ITEM), independientes
+- Reset/recarga cada 3 turnos
+- Reusar con CD>0 consume turno y NO resetea CD
+end note
+
+note right of StatusService
+<b>LOCKS (switches) — canónico</b>
+LOCK_BASIC, LOCK_QWER, LOCK_DEFEND, LOCK_CONSUMABLE,
+LOCK_FOOD, LOCK_GADGET, LOCK_HIDE_SWAP, LOCK_ESCAPE
+
+<b>Defensa (DEFEND)</b>
+- DEF: +50% defensa vs físico/mágico
+- Se CONSUME en el PRIMER IMPACTO recibido
+- Mientras DEF está activo en ese primer impacto: el crítico queda ANULADO
+- El bonus se pierde tras el primer hit recibido
+
+<b>KO y Remate del villano</b>
+- Al entrar en KO: deja de ser targeteable
+- Debe ser atendido antes del siguiente turno del villano
+- Si llega el turno del villano con el objetivo en KO: puede ser REMATADO -> DEAD
+
+<b>Última Bala</b>
+- Post-daño, no altera daño
+- No cuenta escudos, solo HP real
+- Si HP_final <= umbral% de Vida Base => KO
+end note
+
+note right of CombatResolver
+<b>resolveAction(a, teamAtk, teamDef, cycleState, ctx)</b>
+
+0) derivedAtk = buildDerivedStats(actor, ctx)
+   derivedDef = buildDerivedStats(target, ctx)
+
+1) Validar LOCKs + costos + CDs + requisitos:
+   si no permitido => cancelar
+
+2) Resolver impactos (multi-hit)
+   N = max(1, a.skill.multiHitCount)
+
+   for i in 1..N:
+     - Si target NO es targeteable (KO/DEAD): break
+
+     - Hit-check:
+         si a.skill.hitCheckPerHit:
+            hit = rollHit(calcHitChance(derivedAtk, derivedDef))
+         else:
+            hit = hitPrecalculado
+
+     - Si falla:
+         consumir costos de la acción en el primer intento
+         si a.skill.applyEffectsOnMiss == false: continue
+
+     - Determinar DEF activo:
+         isDefendActiveThisHit =
+            (target.isDefending == true) AND
+            (target.defendConsumedThisTurn == false)
+
+     - Daño por hit:
+         dmg = computeDamageOneHit(a, derivedAtk, derivedDef, isDefendActiveThisHit)
+         applyDamageOneHit(target, dmg.D_final)
+
+     - Consumir DEF si se activó:
+         si isDefendActiveThisHit:
+            target.defendConsumedThisTurn = true
+            target.isDefending = false
+
+     - CM:
+         applyCMOnHit(a, dmg, teamAtk, teamDef)
+         clampTeamCM(teamAtk)
+         clampTeamCM(teamDef)
+
+     - Pasivas on-hit / on-being-hit / on-crit:
+         disparar según flags: hitSuccessful, critApplied, etc.
+
+     - Elementos:
+         si hit y skill.hasElement:
+            tryApplyElement(actor, target, elementType, cycleState, ctx)
+
+3) KO/Muerte:
+   si HP<=0 => KO
+   si KO llega al turno del villano y no fue atendido => remate -> DEAD
+
+4) Última Bala:
+   applyLastBulletIfAny(actor, target, derivedDef)
+
+5) Si hubo KO/Muerte:
+   recalcTeamCMMax() + clamp inmediato
+end note
+
+' =========================================================
+' 4) TABLA RÁPIDA DE CÁLCULOS
+' =========================================================
+legend bottom
+|= <b>HOJA EXPRESS — RESUMEN DE FÓRMULAS (PATCH FINAL)</b> |= |
+|= Módulo |= Fórmula / Regla |
+| Modifiers | collectAllModifiers centraliza flat / pctAdd / multFinal / flags / conditionalRules |
+| Stats | stat = (base + flat) * (1+pctAdd) |
+| Fatigue Eff | fatigueEff = clamp(fatiguePct * (1 - fatigueResistPct), 0, 1) |
+| Fatigue Mult | fatigueMult = 1 - fatigueEff |
+| Fatigue Scope | afecta todas las primarias y secundarias ofensivas/defensivas |
+| Hit% | Hit% = 5 + 90 * (ACC / (ACC + EVA_eff)) |
+| EVA_eff | EVA_eff = EVA * max(0.10, 1 - 0.01*stacks) |
+| Daño bruto | D_raw = ATK_eff * multSkill * multContext * multFinal |
+| DV% | D_true = D_raw*DV ; D_norm = D_raw-D_true ; DV ignora ARM/RM, NO ignora escudos |
+| Penetración ARM | PenArmor_eff = min(PenArmor, 0.8*Armor_target) |
+| Penetración RM | PenRM_eff = min(PenRM, 0.8*RM_target) |
+| ARM final | Armor_f = max(0, Armor_target - PenArmor_eff) |
+| RM final | RM_f = max(0, RM_target - PenRM_eff) |
+| Reducción | Red = DEF_f / (DEF_f + 100) |
+| Crítico | Se decide primero; se aplica DESPUÉS de reducción; crit = x1.8 |
+| DEFEND | anula crit en 1er hit recibido |
+| Escudos | Por hit: D_final a Shield, sobrante a HP |
+| PREPARING | +50% defensa ; +20% precisión/evasión |
+| CM_max | Σstorage(Activos) + 0.5×Σstorage(KO) |
+| Clamp CM | min(CM_current, CM_max) (pierde excedente) |
+| Elementos | Ciclo=tu turno+villano; L1=1T; L2=3T; L2=2 PJs distintos mismo ciclo |
+| Desgaste por curación | cada 50% HP_base curado (acum) => +1% fatigue |
+| Gratis | FOOD e ITEM: 1 gratis/eq, CD 3T, solo pre-ofensiva |
+endlegend
+
+@enduml

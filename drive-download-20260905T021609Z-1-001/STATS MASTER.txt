@@ -1,0 +1,732 @@
+@startuml
+title E.N.M.A — ESCALADO 1–18 (Stats Primarias + Secundarias + Tabla de Puntos) [PATCH CANÓNICO EN ESPAÑOL]
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+
+start
+
+:AUTORIDAD CANÓNICA DEL DOCUMENTO;
+note right
+Este documento es la fuente oficial de verdad para:
+
+- escalado de stats
+- agregación de stats
+- caps
+- fatiga / desgaste
+- fórmulas derivadas
+- interacción matemática de modificadores
+
+Si existe contradicción entre este documento
+y BASE MASTER respecto a:
+
+- cálculo de stats
+- agregación
+- caps
+- escalado
+- desgaste
+
+prevalece STATS MASTER.
+end note
+
+:REGLA GLOBAL DE ESCALADO;
+note right
+Toda stat con un MAX definido escala linealmente por nivel:
+
+g(L) = L / 18
+
+Valores numéricos:
+Valor(L) = MAX × g(L)
+
+Valores porcentuales:
+Pct(L) = CAP × g(L)
+
+Esto aplica a:
+- stats primarias
+- stats secundarias ofensivas
+- stats secundarias defensivas
+- bonos de item / emblema / reliquia / recuerdo con techo fijo
+end note
+
+:SUBDIVISIONES DE LA RUN;
+note right
+TABLA — Fases de lectura de poder
+
++------------+------------+-------------------------------+
+| Fase       | Niveles    | Lectura de poder             |
++------------+------------+-------------------------------+
+| Early      | 1 – 5      | bonus pequeño / setup        |
+| Mid        | 6 – 12     | el bonus ya se nota          |
+| Late       | 13 – 18    | cercano al techo máximo      |
++------------+------------+-------------------------------+
+
+Picos de referencia:
+- LV6  = inicio del Mid
+- LV11 = Mid alto
+- LV16 = Late alto
+- LV18 = techo final
+end note
+
+:FACTOR DE NIVEL 1–18;
+note right
+TABLA — Factor lineal por nivel
+
++------+---------+
+| LV   | g(L)    |
++------+---------+
+| 1    | 0.056   |
+| 2    | 0.111   |
+| 3    | 0.167   |
+| 4    | 0.222   |
+| 5    | 0.278   |
+| 6    | 0.333   |
+| 7    | 0.389   |
+| 8    | 0.444   |
+| 9    | 0.500   |
+| 10   | 0.556   |
+| 11   | 0.611   |
+| 12   | 0.667   |
+| 13   | 0.722   |
+| 14   | 0.778   |
+| 15   | 0.833   |
+| 16   | 0.889   |
+| 17   | 0.944   |
+| 18   | 1.000   |
++------+---------+
+end note
+
+:STATS PRIMARIAS;
+note right
+TABLA — Escalado de stats primarias
+
++----------------------+---------+--------------------------------------------------------------+------------------------+-----------------------------+
+| Stat                 | Tipo    | Fórmula / Uso                                                | Cap / Techo            | Escalado                    |
++----------------------+---------+--------------------------------------------------------------+------------------------+-----------------------------+
+| Vida Base            | número  | HP_base(L)=HP_MAX×g(L)                                       | HP_MAX                 | lineal                      |
+| Daño Físico          | número  | DF_base(L)=DF_MAX×g(L)                                       | DF_MAX                 | lineal                      |
+| Daño Mágico          | número  | DM_base(L)=DM_MAX×g(L)                                       | DM_MAX                 | lineal                      |
+| Armadura             | número  | Armor(L)=Armor_MAX×g(L)                                      | dinámico por fórmula   | lineal                      |
+| Resistencia Mágica   | número  | RM(L)=RM_MAX×g(L)                                            | dinámico por fórmula   | lineal                      |
+| Precisión            | número  | ACC(L)=ACC_MAX×g(L)                                          | ACC_MAX                | lineal                      |
+| Evasión              | número  | EVA(L)=EVA_MAX×g(L)                                          | EVA_MAX                | lineal                      |
+| Crítico              | %       | CR(L)=CR_CAP×g(L)                                            | 100%                   | lineal                      |
+| Carga Musical        | recurso | Q=1 / W=2 / E=3 / R=4–5                                      | depende del build      | depende de build            |
+| Desgaste             | %       | deterioro físico acumulado                                   | 0–100%                 | acumulación de run          |
+| Daño Verdadero       | número  | ignora reducción de ARM / RM, NO ignora escudos             | depende de skill       | depende de skill            |
++----------------------+---------+--------------------------------------------------------------+------------------------+-----------------------------+
+
+Fórmulas canónicas:
+
+Hit% = 5 + 90 × (ACC / (ACC + EVA_eff))
+
+EVA_eff = EVA × max(0.10, 1 - 0.01 × stacksEvasionDown)
+
+Penetración de armadura:
+PenArmor_eff = min(PenArmor, 0.8 × Armor_target)
+Armor_f = max(0, Armor_target - PenArmor_eff)
+
+Penetración mágica:
+PenRM_eff = min(PenRM, 0.8 × RM_target)
+RM_f = max(0, RM_target - PenRM_eff)
+
+Reducción final por defensa:
+Red = DEF_f / (DEF_f + 100)
+
+Donde:
+- DEF_f = Armor_f para daño físico
+- DEF_f = RM_f para daño mágico
+end note
+
+:FATIGA / DESGASTE;
+note right
+TABLA — Sistema canónico de desgaste
+
++---------------------------+------------------------------------------------------+
+| Variable                  | Significado                                          |
++---------------------------+------------------------------------------------------+
+| desgasteActual            | desgaste acumulado real de la run                    |
+| mitigacionDesgaste        | stat secundaria que reduce el desgaste (%)           |
+| desgasteReal              | desgaste tras aplicar mitigación                     |
+| supresionTemporal         | reducción directa temporal (ej: torniquetes)         |
+| desgasteEfectivo          | desgaste final aplicado a las stats                  |
+| multiplicadorDesgaste     | multiplicador aplicado a las stats                   |
++---------------------------+------------------------------------------------------+
+
+IDENTIDAD DEL SISTEMA
+
+El desgaste representa deterioro físico acumulado.
+
+No es:
+- daño directo
+- debuff común
+- efecto temporal estándar
+
+El desgaste real de la run nunca desaparece.
+Solo puede:
+
+• mitigarse (stats)
+• suprimirse temporalmente (objetos)
+
+------------------------------------------------------------
+
+FASE 1 — MITIGACIÓN DEL DESGASTE
+
+La mitigación reduce un porcentaje del desgaste actual.
+
+Fórmula:
+
+desgasteReal =
+desgasteActual × (1 - mitigacionDesgaste)
+
+Ejemplo:
+
+desgasteActual = 20%
+mitigacionDesgaste = 10%
+
+desgasteReal =
+20 × (1 - 0.10)
+
+desgasteReal =
+18%
+
+------------------------------------------------------------
+
+FASE 2 — SUPRESIÓN TEMPORAL
+
+Algunos objetos reducen desgaste en puntos directos
+durante un tiempo limitado.
+
+Fórmula:
+
+desgasteEfectivo =
+max(0 , desgasteReal - supresionTemporal)
+
+Ejemplo:
+
+desgasteReal = 18%
+torniquete = 5%
+
+desgasteEfectivo = 13%
+
+Cuando el efecto termina:
+
+desgasteEfectivo vuelve a
+desgasteReal.
+
+------------------------------------------------------------
+
+FASE 3 — MULTIPLICADOR DE DESGASTE
+
+multiplicadorDesgaste =
+1 - desgasteEfectivo
+
+Ejemplo:
+
+desgasteEfectivo = 18%
+
+multiplicadorDesgaste = 0.82
+
+------------------------------------------------------------
+
+APLICACIÓN DEL DESGASTE
+
+El multiplicador afecta globalmente:
+
+PRIMARIAS
+- HP
+- DF
+- DM
+- ARM
+- RM
+- ACC
+- EVA
+- CRIT
+
+SECUNDARIAS OFENSIVAS
+- PREP
+- ATK SPEED
+- TEMPO
+- PEN ARM
+- PEN RM
+- LIFE STEAL
+- WEAPON MASTERY
+- ITEM MASTERY
+- AREA DAMAGE
+- EXPLOSIVE DAMAGE
+- LAST BULLET
+- REBOUND
+
+SECUNDARIAS DEFENSIVAS
+- HP REGEN
+- MEDICAL MASTERY
+- UNBREAKABLE
+- SHIELD EFFICIENCY
+- SHIELD EXTENSION
+- INVULNERABILITY EXTEND
+- TENACITY
+- BUFF AMPLIFIER
+- BUFF EXTENSION
+- DEBUFF AMPLIFIER
+- DEBUFF EXTENSION
+- FOOD MASTERY
+- FOOD EXTENSION
+- REFLEXES
+
+NO afecta:
+- CM actual
+- CM máximo
+- cooldowns
+- flags de estado
+
+------------------------------------------------------------
+
+INTERACCIÓN CON VIDA
+
+HPMaxEfectivo =
+HP_agregado × multiplicadorDesgaste
+
+Si el desgaste aumenta durante combate:
+
+HPActual =
+min(HPActual , HPMaxEfectivo)
+
+------------------------------------------------------------
+
+EJEMPLO COMPLETO
+
+AD base actual = 50
+
+desgasteActual = 20%
+mitigacionDesgaste = 10%
+
+desgasteReal =
+20 × (1 - 0.10)
+
+desgasteReal =
+18%
+
+multiplicadorDesgaste =
+1 - 0.18
+= 0.82
+
+AD_operativo =
+50 × 0.82
+= 41
+
+Habilidad:
+80 + 5% AD actual
+
+5% de 41 =
+2.05
+
+Daño final:
+
+80 + 2.05
+=
+82.05
+end note
+
+:STATS SECUNDARIAS OFENSIVAS;
+note right
+TABLA — Escalado de stats secundarias ofensivas
+
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+| Stat                     | Tipo    | Fórmula / Efecto                                  | Cap / Techo            | Escalado                    |
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+| Preparación              | %       | reduce 1 turno de preparación si llega al umbral  | 75%                    | PREP(L)=0.75×g(L)           |
+| Velocidad de Ataque      | %       | hits = base × (1 + AS)                            | 60%                    | AS(L)=0.60×g(L)             |
+| Tempo                    | %       | CM_gain = CM_base × (1 + TMP)                     | 50%                    | TMP(L)=0.50×g(L)            |
+| Pen. Armadura            | número  | Armor_f = Armor - PenArmor_eff                    | ≤80% ARM objetivo      | PenAR(L)=PenAR_MAX×g(L)     |
+| Pen. Mágica              | número  | RM_f = RM - PenRM_eff                             | ≤80% RM objetivo       | PenRM(L)=PenRM_MAX×g(L)     |
+| Robo de Vida             | %       | Heal = Damage × LS                                | 25%                    | LS(L)=0.25×g(L)             |
+| Dominio de Armas         | %       | P_final = P_base × (1 + WM)                       | 50%                    | WM(L)=0.50×g(L)             |
+| Dominio de Objetos       | %       | D_item = D_base × (1 + IM)                        | 60%                    | IM(L)=0.60×g(L)             |
+| Daño de Área             | %       | AoE_damage = D × (1 + AOE)                        | 80%                    | AOE(L)=0.80×g(L)            |
+| Daño Explosivo           | %       | Explosion_damage = D × (1 + EXPL)                 | 100%                   | EXPL(L)=1.00×g(L)           |
+| Última Bala              | %       | si HP ≤ HP_max × LB -> KO/Muerte                  | 10%                    | LB(L)=0.15×g(L)             |
+| Rebote                   | %       | chance de rebotar daño a enemigo cercano          | 30%                    | RB(L)=0.30×g(L)             |
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+
+Ejemplos de pico:
+- VelocidadAtaque 60% -> 10 hits se vuelven 16
+- Tempo 50% -> 1.5x generación de CM
+- DominioArmas 50% -> gadget 25% se vuelve 37.5%
+- DominioObjetos 60% -> item 100 se vuelve 160
+- DañoÁrea 80% -> 100 se vuelve 180
+- DañoExplosivo 100% -> 200 se vuelve 400
+end note
+
+:STATS SECUNDARIAS DEFENSIVAS;
+note right
+TABLA — Escalado de stats secundarias defensivas
+
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+| Stat                     | Tipo    | Fórmula / Efecto                                  | Cap / Techo            | Escalado                    |
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+| Regeneración de Vida     | %       | HP_regen = HP_base(L) × RGN                       | 10% por turno          | RGN(L)=0.10×g(L)            |
+| Dominio Médico           | %       | Heal_total = Heal_base + (Heal_base × MM)         | 50%                    | MM(L)=0.50×g(L)             |
+| Resistencia Desgaste     | %       | reduce el desgaste actual en porcentaje           | 50%                    | RD(L)=0.50×g(L)             |
+| Inquebrantable           | %       | chance de autorevivir tras KO                     | 25%                    | UNB(L)=0.25×g(L)            |
+| Eficiencia Escudo        | %       | Shield_final = Shield_base × (1 + SHD)            | 50%                    | SHD(L)=0.50×g(L)            |
+| Extensión de Escudo      | %       | al expirar: rnd < SHD+ => +1 turno                | 30%                    | SHD+(L)=0.30×g(L)           |
+| Extensión Invulnerable   | %       | al expirar: rnd < INV+ => +1 turno                | 25%                    | INV+(L)=0.25×g(L)           |
+| Tenacidad                | %       | al inicio limpia debuffs excepto emociones        | 30%                    | TNC(L)=0.30×g(L)            |
+| Amplificador de Buff     | %       | Buff_final = Buff_base × (1 + AUG)                | 50%                    | AUG(L)=0.50×g(L)            |
+| Extensión de Buff        | %       | al expirar: rnd < AUG+ => +1 turno                | 25%                    | AUG+(L)=0.25×g(L)           |
+| Amplificador de Debuff   | %       | Debuff_final = Debuff_base × (1 + DIM)            | 50%                    | DIM(L)=0.50×g(L)            |
+| Extensión de Debuff      | %       | al expirar: rnd < DIM+ => +1 turno                | 25%                    | DIM+(L)=0.25×g(L)           |
+| Dominio de Comida        | %       | Food_final = Food_base × (1 + DGS)                | 50%                    | DGS(L)=0.50×g(L)            |
+| Extensión de Comida      | %       | al expirar: rnd < DGS+ => +1 turno                | 30%                    | DGS+(L)=0.30×g(L)           |
+| Reflejos                 | %       | intercepta daño letal dirigido a aliado           | 20%                    | RFX(L)=0.20×g(L)            |
++--------------------------+---------+---------------------------------------------------+------------------------+-----------------------------+
+
+Notas importantes:
+- Regeneración de Vida NO genera desgaste por sí misma
+- Dominio Médico NO agrega desgaste extra por fórmula propia
+- Tenacidad limpia debuffs, no emociones
+- Las chances de extensión pueden repetirse cada vez que el efecto expira
+end note
+
+:MODELO DE MODIFICADORES;
+note right
+TABLA — Tipos canónicos de modificador
+
++----------------------+--------------------------------------------------+
+| Tipo de modificador  | Significado                                      |
++----------------------+--------------------------------------------------+
+| flat                 | suma directa a la stat                           |
+| pctAdd               | porcentaje aditivo sobre la stat operativa       |
+| multFinal            | multiplicador final excepcional                  |
+| conditional          | regla que solo aplica si se cumple el trigger    |
+| flags                | lógica especial / inmunidades / overrides        |
++----------------------+--------------------------------------------------+
+
+Ejemplos:
+- flat["physAtk"] += 30
+- pctAdd["critPct"] += 0.20
+- multFinal["damage.physical"] *= 1.25
+- conditional: si HP<50%, +45% crit
+- flags: IMMUNE_MAGICAL / SPECIAL_CAN_CRIT
+
+REGLA:
+Los porcentajes NO se multiplican entre sí.
+Todos leen la misma stat operativa de referencia.
+end note
+
+:REGLA CANÓNICA DE AGREGACIÓN;
+note right
+TABLA — Regla oficial de agregación de stats
+
++----------------------+--------------------------------------------------------------+
+| Concepto             | Definición                                                   |
++----------------------+--------------------------------------------------------------+
+| BaseRef              | stat base tras escalado por nivel                           |
+| StatOperativa        | stat tras aplicar desgaste efectivo                         |
+| FlatMods             | sumas / restas planas                                        |
+| PctMods              | porcentajes calculados SOLO desde StatOperativa             |
+| % misma familia      | se suman entre sí, NO se multiplican entre sí                |
+| multFinal            | capa final excepcional                                       |
++----------------------+--------------------------------------------------------------+
+
+FÓRMULA OFICIAL:
+
+StatFinal = StatOperativa + ΣFlatMods + Σ(StatOperativa × PctMods)
+
+REGLAS CANÓNICAS:
+1) Primero se calcula BaseRef.
+2) Luego se aplica desgaste para obtener StatOperativa.
+3) Los porcentajes siempre usan la StatOperativa SIN modificaciones previas.
+4) Los porcentajes de la misma familia NO se multiplican entre sí.
+5) Los flats se suman aparte.
+6) multFinal solo actúa en su propia capa.
+end note
+
+:DEFINICIÓN DE BASEREF Y STAT OPERATIVA;
+note right
+TABLA — Significado de capas
+
++----------------------+--------------------------------------------------------------+
+| Concepto             | Significado                                                  |
++----------------------+--------------------------------------------------------------+
+| RawBase              | stat innata original del personaje                           |
+| LevelScaledBase      | stat tras escalado por nivel 1–18                            |
+| BaseRef              | valor usado antes del desgaste                               |
+| StatOperativa        | valor resultante tras desgaste, usado por buffs/debuffs      |
++----------------------+--------------------------------------------------------------+
+
+Para cálculo canónico:
+
+BaseRef = valor tras escalado por nivel
+StatOperativa = BaseRef × (1 - desgasteEfectivo)
+
+Luego:
+StatFinal = StatOperativa + flats + % sobre StatOperativa
+end note
+
+:EJEMPLO — PORCENTAJES INDEPENDIENTES;
+note right
+Ejemplo:
+
+BaseRef AD = 48
+DesgasteEfectivo = 10%
+StatOperativa AD = 48 × 0.90 = 43.2
+
+Arma flat = +25
+Arma % = +2% de StatOperativa
+Buff % = +3% de StatOperativa
+
+Paso 1) StatOperativa
+43.2
+
+Paso 2) Flats
++25
+
+Paso 3) Porcentajes sobre StatOperativa
+2% de 43.2 = 0.864
+3% de 43.2 = 1.296
+Aporte % total = 2.16
+
+Paso 4) StatFinal
+43.2 + 25 + 2.16 = 70.36
+
+Lectura oficial:
+El 2% y el 3% leen 43.2,
+no 48 ni 68.2.
+end note
+
+:ORDEN CANÓNICO DE CÁLCULO;
+note right
+TABLA — Orden canónico de cálculo de stats
+
++------+--------------------------------------------------------------+
+| Paso | Operación                                                    |
++------+--------------------------------------------------------------+
+| 1    | Stats base del personaje                                     |
+| 2    | Escalado por nivel                                           |
+| 3    | Definir BaseRef de cada stat                                 |
+| 4    | Calcular mitigación de desgaste                              |
+| 5    | Obtener desgaste real efectivo                               |
+| 6    | Aplicar desgaste a BaseRef                                   |
+| 7    | Obtener StatOperativa                                        |
+| 8    | Aplicar flats y porcentajes de buffs/debuffs                 |
+| 9    | Aplicar multiplicadores finales                              |
+| 10   | Calcular derivados (evasión, reducción, etc.)                |
+| 11   | Aplicar clamps finales                                       |
++------+--------------------------------------------------------------+
+
+INTERPRETACIÓN
+
+El desgaste representa el estado físico real
+del personaje en ese momento.
+
+Los buffs y debuffs operan sobre la stat
+ya afectada por desgaste.
+
+Esto separa dos capas:
+
+estado físico (desgaste)
+estado táctico (buffs/debuffs)
+end note
+
+:REGLA DE BÁSICOS Y HABILIDADES;
+note right
+BÁSICO:
+
+DañoBasico = DañoOfensivoRef
+
+donde DañoOfensivoRef es la stat ofensiva final
+que corresponda a la acción.
+
+HABILIDAD:
+
+DañoSkill = DañoBaseSkill + (DañoOfensivoRef × CoefSkill)
+
+donde:
+- DañoBaseSkill = daño propio intrínseco de la habilidad
+- DañoOfensivoRef = stat ofensiva final del momento
+- CoefSkill = coeficiente de escalado de la habilidad
+
+Esto evita double-dipping porque:
+- la habilidad NO escala desde un daño ya reescalado
+- escala desde la referencia ofensiva canónica del momento
+end note
+
+:PLANTILLA GENERAL DE STATS;
+note right
+Plantilla general de cálculo de stats
+
+1) BaseRef tras escalado por nivel
+
+BaseRef_stat
+
+------------------------------------------------
+
+2) Aplicar mitigación de desgaste
+
+desgasteReal =
+desgasteActual × (1 - mitigacionDesgaste)
+
+------------------------------------------------
+
+3) Aplicar supresión temporal si existe
+
+desgasteEfectivo =
+max(0 , desgasteReal - supresionTemporal)
+
+------------------------------------------------
+
+4) Obtener stat operativa
+
+StatOperativa =
+BaseRef_stat × (1 - desgasteEfectivo)
+
+------------------------------------------------
+
+5) Aplicar modificadores de combate
+
+FlatSum_stat =
+Σ flats válidos
+
+PctSum_stat =
+Σ porcentajes válidos
+
+------------------------------------------------
+
+6) Agregación final
+
+StatFinal =
+StatOperativa + FlatSum_stat + (StatOperativa × PctSum_stat)
+
+------------------------------------------------
+
+Lectura del sistema
+
+Desgaste define la capacidad física real.
+
+Buffs y debuffs modifican esa capacidad
+durante el combate.
+
+Esto evita:
+
+• explosiones exponenciales
+• ignorar el desgaste con buffs
+• doble escalado de stats
+end note
+
+:REFERENCIAS COMUNES DE CAP;
+note right
+TABLA — Referencias comunes de cap por nivel
+
++------+---------+---------+---------+---------+---------+---------+
+| LV   | Cap15   | Cap20   | Cap25   | Cap30   | Cap50   | Cap60   |
++------+---------+---------+---------+---------+---------+---------+
+| 1    | 0.8%    | 1.1%    | 1.4%    | 1.7%    | 2.8%    | 3.3%    |
+| 3    | 2.5%    | 3.3%    | 4.2%    | 5.0%    | 8.3%    | 10.0%   |
+| 6    | 5.0%    | 6.7%    | 8.3%    | 10.0%   | 16.7%   | 20.0%   |
+| 9    | 7.5%    | 10.0%   | 12.5%   | 15.0%   | 25.0%   | 30.0%   |
+| 12   | 10.0%   | 13.3%   | 16.7%   | 20.0%   | 33.3%   | 40.0%   |
+| 15   | 12.5%   | 16.7%   | 20.8%   | 25.0%   | 41.7%   | 50.0%   |
+| 18   | 15.0%   | 20.0%   | 25.0%   | 30.0%   | 50.0%   | 60.0%   |
++------+---------+---------+---------+---------+---------+---------+
+
+Lectura útil:
+- Cap15 -> Última Bala
+- Cap20 -> Reflejos
+- Cap25 -> Inquebrantable / ExtInvul / ExtBuff / ExtDebuff
+- Cap30 -> Rebote / ExtComida / Tenacidad / ExtEscudo
+- Cap50 -> DomArmas / DomComida / DomMédico / Buff/Debuff bonus
+- Cap60 -> DomObjetos / VelocidadAtaque alta
+end note
+
+:EJEMPLOS DE APLICACIÓN;
+note right
+TABLA — Ejemplos de aplicación
+
++----------------------------+-----------+----------------------------------------------+
+| Caso                       | Nivel     | Resultado                                     |
++----------------------------+-----------+----------------------------------------------+
+| Dominio Objetos cap 60%    | LV9       | 60% × 0.50 = 30%                              |
+| Dominio Armas cap 50%      | LV12      | 50% × 0.667 = 33.3%                           |
+| Extensión Comida cap 30%   | LV15      | 30% × 0.833 = 25.0%                           |
+| Reflejos cap 20%           | LV18      | 20%                                           |
+| Última Bala cap 15%        | LV6       | 15% × 0.333 = 5.0%                            |
+| Regeneración cap 10%       | LV9       | 10% × 0.50 = 5.0%                             |
+| Tenacidad cap 30%          | LV12      | 30% × 0.667 = 20.0%                           |
++----------------------------+-----------+----------------------------------------------+
+
+Ejemplo de lectura:
+Daño base de item = 100
+DominioObjetos LV12 = 40%
+Daño final de item = 100 + (100 × 0.40) = 140
+
+La lectura correcta:
+El 40% usa la referencia base del item,
+no un resultado intermedio ya modificado.
+end note
+
+:TABLA DE PUNTOS POR COMBATE;
+note right
+TABLA — Puntos de participación por combate
+
++----------------------+------------------------------------------+--------+
+| Categoría            | Evento                                   | Pts    |
++----------------------+------------------------------------------+--------+
+| Presencia            | Entrar al frontline                      | +2     |
+| Presencia            | Permanecer toda la pelea en frontline    | +2     |
+| Táctico              | Realizar swap                            | +1     |
+| Eliminación          | Último golpe                             | +2     |
+| Eliminación          | KO / derribo                             | +3     |
+| Eliminación          | Asistencia                               | +1     |
+| Rescate              | Salvar aliado                            | +2     |
+| Rescate              | Revivir aliado                           | +3     |
+| Soporte              | Curación significativa                   | +2     |
+| Control              | Acción decisiva                          | +2     |
+| Reserva              | Permanecer en banca                      | +1     |
+| Sigilo               | Permanecer oculto                        | +1     |
++----------------------+------------------------------------------+--------+
+
+Acumulación:
+Los puntos se apilan dentro del mismo combate.
+
+Ejemplo:
+Frontline + KO + last hit + assist
+= 2 + 3 + 2 + 1 = 8 pts
+end note
+
+:CAP ANTI-EXPLOIT DE PUNTOS;
+note right
+TABLA — Cap efectivo de puntos
+
++-------------------------------+----------------------------------+
+| Regla                         | Fórmula                          |
++-------------------------------+----------------------------------+
+| Primeros 10 pts               | valor completo                   |
+| Puntos extra                  | valen 0.5 cada uno               |
++-------------------------------+----------------------------------+
+
+Pts_eff = min(Pts,10) + max(0, Pts-10)×0.5
+
+Ejemplo:
+Pts = 21
+Pts_eff = 10 + (11×0.5) = 15.5
+end note
+
+:CONVERSIÓN A EXP;
+note right
+TABLA — Conversión a EXP individual
+
++------------------------------+----------------------------------------------+
+| Variable                     | Fórmula                                      |
++------------------------------+----------------------------------------------+
+| EXP base del combate         | EXP_combat                                   |
+| EXP del personaje            | EXP_p = EXP_combat × (Pts_eff / promedio)    |
++------------------------------+----------------------------------------------+
+
+Donde:
+promedio = promedio del equipo de Pts_eff en ese combate
+end note
+
+stop
+@enduml

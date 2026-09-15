@@ -1,0 +1,224 @@
+@startuml
+title E.N.M.A — DIAGRAMA MAESTRO (Loop completo de combate, sin paginado)
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor white
+  BorderColor black
+  ArrowColor black
+  FontSize 12
+}
+
+start
+
+:INICIO COMBATE;
+:Leer CONTEXTO DE ENTORNO\n- Clima\n- Ambientación\n- Música/Tempo\n- ¿Hay escondites/salvaguarda?\n- ¿Escape permitido? (flag por combate)\n- Tamaño/capacidad de escondites;
+:Inicializar ESTADO GLOBAL\n- Estados/Emociones (duraciones)\n- Elementos (duraciones)\n- Desgaste (stats)\n- Emblemas (fuera de combate, solo efectos activos)\n- Gadgets pasivos (si existen);
+:Inicializar CARGA MUSICAL (CM)\n- CM_max = Σ storage(Activos) + 0.5×Σ storage(KO)\n- CM_actual (normalmente 0)\n- Clamp CM_actual ≤ CM_max;
+:Inicializar VENTANA ELEMENTAL (por objetivo)\n- elementSuccessActors[target] = ∅;
+
+while (¿VICTORIA o DERROTA?) is (NO)
+
+  :INICIO DE CICLO (Jugador + Enemigos);
+  :Efectos GLOBALes por ciclo (si aplica)\n- Música/tempo fase\n- Clima/ambientación fase\n- Otros auras de entorno;
+
+  ' =======================
+  ' TURNO BANDO JUGADOR
+  ' =======================
+  :TURNO BANDO JUGADOR;
+
+  ' --------- Pre-turno de bando: escondites y KO ----------
+  if (¿Entorno tiene ESCONDITES/SALVAGUARDA?) then (SÍ)
+    if (¿Hay al menos 1 aliado en K.O.?) then (SÍ)
+      :DECISIÓN INICIAL DEL JUGADOR\nElegir K.O. a atender (si quiere);
+      if (¿Decide atender un K.O. ahora?) then (SÍ)
+        :OCUPAR ESCONDITE/SLOT\n(queda bloqueado este ciclo/turno)\n*Se considera “recurso ocupado”*;
+        :Definir “K.O. en proceso”\n(o extracción/atención);
+      else (NO)
+        :No se usa escondite en este inicio;
+      endif
+    else (NO)
+      :No hay K.O. que atender al inicio;
+    endif
+  else (NO)
+    :Sin escondites:\n- No hay swap por banquillo\n- K.O. implica pelear con uno menos\nhasta reanimación por aliados (si existe) o fin;
+  endif
+
+  ' --------- Iteración por personajes del bando ----------
+  while (¿Quedan aliados por actuar?) is (SÍ)
+
+    :Seleccionar siguiente PJ (orden del bando);
+
+    if (¿PJ está MUERTO?) then (SÍ)
+      :Saltar turno (muerto);
+    else (NO)
+      if (¿PJ está K.O.?) then (SÍ)
+        :Saltar turno (K.O. no actúa);\n(Aporta 50% storage a CM_max);
+      else (NO)
+
+        :INICIO TURNO PJ (tick/limpieza)\n- Tick Elementos sobre el PJ\n- Tick Emoción sobre el PJ\n- Tick Buffs/Debuffs sobre el PJ\n- Tenacidad (solo NEGATIVOS)\n- Regeneración (si existe)\n- Tick cooldowns de items (si aplica por PJ);
+        :Recalcular LOCKS por estado\n(LOCK_BASIC / LOCK_QWER / LOCK_DEFEND /\nLOCK_CONSUMABLE / LOCK_FOOD / LOCK_GADGET /\nLOCK_HIDE_SWAP / LOCK_ESCAPE / etc.);
+        if (¿Todas las acciones están bloqueadas?) then (SÍ)
+          :Turno bloqueado → termina por timeout inmediato;
+        else (NO)
+
+          ' ==========================
+          ' VENTANA PRE-OFENSIVA (GRATIS)
+          ' ==========================
+          :VENTANA PRE-OFENSIVA (1s input)\nSolo antes de ofensiva;
+          if (¿Jugador usa COMIDA gratis?) then (SÍ)
+            if (¿FREE_FOOD_TEAM disponible\nY CD_item==0\nY NOT LOCK_FOOD?) then (SÍ)
+              :Aplicar Comida (solo aliados)\nBuff/limpia/escudo/estados/etc.;
+              :Set CD_item(food)=3;\nConsumir FREE_FOOD_TEAM (CD=3);
+              :Volver a Ventana Pre-Ofensiva\n(aún sin ofensiva);
+            else (NO)
+              :Rechazar (no disponible);\nseguir ventana;
+            endif
+          endif
+
+          if (¿Jugador usa CONSUMIBLE gratis?) then (SÍ)
+            if (¿FREE_CONSUMABLE_TEAM disponible\nY CD_item==0\nY NOT LOCK_CONSUMABLE?) then (SÍ)
+              :Aplicar Consumible (ambos bandos)\nBuff/debuff/limpia/escudo/estados/etc.;
+              :Set CD_item(cons)=3;\nConsumir FREE_CONSUMABLE_TEAM (CD=3);
+              :Volver a Ventana Pre-Ofensiva\n(aún sin ofensiva);
+            else (NO)
+              :Rechazar (no disponible);\nseguir ventana;
+            endif
+          endif
+
+          ' Una vez que inicia ofensiva, se cierra la ventana gratis.
+          :INICIO OFENSIVA\n(Cierra ventana gratis este turno);
+
+          ' ==========================
+          ' SUBPROCESO: MOTOR DE TURNO POR PJ
+          ' ==========================
+          :MOTOR DE TURNO PJ (encadenable, 1s timeout)\nInputs: B / QWER / QT / DEF / GADGET / CONSUMIBLE(>0) / COMIDA(>0)\nHIDE/SWAP / ESCAPE\nRegla de modo:\n- Iniciar con B o con QWER\n- Si entra a QWER → no regresa a B;
+
+          note right
+            SUBPROCESO (resumen de reglas implementadas):
+            - Timeout 1s sin B/QWER => fin turno PJ.
+            - Fallo de hit no corta secuencia.
+            - Validación LOCKs por categoría antes de ejecutar.
+            - Básicos limitados por Velocidad de Ataque.
+            - Transición: B -> QWER irreversible.
+            - Gadget: siempre consume turno.
+            - Consumible/Comida NO gratis (CD>0): consume turno, no resetea CD.
+            - Escape: tiro de moneda, si permitido; éxito termina combate.
+            - Relevo: requiere escondite; normalmente consume turno; con sinergia no consume.
+          end note
+
+          ' --------- Fin turno PJ ----------
+          :FIN TURNO PJ\n- Si está PREPARANDO: CD_prep-- (fin de turno)\n- Consumir estado “DEFENDER” en primer hit recibido (durante resolución)\n- Si hubo KO/Muerte durante el turno:\n  Recalcular CM_max y clamp (pierde excedente);
+
+        endif
+      endif
+    endif
+
+  endwhile (NO)
+
+  :FIN BANDO JUGADOR;
+
+  ' =======================
+  ' TURNO BANDO ENEMIGO
+  ' =======================
+  :TURNO BANDO ENEMIGO;
+
+  while (¿Quedan enemigos por actuar?) is (SÍ)
+
+    :Seleccionar siguiente enemigo;
+
+    if (¿Enemigo MUERTO?) then (SÍ)
+      :Saltar turno (muerto);
+    else (NO)
+      if (¿Enemigo K.O.?) then (SÍ)
+        :Saltar turno (K.O.);
+      else (NO)
+
+        :INICIO TURNO ENEMIGO (tick/limpieza)\n- Tick Elementos\n- Tick Emoción\n- Tick Buff/Debuff\n- Tenacidad (si aplica)\n- Regeneración (si aplica);
+        :Recalcular LOCKS del enemigo;
+
+        if (¿Acciones bloqueadas?) then (SÍ)
+          :Turno enemigo perdido;
+        else (NO)
+
+          :EJECUTAR IA (acciones)\nPuede usar mismo motor lógico sin input humano;
+          note right
+            Durante acciones enemigas se usa el MISMO ORDEN DE RESOLUCIÓN
+            (daño → CM → estados → KO/muerte → clamp CM_max, etc.)
+          end note
+
+          :FIN TURNO ENEMIGO\n- Si PREPARA: CD_prep--\n- Si causó KO/Muerte: recalcular CM_max + clamp;
+        endif
+      endif
+    endif
+
+  endwhile (NO)
+
+  :FIN BANDO ENEMIGO (FIN DE CICLO);
+
+  ' --------- Reset de ventana elemental del ciclo ----------
+  :RESET VENTANA ELEMENTAL\n(elementSuccessActors[target] = ∅)\n*Regla: se resetea tras turno enemigo*;
+
+  ' --------- Liberación de escondite (si aplica) ----------
+  if (¿Entorno tiene ESCONDITES?\nY estaba OCUPADO por K.O.?) then (SÍ)
+    if (¿K.O. fue REANIMADO en el ciclo siguiente\nO fue REEMPLAZADO por banquillo?) then (SÍ)
+      :Liberar escondite/slot;
+    else (NO)
+      :Mantener escondite OCUPADO\nhasta que K.O. se resuelva;
+    endif
+  endif
+
+  ' --------- Chequeo de victoria/derrota ----------
+  if (¿Todos los enemigos fuera de combate?) then (SÍ)
+    :VICTORIA;
+    break
+  endif
+
+  if (¿Todos los aliados fuera de combate?) then (SÍ)
+    :DERROTA;
+    break
+  endif
+
+endwhile (YES)
+
+stop
+
+
+' ==========================
+' SUBPROCESO DETALLADO (referencia)
+' ==========================
+legend right
+SUBPROCESO: ORDEN OFICIAL DE RESOLUCIÓN DE ACCIÓN/IMPACTO (por hit)
+0) Pre-chequeos: locks + CM + costos
+1) Hit-check (si falla, no corta secuencia)
+2) Daño:
+   - Base
+   - Modificadores ofensivos
+   - Separar DV%
+   - Reducir por Armadura/RM (con penetración)
+   - Crítico DESPUÉS de reducción
+   - Escudos (DV NO los ignora)
+   - HP
+3) Post-hit inmediato:
+   - CM atacante (por arma/hit/tempo si aplica)
+   - CM defensor (según arma del atacante; defensa duplica vs no defensa; tempo NO aplica aquí)
+   - Modificadores de CM (emociones/rasgos; Enfermo×2, Terror×0.75, etc.)
+   - Clamp CM_actual ≤ CM_max (pierde excedente)
+4) Pasivas on-hit / on-being-hit
+5) Elementos:
+   - L2 bloquea nuevos elementos
+   - L2 requiere 2 PJs distintos en la ventana del ciclo
+   - Reemplazo del elemento previo
+6) KO/Muerte:
+   - KO si HP≤0
+   - Muerte por daño grave en KO (según reglas)
+7) Última Bala:
+   - Condicionador post-daño (no altera daño)
+   - Si HP final ≤ umbral% Vida Base => KO
+8) Si KO/Muerte:
+   - Recalcular CM_max (KO aporta 50%, muerte 0)
+   - Clamp inmediato (pierde excedente)
+endlegend
+
+@enduml

@@ -1,0 +1,716 @@
+@startuml
+title E.N.M.A — SISTEMA DE HABILIDADES QWER / ÁRBOLES / EVOLUCIONES / SECUENCIAS [CANÓNICO CERRADO — PATCH]
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontSize 12
+
+' =========================================================
+' 1) TIPOS BASE
+' =========================================================
+package "Tipos Base" {
+
+  enum SkillSlot {
+    Q
+    W
+    E
+    R
+    QT1
+    QT2
+    QT3
+    QT4
+    WT1
+    WT2
+    ET1
+    ET2
+    RT1
+    RT2
+  }
+
+  enum SkillKind {
+    BASE_SLOT
+    SUBSKILL_SEQUENCE
+    EVOLVED_SLOT
+    GLOBAL_MUTATION
+  }
+
+  enum DamageType {
+    PHYSICAL
+    MAGICAL
+    TRUE
+    SUPPORT
+  }
+
+  enum TargetType {
+    SELF
+    SINGLE_ALLY
+    MULTI_ALLY
+    SINGLE_ENEMY
+    MULTI_ENEMY
+    ALL_ENEMIES
+    ALL_ALLIES
+    RANDOM_ENEMIES
+    DEAD_ALLY
+  }
+
+  enum UnlockMode {
+    START_OF_RUN
+    CONDITIONAL
+  }
+
+  enum EvolutionMode {
+    REPLACE_SLOT_SKILL
+    UNLOCK_SUBSKILL
+  }
+
+  enum TriggerType {
+    ALWAYS
+    SKILL_LEVEL_REACHED
+    PLAYER_LEVEL_REACHED
+    STAT_THRESHOLD
+    KEEP_SKILL_AT_LEVEL
+    CUSTOM_CONDITION
+  }
+
+  enum TieBreakMode {
+    RANDOM
+  }
+
+  enum TriggerOperator {
+    EQUAL
+    GREATER_OR_EQUAL
+    LESS_OR_EQUAL
+  }
+
+  enum SequenceState {
+    INACTIVE
+    ACTIVE
+    BROKEN
+    COMPLETED
+  }
+}
+
+' =========================================================
+' 2) MODELO CENTRAL
+' =========================================================
+package "Modelo Central del Subsistema" {
+
+  class SkillTreeRef {
+    +id : String
+    +name : String
+    +weaponClass : String
+    +archetype : String
+    +unlockMode : UnlockMode
+    +description : String
+    +identityTags : Set<String>
+    +specialties : Set<String>
+
+    +baseQ : String
+    +baseW : String
+    +baseE : String
+    +baseR : String
+  }
+
+  class SkillRef {
+    +id : String
+    +name : String
+    +slot : SkillSlot
+    +kind : SkillKind
+
+    +treeId : String
+    +replacesSkillId : String
+
+    +damageType : DamageType
+    +targetType : TargetType
+
+    +baseDamage : double
+    +hitCount : int
+
+    +canCrit : boolean
+    +canApplyElement : boolean
+    +canApplyStatus : boolean
+
+    +description : String
+    +tags : Set<String>
+    +identityRole : String
+  }
+
+  class SkillScaling {
+    +skillId : String
+    +scalePhysAtk : double
+    +scaleMagAtk : double
+    +scaleHP : double
+    +scaleArmor : double
+    +scaleResist : double
+    +scaleAccuracy : double
+    +scaleEvasion : double
+    +scaleCrit : double
+    +scaleAtkSpeed : double
+    +scaleTempo : double
+    +scalePenArmor : double
+    +scalePenResist : double
+    +scaleLifeSteal : double
+    +scaleWeaponMastery : double
+    +scaleItemMastery : double
+    +scaleAreaDmg : double
+    +scaleExplosiveDmg : double
+    +scaleLastBullet : double
+    +scaleRebound : double
+    +scaleRegen : double
+    +scaleMedicMastery : double
+    +scaleFatigueResist : double
+    +scaleUnbreakable : double
+    +scaleShieldEff : double
+    +scaleInvulnExtend : double
+    +scaleTenacity : double
+    +scaleAugmenter : double
+    +scaleDiminisher : double
+    +scaleTaster : double
+    +scaleReflexes : double
+  }
+
+  class SkillEffect {
+    +skillId : String
+    +effectId : String
+    +effectType : String
+    +value : double
+    +chance : double
+    +duration : int
+    +notes : String
+  }
+
+  class EvolutionRule {
+    +id : String
+    +treeId : String
+    +sourceSkillId : String
+    +resultSkillId : String
+
+    +mode : EvolutionMode
+    +trigger : TriggerType
+    +triggerStat : String
+    +triggerOperator : TriggerOperator
+    +triggerValue : String
+
+    +oneWayOnly : boolean
+    +locksFurtherEvolution : boolean
+
+    +notes : String
+  }
+
+  class SequenceRule {
+    +id : String
+    +treeId : String
+    +sequenceSteps : List<String>
+    +resultingSubskillId : String
+    +requiresUnlockedSubskill : boolean
+    +notes : String
+  }
+
+  class SkillLoadout {
+    +treeId : String
+
+    +currentQ : String
+    +currentW : String
+    +currentE : String
+    +currentR : String
+
+    +unlockedSequenceSkills : Set<String>
+    +lockedReplacements : Set<String>
+  }
+
+  class SequenceContext {
+    +treeId : String
+    +activeSequenceId : String
+    +state : SequenceState
+    +currentStepIndex : int
+    +expectedNextStep : String
+    +enabledSubskills : Set<String>
+    +consumedBaseSlots : Set<String>
+    +notes : String
+  }
+
+  class TreeIdentityRule {
+    +treeId : String
+    +allowedThemes : Set<String>
+    +forbiddenThemes : Set<String>
+    +notes : String
+  }
+
+  class EvolutionPriorityRule {
+    +compareBy : String = "ABSOLUTE_STAT_VALUE"
+    +tieBreak : TieBreakMode = RANDOM
+    +evaluationMoment : String = "TURN_START_SELF"
+    +notes : String
+  }
+}
+
+' =========================================================
+' 3) RELACIONES
+' =========================================================
+SkillTreeRef --> SkillRef : define kit base
+SkillRef --> SkillScaling : usa escalado
+SkillRef --> SkillEffect : aplica efectos
+EvolutionRule --> SkillRef : sourceSkillId
+EvolutionRule --> SkillRef : resultSkillId
+SequenceRule --> SkillRef : resultingSubskillId
+SkillLoadout --> SkillTreeRef : árbol activo
+SkillLoadout --> SequenceContext : runtime
+TreeIdentityRule --> SkillTreeRef : identidad
+EvolutionPriorityRule ..> EvolutionRule
+SequenceContext --> SequenceRule : secuencia activa
+SequenceContext --> SequenceState
+EvolutionRule --> TriggerOperator
+
+' =========================================================
+' 4) REGLAS CANÓNICAS DEL SISTEMA
+' =========================================================
+note right of SkillTreeRef
+<b>REGLAS DEL ÁRBOL / CAMINO</b>
+
+1) Cada run usa un árbol/camino activo.
+2) El árbol define el kit base:
+   - Q
+   - W
+   - E
+   - R
+3) Todo lo hablado aplica a todas las teclas:
+   - Q
+   - W
+   - E
+   - R
+4) R sigue las mismas reglas generales,
+   aunque suele entrar menos porque normalmente
+   solo tiene 3 niveles de aumento.
+5) Cada árbol tiene identidad mecánica propia.
+6) Sus evoluciones y subhabilidades deben respetar esa identidad.
+end note
+
+note right of SkillRef
+<b>TIPOS DE HABILIDAD</b>
+
+BASE_SLOT:
+- habilidad normal del slot Q/W/E/R
+- puede usarse libremente si el slot no ha sido consumido
+
+SUBSKILL_SEQUENCE:
+- subhabilidad secuencial (QT/WT/ET/RT)
+- NO reemplaza la habilidad base
+- NO puede usarse libremente
+- solo existe dentro de su secuencia específica
+- consume la tecla base correspondiente
+
+EVOLVED_SLOT:
+- reemplaza la habilidad base del slot
+- conserva el nivel que tenía la habilidad anterior
+- NO altera la estructura de secuencia del árbol
+
+GLOBAL_MUTATION:
+- reemplazo externo al árbol
+- sigue la misma regla:
+  primera evolución válida aplicada = gana
+end note
+
+note right of EvolutionRule
+<b>REGLAS CANÓNICAS DE EVOLUCIÓN</b>
+
+A) REPLACE_SLOT_SKILL
+- reemplaza la skill activa del slot
+- ejemplo:
+  Q -> Q_Evol
+
+B) UNLOCK_SUBSKILL
+- desbloquea subhabilidad secuencial
+- NO reemplaza la habilidad base
+- ejemplo:
+  Q lvl 6 -> QT1
+  Q lvl 8 -> QT2
+
+C) La habilidad evolucionada conserva el nivel actual
+de la habilidad anterior.
+Ejemplo:
+- Q estaba lvl 7
+- evoluciona
+- Q_Evol aparece en lvl 7
+- puede seguir subiendo hasta el máximo permitido
+
+D) La primera evolución/reemplazo que se aplique gana
+y después esa skill base ya no vuelve a cambiar.
+
+E) Esto aplica tanto para:
+- evolución del árbol
+- evolución por stats
+- mutación global
+
+F) Las condiciones de evolución se evalúan
+al INICIO DEL TURNO del personaje.
+
+G) La evolución cambia la skill activa del slot,
+pero NO cambia el armado estructural de una secuencia.
+end note
+
+note right of SequenceRule
+<b>REGLAS CANÓNICAS DE SECUENCIA</b>
+
+1) Las subhabilidades de secuencia pertenecen al árbol,
+   no al sistema global.
+2) No compiten con subhabilidades de otros árboles.
+3) Nunca empiezan una secuencia por sí solas.
+4) Solo se activan dentro de la secuencia exacta
+   para la que fueron diseñadas.
+5) Pueden coexistir con skills evolucionadas del slot.
+6) Si la secuencia se rompe, la continuación ya no estará disponible.
+7) La secuencia no puede reconstruirse ni reanudarse.
+8) Si el jugador se desvía, pierde la continuación.
+9) Si la secuencia espera una subskill,
+   usar la skill base/evolucionada del slot en su lugar
+   rompe la secuencia.
+10) La secuencia está anclada al árbol/slot,
+    no al skillId exacto previo.
+11) Una versión evolucionada del slot
+    sigue contando como ese slot dentro del patrón.
+
+Ejemplo:
+W -> ET1 -> ET2 -> Q -> R
+
+Si haces:
+W -> ET1 -> Q
+- no está prohibido
+- pero ET2 desaparece
+- la secuencia se rompe definitivamente
+- solo quedan disponibles las teclas base no usadas
+end note
+
+note right of SkillLoadout
+<b>REGLAS DEL LOADOUT EN RUN</b>
+
+1) Cada slot Q/W/E/R solo tiene
+   una habilidad principal activa a la vez.
+
+2) Las subhabilidades de secuencia viven aparte:
+   - se desbloquean por progresión
+   - coexisten con skills evolucionadas
+   - pero solo se usan si una secuencia activa
+     las habilita en ese momento
+
+3) Ejemplo válido:
+   currentQ = Q_Evol
+   unlockedSequenceSkills = {QT1, QT2}
+
+4) Si el jugador no hace secuencia:
+   usa la skill base/evolucionada normal.
+
+5) Si el jugador hace la secuencia correcta:
+   usa la subhabilidad de secuencia correspondiente.
+
+6) unlockedSequenceSkills NO significa
+   "usable libremente".
+   Solo significa "ya desbloqueada en la run".
+end note
+
+note right of SequenceContext
+<b>REGLAS DE RUNTIME DE SECUENCIA Y GASTO DE TECLAS</b>
+
+1) Q/W/E/R siguen la misma lógica general
+   con o sin secuencia:
+   cada tecla base se consume al usarse.
+
+2) Las secuencias NO crean teclas nuevas.
+   Solo cambian la forma en que una tecla base
+   se expresa en ese momento.
+
+3) Una subskill consume la tecla base correspondiente.
+   Ejemplos:
+   - ET1 consume E
+   - QT1 consume Q
+   - RT1 consume R
+
+4) Si una tecla base ya fue consumida,
+   ya no vuelve a estar disponible
+   durante esa ejecución de cadena/turno.
+
+5) Si la secuencia se rompe:
+   - no se recuperan teclas
+   - no se recuperan subskills pendientes
+   - solo permanecen las teclas base no usadas
+
+6) La continuación secuencial tiene prioridad
+   sobre la skill libre del slot.
+   Si la secuencia pide ET1 y el jugador usa EEvol,
+   la cadena se rompe.
+
+7) La evolución NO protege ni rescata una secuencia.
+   Ejemplo:
+   WEvol -> QEvol
+   rompe igual si el patrón exigía otra cosa.
+end note
+
+note right of TreeIdentityRule
+<b>REGLAS DE IDENTIDAD DEL ÁRBOL</b>
+
+Las evoluciones y subhabilidades deben respetar
+la fantasía mecánica del árbol.
+
+Ejemplo:
+Camino de la Flor de Azerion
+- roba vida
+- multi hit
+- CM
+- evasión
+
+Entonces sus evoluciones/subhabilidades sí pueden reforzar:
+- sustain
+- cadenas de impactos
+- generación de CM
+- evasión para seguir generando CM
+
+Pero NO tendría sentido meter:
+- escudos pesados
+- preparación lenta incompatible
+- fantasías ajenas al árbol
+end note
+
+note right of EvolutionPriorityRule
+<b>REGLA CANÓNICA DE PRIORIDAD DE EVOLUCIONES SIMULTÁNEAS</b>
+
+Si múltiples evoluciones se activan al mismo tiempo:
+
+1) Se consideran solo las condiciones cumplidas
+2) Se toma el valor absoluto actual de la stat
+   que activó cada condición
+3) Gana la evolución asociada a la stat
+   con mayor valor absoluto
+4) Si hay empate exacto:
+   gana por azar
+5) La evaluación ocurre al inicio del turno del personaje
+
+Ejemplo:
+- Crit = 85
+- PenArmor = 60
+=> gana Crit
+
+Ejemplo:
+- Crit = 85
+- PenArmor = 85
+=> azar
+end note
+
+' =========================================================
+' 5) EJEMPLO CANÓNICO — CAMINO DE LA FLOR DE AZERION
+' =========================================================
+package "Ejemplo — Camino de la Flor de Azerion" {
+
+  class AzerionTree {
+    +id = "TREE_AZERION"
+    +name = "Camino de la Flor de Azerion"
+    +weaponClass = "LIGHT"
+    +archetype = "DESTERRADO"
+    +unlockMode = START_OF_RUN
+    +specialties = {LIFE_STEAL, CM_GAIN, MULTI_HIT, EVASION}
+  }
+
+  class AzerionQ {
+    +id = "AZERION_Q"
+    +slot = Q
+    +kind = BASE_SLOT
+    +identityRole = "multi hit sustain"
+  }
+
+  class AzerionQ_Evol {
+    +id = "AZERION_Q_EVOL"
+    +slot = Q
+    +kind = EVOLVED_SLOT
+    +replacesSkillId = "AZERION_Q"
+    +identityRole = "multi hit sustain evolved"
+  }
+
+  class AzerionQT1 {
+    +id = "AZERION_QT1"
+    +slot = QT1
+    +kind = SUBSKILL_SEQUENCE
+    +identityRole = "sequence extension"
+  }
+
+  class AzerionQT2 {
+    +id = "AZERION_QT2"
+    +slot = QT2
+    +kind = SUBSKILL_SEQUENCE
+    +identityRole = "sequence finisher"
+  }
+
+  class Rule_Q_Lv6_QT1 {
+    +id = "RULE_Q_LV6_QT1"
+    +sourceSkillId = "AZERION_Q"
+    +resultSkillId = "AZERION_QT1"
+    +mode = UNLOCK_SUBSKILL
+    +trigger = SKILL_LEVEL_REACHED
+    +triggerStat = "Q_LEVEL"
+    +triggerOperator = GREATER_OR_EQUAL
+    +triggerValue = "6"
+  }
+
+  class Rule_Q_Lv8_QT2 {
+    +id = "RULE_Q_LV8_QT2"
+    +sourceSkillId = "AZERION_Q"
+    +resultSkillId = "AZERION_QT2"
+    +mode = UNLOCK_SUBSKILL
+    +trigger = SKILL_LEVEL_REACHED
+    +triggerStat = "Q_LEVEL"
+    +triggerOperator = GREATER_OR_EQUAL
+    +triggerValue = "8"
+  }
+
+  class Rule_Q_Crit85_Evol {
+    +id = "RULE_Q_CRIT85_EVOL"
+    +sourceSkillId = "AZERION_Q"
+    +resultSkillId = "AZERION_Q_EVOL"
+    +mode = REPLACE_SLOT_SKILL
+    +trigger = STAT_THRESHOLD
+    +triggerStat = "CRIT"
+    +triggerOperator = GREATER_OR_EQUAL
+    +triggerValue = "85"
+    +locksFurtherEvolution = true
+  }
+
+  class AzerionSequence {
+    +id = "SEQ_AZERION_MAIN"
+    +sequenceSteps = [W, QT1, E, QT2]
+    +requiresUnlockedSubskill = true
+  }
+}
+
+AzerionTree --> AzerionQ
+AzerionTree --> AzerionQ_Evol
+AzerionTree --> AzerionQT1
+AzerionTree --> AzerionQT2
+
+Rule_Q_Lv6_QT1 --> AzerionQ
+Rule_Q_Lv6_QT1 --> AzerionQT1
+
+Rule_Q_Lv8_QT2 --> AzerionQ
+Rule_Q_Lv8_QT2 --> AzerionQT2
+
+Rule_Q_Crit85_Evol --> AzerionQ
+Rule_Q_Crit85_Evol --> AzerionQ_Evol
+
+AzerionSequence --> AzerionQT1
+AzerionSequence --> AzerionQT2
+
+' =========================================================
+' 6) EJEMPLO CANÓNICO — REN / SECUENCIA W
+' =========================================================
+package "Ejemplo — Ren / Secuencia de Chef" {
+
+  class RenW {
+    +id = "REN_W"
+    +slot = W
+    +kind = BASE_SLOT
+    +name = "Principio de Chef"
+    +description = "Prepara tu siguiente habilidad con 30% de aplicar elemento"
+  }
+
+  class RenET1 {
+    +id = "REN_ET1"
+    +slot = ET1
+    +kind = SUBSKILL_SEQUENCE
+    +name = "Asedio de Fuego"
+    +description = "75 damage + 10% daño mágico base"
+  }
+
+  class RenET2 {
+    +id = "REN_ET2"
+    +slot = ET2
+    +kind = SUBSKILL_SEQUENCE
+    +name = "Re Asedio"
+    +description = "salpica a todos 20 daño mágico + 50% daño mágico base"
+  }
+
+  class RenQ {
+    +id = "REN_Q"
+    +slot = Q
+    +kind = BASE_SLOT
+    +name = "Golpe Potenciado"
+    +description = "80 damage + 5% daño físico base"
+  }
+
+  class RenR {
+    +id = "REN_R"
+    +slot = R
+    +kind = BASE_SLOT
+    +name = "Cierre del Platillo"
+    +description = "finalizador de secuencia"
+  }
+
+  class RenSequence {
+    +id = "SEQ_REN_CHEF"
+    +sequenceSteps = [W, ET1, ET2, Q, R]
+    +requiresUnlockedSubskill = true
+  }
+
+  class RenSequenceRuntime {
+    +activeSequenceId = "SEQ_REN_CHEF"
+    +state = ACTIVE
+    +currentStepIndex = 1
+    +expectedNextStep = "ET2"
+    +enabledSubskills = {ET2}
+    +consumedBaseSlots = {W, E}
+  }
+}
+
+RenSequence --> RenET1
+RenSequence --> RenET2
+RenSequenceRuntime --> RenSequence
+
+' =========================================================
+' 7) RESUMEN GLOBAL
+' =========================================================
+note bottom
+<b>RESUMEN CANÓNICO DEL SUBSISTEMA DE HABILIDADES</b>
+
+1) Todo aplica a Q/W/E/R.
+   R sigue las mismas reglas, aunque suele tener menos casos.
+
+2) Cada slot Q/W/E/R tiene una habilidad principal activa.
+
+3) Esa habilidad puede evolucionar:
+   - reemplaza a la anterior
+   - conserva su nivel
+   - sigue subiendo desde ahí
+   - la primera evolución aplicada gana
+   - después ya no vuelve a cambiar
+   - se chequea al inicio del turno del personaje
+
+4) Las subhabilidades de secuencia:
+   - no reemplazan la base
+   - no pueden usarse libres
+   - nunca empiezan la secuencia por sí solas
+   - solo existen dentro de su secuencia exacta
+   - coexisten con skills evolucionadas
+   - consumen la tecla base correspondiente
+
+5) Q/W/E/R siguen la misma lógica con o sin secuencia:
+   - cada tecla base se consume al usarse
+   - no vuelve a estar disponible en esa ejecución
+
+6) Si la secuencia se rompe:
+   - la continuación desaparece
+   - no puede retomarse
+   - no se recuperan teclas
+   - solo quedan disponibles las teclas base no usadas
+
+7) La secuencia tiene prioridad sobre la skill libre del slot.
+   Si la secuencia pide una subskill y el jugador usa
+   la skill base/evolucionada del slot, la cadena se rompe.
+
+8) La evolución no altera la estructura de secuencia.
+   Una skill evolucionada sigue contando como su slot base.
+   La evolución no protege ni rescata una secuencia rota.
+
+9) Si varias evoluciones se cumplen al mismo tiempo:
+   - gana la asociada a la stat con mayor valor absoluto
+   - si empatan exactamente, azar
+
+10) Las subhabilidades y evoluciones deben respetar
+    la identidad mecánica del árbol.
+end note
+
+@enduml

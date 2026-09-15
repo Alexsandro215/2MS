@@ -1,0 +1,548 @@
+@startuml
+title E.N.M.A — SISTEMA MAESTRO DE GADGETS
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam classAttributeIconSize 0
+left to right direction
+
+package "NUCLEO DEL GADGET" {
+
+class Gadget {
+  +id
+  +name
+  +rarity
+  +cooldown
+  +upgradeLevel
+  +description
+  +oneSlotPerAlly = true
+  +singleActivationPerEvent = true
+}
+
+class GadgetIdentity {
+  +activationMode
+  +polarity
+  +category
+  +nature
+}
+
+class GadgetUpgrade {
+  +canImprove = true
+  +modifyTargetCount
+  +modifyDuration
+  +modifyValue
+  +modifyCooldown
+  +modifyCondition
+  +modifySpecialRule
+}
+
+Gadget --> GadgetIdentity
+Gadget --> GadgetUpgrade
+}
+
+package "CLASIFICACION" {
+
+enum ActivationMode {
+  ACTIVE
+  PASSIVE
+  REACTIVE
+  AURA
+}
+
+enum Polarity {
+  POSITIVE
+  NEGATIVE
+  MIXED
+}
+
+enum GadgetCategory {
+  OFFENSIVE
+  DEFENSIVE
+  SUPPORT
+  CONTROL
+  UTILITY
+  RECOVERY
+  STATUS_SUPPORT
+  RESOURCE_CONTROL
+  TEAM_AURA
+  ITEM_GENERATION
+  RUN_PROGRESS
+}
+
+enum GadgetNature {
+  IMPACT
+  CONDITIONAL
+  SYSTEMIC
+}
+
+enum Rarity {
+  COMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+GadgetIdentity --> ActivationMode
+GadgetIdentity --> Polarity
+GadgetIdentity --> GadgetCategory
+GadgetIdentity --> GadgetNature
+Gadget --> Rarity
+}
+
+package "TARGETEO" {
+
+class TargetRule {
+  +targetType
+  +targetFilter
+  +targetCount
+  +independentPerTarget
+}
+
+enum TargetType {
+  SELF
+  SINGLE_ALLY
+  ALL_ALLIES
+  SINGLE_ENEMY
+  ALL_ENEMIES
+  VILLAIN
+  TEAM_MEMBER_BY_ID
+  RUN_INVENTORY
+}
+
+enum TargetFilter {
+  NONE
+  ALLY_WITH_ELEMENT
+  ALLY_WITH_STATUS
+  ENEMY_WITH_STATUS
+  TARGET_WITH_CM_ABOVE_X
+  CHARACTER_IN_SET
+  LAST_ATTACKER
+  LOWEST_HP_ALLY
+  HIGHEST_ATK_ENEMY
+}
+
+Gadget --> TargetRule
+TargetRule --> TargetType
+TargetRule --> TargetFilter
+}
+
+package "ACTIVACION Y CONDICION" {
+
+class TriggerRule {
+  +triggerType
+  +conditionType
+  +conditionValue
+  +cooldownRequired = true
+}
+
+enum TriggerType {
+  ON_USE
+  ON_BATTLE_START
+  ON_TURN_START_SELF
+  ON_TURN_START_TARGET
+  ON_TURN_END_SELF
+  ON_HIT
+  ON_BEING_HIT
+  ON_HP_BELOW_X
+  ON_CM_ABOVE_X
+  ON_FOOD_CONSUMED
+  ON_BATTLE_END
+  ON_BASIC_HIT
+}
+
+enum ConditionType {
+  NONE
+  HP_BELOW_PERCENT
+  HP_ABOVE_PERCENT
+  TARGET_HAS_STATUS
+  SELF_HAS_EMOTION
+  TARGET_CM_ABOVE_PERCENT
+  TARGET_IS_VILLAIN
+  CHARACTER_PRESENT_IN_TEAM
+  COOLDOWN_READY
+  ONCE_PER_BATTLE
+  USER_IS_SPECIFIC_CHARACTER
+  FOOD_COUNT_REACHED
+  PARTICIPATED_IN_BATTLE
+}
+
+Gadget --> TriggerRule
+TriggerRule --> TriggerType
+TriggerRule --> ConditionType
+}
+
+package "EFECTOS" {
+
+class GadgetEffect {
+  +effectType
+  +value
+  +durationType
+  +durationValue
+  +persistenceType
+  +usesResolver
+  +bypassEvasion
+  +temporaryOnly
+}
+
+enum EffectType {
+  DAMAGE
+  HEAL
+  SHIELD
+  BUFF
+  DEBUFF
+  STATUS_APPLY
+  STATUS_CLEANSE
+  CM_DRAIN
+  CM_SET
+  CM_GAIN
+  ITEM_CREATE
+  RUN_PROGRESS_GAIN
+  RESOURCE_BONUS
+}
+
+enum DurationType {
+  INSTANT
+  TARGET_TURN
+  SELF_TURN
+  FIXED_TURNS
+  BATTLE
+  CONDITION
+}
+
+enum PersistenceType {
+  RESOLUTION_ONLY
+  TURN
+  BATTLE
+  RUN
+  PERMANENT_UNTIL_USED
+}
+
+class DamageProfile {
+  +damageType
+  +baseDamage
+  +canCrit
+  +canMultiHit
+  +hitCount
+  +perHitIndependentCheck
+}
+
+enum DamageType {
+  PHYSICAL
+  MAGICAL
+  TRUE
+  EXPLOSIVE
+}
+
+class DynamicModifier {
+  +affectedStat
+  +startValue
+  +growthRule
+  +maxCap
+  +onlyInsideGadget = true
+}
+
+Gadget --> GadgetEffect
+GadgetEffect --> EffectType
+GadgetEffect --> DurationType
+GadgetEffect --> PersistenceType
+GadgetEffect --> DamageProfile
+DamageProfile --> DamageType
+GadgetEffect --> DynamicModifier
+}
+
+package "RESOLUCION E INTEGRACION" {
+
+class OffensiveImpactRules {
+  +targetsEnemies = true
+  +usesResolverMaster = true
+  +usesEvasion = true
+  +usesCritIfApplicable = true
+  +usesArmorResistIfApplicable = true
+  +usesPenetrationIfApplicable = true
+  +unlessDescriptionSaysOtherwise = true
+}
+
+class ConditionalSystemRules {
+  +checksTrigger = true
+  +checksCondition = true
+  +ignoresEvasion = true
+  +directApply = true
+}
+
+class MultiHitRules {
+  +perEnemyIndependent = true
+  +perHitIndependent = true
+  +eachHitCanMiss = true
+  +eachHitCanCrit = true
+  +dynamicEffectsAdvanceOnSuccessfulHit = true
+}
+
+class ResolverMasterLink {
+  +sharedCombatPrinciples = true
+}
+
+Gadget --> OffensiveImpactRules
+Gadget --> ConditionalSystemRules
+Gadget --> MultiHitRules
+OffensiveImpactRules --> ResolverMasterLink
+}
+
+package "REGLAS IMPLICITAS DEL SISTEMA" {
+
+class ImplicitReadingRules {
+  +descriptionDefinesNature = true
+  +impactWordsUseResolver = true
+  +conditionWordsUseDirectApply = true
+  +offensiveAgainstEnemyUsesEvasion = true
+  +conditionalIgnoresEvasion = true
+}
+
+class PersistenceRules {
+  +internalDynamicEffectsExpireAfterResolution = true
+  +unlessExplicitlyPersistent = true
+  +runEffectsCanPersistAcrossBattles = true
+  +createdItemsCanRemainUntilUsed = true
+}
+
+Gadget --> ImplicitReadingRules
+Gadget --> PersistenceRules
+}
+
+package "EJEMPLOS REPRESENTATIVOS" {
+
+class AntenaPararrayosDeUnGallo {
+  +mode = PASSIVE
+  +polarity = POSITIVE
+  +nature = CONDITIONAL
+  +trigger = ON_TURN_START_SELF
+  +condition = exists ally with ELECTRIC
+  +target = SINGLE_ALLY with ELECTRIC
+  +effect = STATUS_CLEANSE ELECTRIC
+  +cooldown = yes
+}
+
+class GlobosDeAgua {
+  +mode = ACTIVE
+  +polarity = NEGATIVE
+  +nature = IMPACT
+  +target = ALL_ENEMIES
+  +effect = DEBUFF CritChance -15%
+  +duration = TARGET_TURN 1
+  +cooldown = yes
+}
+
+class CajaDeMusicaDeAlmis {
+  +mode = REACTIVE
+  +polarity = NEGATIVE
+  +nature = CONDITIONAL
+  +trigger = ON_TURN_START_TARGET
+  +condition = VILLAIN and CM > 80%
+  +target = VILLAIN
+  +effect = CM_SET 50%
+  +cooldown = 6 turns
+}
+
+class BanderaDelDistrito4 {
+  +mode = AURA
+  +polarity = POSITIVE
+  +nature = SYSTEMIC
+  +trigger = ON_BATTLE_START
+  +target = TEAM_MEMBERS_BY_ID
+  +effect = BaseDamage +1% per Alextsu/Itzela/Ren
+  +cap = 3%
+  +duration = BATTLE
+}
+
+class Desterradora {
+  +mode = ACTIVE
+  +polarity = NEGATIVE
+  +rarity = LEGENDARY
+  +nature = IMPACT
+  +target = ALL_ENEMIES
+  +damage = 20 PHYSICAL per hit
+  +hits = 10 per enemy
+  +crit = yes
+  +evasion = per hit
+  +penArmor starts 1%
+  +penArmor doubles on successful hit
+  +penArmor cap 64%
+  +penArmor only during gadget resolution
+  +cooldown = 5 turns
+}
+
+class TostadoraQuemadora {
+  +mode = PASSIVE
+  +polarity = POSITIVE
+  +nature = SYSTEMIC
+  +trigger = ON_FOOD_CONSUMED
+  +condition = user is Ren and food count reaches 3
+  +target = RUN_INVENTORY
+  +effect = ITEM_CREATE 2 Tostadas de mermelada
+  +persistence = RUN
+}
+
+class TostadaDeMermelada {
+  +type = CREATED_ITEM
+  +effect = STATUS_CLEANSE any debuff
+  +effect2 = STATUS_CLEANSE any elemental state
+  +persistence = PERMANENT_UNTIL_USED
+}
+
+class LibretaDeApuntes {
+  +mode = PASSIVE
+  +polarity = POSITIVE
+  +nature = SYSTEMIC
+  +trigger = ON_BATTLE_END
+  +condition = Dorokan participated in battle
+  +target = SELF or TEAM_OWNER
+  +effect = RUN_PROGRESS_GAIN CritChance +1%
+  +persistence = RUN
+}
+
+class TituloDeConsejal {
+  +mode = PASSIVE
+  +polarity = POSITIVE
+  +nature = CONDITIONAL
+  +trigger = ON_BASIC_HIT
+  +condition = user is Amy
+  +target = SELF
+  +effect = CM_GAIN +3% extra
+  +duration = INSTANT
+}
+
+Gadget <|-- AntenaPararrayosDeUnGallo
+Gadget <|-- GlobosDeAgua
+Gadget <|-- CajaDeMusicaDeAlmis
+Gadget <|-- BanderaDelDistrito4
+Gadget <|-- Desterradora
+Gadget <|-- TostadoraQuemadora
+Gadget <|-- LibretaDeApuntes
+Gadget <|-- TituloDeConsejal
+TostadoraQuemadora --> TostadaDeMermelada
+}
+
+note right of Gadget
+REGLAS BASE FIJAS
+
+• Cada aliado solo puede equipar 1 gadget
+• Todos los gadgets tienen cooldown
+• Los gadgets pueden mejorarse
+• Un gadget solo puede activarse una vez por evento fuente
+• La descripcion del gadget deja clara su naturaleza
+end note
+
+note right of GadgetUpgrade
+MEJORAS POSIBLES
+
+• ampliar cantidad de objetivos
+• ampliar duracion
+• aumentar valor
+• reducir cooldown
+• mejorar condicion
+• agregar regla especial
+end note
+
+note right of OffensiveImpactRules
+GADGET OFENSIVO DE IMPACTO
+
+Si apunta ofensivamente a enemigos,
+usa los principios del RESOLVER MASTER
+salvo que el propio gadget diga lo contrario.
+
+Esto puede incluir:
+• evasion
+• critico
+• armadura o resistencia
+• penetracion
+• ruptura de defensa si la descripcion lo indica
+end note
+
+note right of ConditionalSystemRules
+GADGET CONDICIONAL / SISTEMICO
+
+No realiza chequeo de evasion.
+No depende de impacto.
+Se aplica directamente si trigger + condicion se cumplen.
+
+Ejemplos:
+• limpieza de estado
+• drenado de CM
+• aura de equipo
+• activacion automatica
+• creacion de items
+• progreso de run
+end note
+
+note right of MultiHitRules
+MULTI-HIT
+
+• cada enemigo resuelve su propia secuencia
+• puede que un enemigo reciba todos los impactos
+  y otro solo algunos
+• cada hit puede acertar o fallar individualmente
+• cada hit puede critar individualmente
+• cada hit puede recalcular segun la descripcion
+end note
+
+note bottom of PersistenceRules
+PERSISTENCIA
+
+Los modificadores dinamicos generados
+dentro de la resolucion del gadget
+solo existen durante esa resolucion,
+salvo que el propio gadget diga lo contrario.
+
+Tambien pueden existir efectos persistentes:
+• durante 1 turno
+• durante el combate
+• durante la run
+• hasta ser usados
+end note
+
+note bottom of ImplicitReadingRules
+LECTURA IMPLICITA
+
+Si la descripcion usa ideas como:
+dispara / lanza / golpea / rafaga / balas / impacto
+=> se interpreta como IMPACT y usa Resolver Master
+
+Si la descripcion usa ideas como:
+si ocurre X / al inicio del turno / drena / limpia / otorga
+=> se interpreta como CONDITIONAL o SYSTEMIC
+y aplica directo si se cumplen sus reglas
+end note
+
+note bottom of Desterradora
+DESTERRADORA
+
+Cada enemigo se resuelve por separado.
+La penetracion escala solo con hits acertados.
+La penetracion no persiste despues del gadget.
+Se balancea por:
+• dano base bajo
+• evasion por hit
+• armadura por hit
+• cooldown
+end note
+
+note bottom of TostadoraQuemadora
+TOSTADORA QUEMADORA
+
+Abre la posibilidad de:
+• crear items dentro de la run
+• generar recursos consumibles
+• persistencia hasta uso
+end note
+
+note bottom of LibretaDeApuntes
+LIBRETA DE APUNTES
+
+Abre la posibilidad de:
+• progresion acumulativa por combate
+• bonus persistentes durante la run
+• gadgets ligados a participacion de personaje
+end note
+
+@enduml

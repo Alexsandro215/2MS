@@ -1,0 +1,8 @@
+# Archivos temporales de Office (bloqueo de Word/Excel abiertos)
+~$*
+*.tmp
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
