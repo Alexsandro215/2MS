@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    NUCLEO DETERMINISTA DE E.N.M.A.
+
+    Esta libreria NO debe referenciar ningun motor de juego, ni Godot, ni
+    System.Windows, ni nada grafico. Ver docs/arquitectura.md  3.
+
+    Se le entrega un estado y una accion, y devuelve un estado nuevo mas una
+    lista de eventos. La presentacion observa esos eventos; nunca los produce.
+
+    Consecuencia practica: se puede simular sin juego. Miles de combates
+    automaticos para balancear los 20 kits, corriendo con `dotnet` sin abrir
+    el motor.
+
+    net8.0 por compatibilidad con Godot 4.x (C#/Mono).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Enma.Core</RootNamespace>
+    <AssemblyName>EnmaCore</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+</Project>

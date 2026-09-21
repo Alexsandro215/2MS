@@ -280,7 +280,7 @@ Conforme el defensor recibe intentos de ataque y **consigue esquivarlos**, su ev
 | Situación | PRESS | EVA efectiva | Acierto |
 |---|---|---|---|
 | Enemigo fresco | 50 | 100 | 35% |
-| EVA reducida | 50 | 75 | 40.7% |
+| EVA reducida | 50 | 75 | 41.0% |
 | EVA reducida | 50 | 50 | 50% |
 | EVA reducida | 50 | 25 | 65% |
 | EVA muy desgastada | 50 | 10 | 80% |

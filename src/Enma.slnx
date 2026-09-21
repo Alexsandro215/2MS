@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EnmaCore.Tests/EnmaCore.Tests.csproj" />
+  <Project Path="EnmaCore/EnmaCore.csproj" />
+</Solution>
