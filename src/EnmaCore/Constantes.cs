@@ -58,15 +58,15 @@ public static class Constantes
 
     // ---- Desgaste (fatiga) ----
     /// <summary>
-    /// Cada 1/3 de la VIDA BASE curada (acumulado) genera +1% de desgaste.
+    /// Cada 50% de la VIDA BASE curada (acumulado) genera +1% de desgaste.
+    /// Curarse una barra entera cuesta 2%.
     ///
-    /// Es el DIAL de dureza de la run. Estaba en 0.50 y se bajo a un tercio,
-    /// lo que endurece el coste de depender de la curacion en un 50%.
+    /// Es el DIAL de dureza de la run. Se probo en 1/3 y se devolvio a 1/2.
     ///
-    /// Un tercio exacto y no 0.33 porque hace la aritmetica limpia:
-    /// curarse una barra entera cuesta exactamente 3%.
+    /// ⚠️ Este numero tiene un conflicto abierto: dia.md 11 necesita ~1/10
+    /// para que cuadre el +35% de desgaste por campana. Ver ese documento.
     /// </summary>
-    public const double FraccionVidaPorPuntoDesgaste = 1.0 / 3.0;
+    public const double FraccionVidaPorPuntoDesgaste = 0.50;
 
     /// <summary>Desgaste generado al cruzar el umbral.</summary>
     public const double DesgastePorUmbral = 0.01;

@@ -78,55 +78,53 @@ public class DesgasteTests
     }
 
     [Fact]
-    public void Curarse_un_tercio_de_barra_cuesta_exactamente_un_uno_por_ciento()
+    public void Curarse_media_barra_cuesta_exactamente_un_uno_por_ciento()
     {
         // La regla es PROPORCIONAL: cuesta lo mismo seas quien seas
         // y estes en el nivel que estes.
         var d1 = new Desgaste();
-        d1.AplicarCuracion(curacion: 100.0 / 3.0, vidaBaseEfectiva: 100);
+        d1.AplicarCuracion(curacion: 50, vidaBaseEfectiva: 100);
         Assert.Equal(0.01, d1.Acumulado, 4);
 
         var d2 = new Desgaste();
-        d2.AplicarCuracion(curacion: 1000.0 / 3.0, vidaBaseEfectiva: 1000);
+        d2.AplicarCuracion(curacion: 500, vidaBaseEfectiva: 1000);
         Assert.Equal(0.01, d2.Acumulado, 4);
     }
 
     [Fact]
-    public void Curarse_una_barra_entera_cuesta_exactamente_tres_por_ciento()
+    public void Curarse_una_barra_entera_cuesta_dos_por_ciento()
     {
-        // Es la propiedad que hace limpio el dial de 1/3.
         var d = new Desgaste();
         d.AplicarCuracion(curacion: 100, vidaBaseEfectiva: 100);
-        Assert.Equal(0.03, d.Acumulado, 4);
+        Assert.Equal(0.02, d.Acumulado, 4);
     }
 
     [Fact]
     public void Proyeccion_a_final_de_run_moderada()
     {
-        // formulas.md  3: curacion moderada (25% de barra) x 40 combates -> 30%
+        // formulas.md  3: curacion moderada (25% de barra) x 40 combates -> 20%
         var d = new Desgaste();
         for (int i = 0; i < 40; i++)
             d.AplicarCuracion(curacion: 25, vidaBaseEfectiva: 100);
-        Assert.Equal(0.30, d.Acumulado, 4);
+        Assert.Equal(0.20, d.Acumulado, 4);
     }
 
     [Fact]
-    public void El_curandero_intensivo_agota_su_margen_antes_de_acabar_la_run()
+    public void El_curandero_intensivo_llega_al_ochenta_por_ciento_a_los_40_combates()
     {
-        // Curando una barra por combate, a los 40 se llega al tope.
         var d = new Desgaste();
         for (int i = 0; i < 40; i++)
             d.AplicarCuracion(curacion: 100, vidaBaseEfectiva: 100);
-        Assert.Equal(1.00, d.Acumulado, 4);
+        Assert.Equal(0.80, d.Acumulado, 4);
     }
 
     [Fact]
     public void El_resto_por_debajo_del_umbral_no_se_pierde()
     {
-        // Tres curaciones de un 12% acumulan 36%, que ya cruza el tercio.
+        // Tres curaciones del 20% acumulan 60%, que ya cruza la media barra.
         var d = new Desgaste();
         for (int i = 0; i < 3; i++)
-            d.AplicarCuracion(curacion: 12, vidaBaseEfectiva: 100);
+            d.AplicarCuracion(curacion: 20, vidaBaseEfectiva: 100);
         Assert.Equal(0.01, d.Acumulado, 4);
     }
 
