@@ -1,0 +1,41 @@
+; Prototipo de medicion del reloj de audio para E.N.M.A.
+;
+; NO es parte del juego. Es la prueba que decide la eleccion de motor,
+; segun docs/arquitectura.md  5: "el reloj debe ser el audio, no los
+; fotogramas".
+
+config_version=5
+
+[application]
+
+config/name="Reloj de audio - E.N.M.A."
+config/description="Mide latencia, jitter y deriva del reloj de audio."
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[input]
+
+tap={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+reiniciar={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+guardar={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
