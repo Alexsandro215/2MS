@@ -1,0 +1,106 @@
+namespace Enma.Core.Estado;
+
+/// <summary>Bando al que pertenece un combatiente.</summary>
+public enum Bando { Aliado, Enemigo }
+
+/// <summary>
+/// Casilla dentro de la linea propia. Cada combatiente del front ocupa una
+/// linea de 3 casillas y solo se desplaza adelante o atras sobre ella.
+/// Ver manual-tecnico.md  1.2.
+/// </summary>
+public enum Casilla { Defensiva = 0, Neutral = 1, Ofensiva = 2 }
+
+/// <summary>
+/// Catalogo de estadisticas. Fuente: manual-tecnico.md  3.2 a  3.4.
+///
+/// Nota de nomenclatura: los documentos usan PRESS, PRES y ACC para la misma
+/// stat. Aqui se fija en <c>Press</c>.
+/// </summary>
+public enum Stat
+{
+    // Primarias
+    Hp, Ad, Ap, Arm, Rm, Press, Eva, Crit,
+
+    // Secundarias ofensivas
+    Preparacion, VelocidadAtaque, Tempo, PenArmadura, PenMagica, RoboVida,
+    DominioArmas, DominioObjetos, DanoArea, DanoExplosivo, UltimaBala, Rebote,
+
+    // Secundarias defensivas
+    RegeneracionVida, DominioMedico, ResistenciaDesgaste, Inquebrantable,
+    EficienciaEscudo, ExtensionEscudo, ExtensionInvulnerable, Tenacidad,
+    AmplificadorBuff, ExtensionBuff, AmplificadorDebuff, ExtensionDebuff,
+    DominioComida, ExtensionComida, Reflejos,
+
+    // Stats propias de kits concretos (Willham)
+    AntiArm, AntiRm,
+}
+
+/// <summary>Una marca elemental activa sobre un combatiente.</summary>
+public sealed class MarcaElemental(string elemento, int nivel, int turnosRestantes)
+{
+    public string Elemento { get; } = elemento;
+    /// <summary>1 o 2. L2 bloquea nuevos elementos.</summary>
+    public int Nivel { get; set; } = nivel;
+    public int TurnosRestantes { get; set; } = turnosRestantes;
+}
+
+/// <summary>
+/// Un combatiente. Lleva lo que el motor de reglas necesita consultar:
+/// stats, contadores propios con nombre, flags, posicion y estado elemental.
+/// </summary>
+public sealed class Combatiente
+{
+    public required string Id { get; init; }
+    public string Nombre { get; init; } = "";
+    public Bando Bando { get; init; }
+    public Casilla Posicion { get; set; } = Casilla.Neutral;
+
+    /// <summary>Linea que ocupa dentro del bando (0..5).</summary>
+    public int Linea { get; set; }
+
+    public int Nivel { get; set; } = 1;
+
+    /// <summary>MAX aspirable por stat. El techo de ESTE personaje, mejorable jugando.</summary>
+    public Dictionary<Stat, double> MaxAspirable { get; } = new();
+
+    /// <summary>
+    /// Contadores propios con nombre. Es lo que necesitan los kits de cargas:
+    /// "cargas_kronwell", "cargas_hallen". No son stats ni modificadores.
+    /// </summary>
+    public Dictionary<string, double> Contadores { get; } = new();
+
+    /// <summary>Flags de estado: "anclado", "inmovil", "inmune_ee", "oculto", "invulnerable".</summary>
+    public Dictionary<string, int> Flags { get; } = new();
+
+    public double Hp { get; set; }
+    public double Escudo { get; set; }
+    public bool EnKo { get; set; }
+
+    public Stats.Desgaste Desgaste { get; } = new();
+    public Musica.ClaseArma Arma { get; set; } = Musica.ClaseArma.Media;
+
+    /// <summary>Capacidad que aporta al pool de CM del equipo.</summary>
+    public double Storage { get; set; } = 3.0;
+
+    public List<MarcaElemental> Elementos { get; } = new();
+
+    // ---- lecturas derivadas, que las reglas consultan ----
+
+    /// <summary>Vida base efectiva a este nivel, ya mermada por el desgaste.</summary>
+    public double HpMax =>
+        Stats.Agregacion.StatOperativa(
+            Stats.Escalado.Valor(MaxAspirable.GetValueOrDefault(Stat.Hp), Nivel),
+            Desgaste.Acumulado);
+
+    public double HpPct => HpMax <= 0 ? 0.0 : Hp / HpMax;
+    public double HpFaltantePct => 1.0 - HpPct;
+
+    public double Contador(string nombre) => Contadores.GetValueOrDefault(nombre);
+    public bool TieneFlag(string flag) => Flags.GetValueOrDefault(flag) > 0;
+    public bool TieneElemento => Elementos.Count > 0;
+    public bool TieneElementoL2 => Elementos.Exists(e => e.Nivel >= 2);
+
+    /// <summary>Valor base de una stat a este nivel, antes de modificadores.</summary>
+    public double BaseRef(Stat s) =>
+        Stats.Escalado.Valor(MaxAspirable.GetValueOrDefault(s), Nivel);
+}

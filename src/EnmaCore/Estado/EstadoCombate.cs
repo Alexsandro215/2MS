@@ -1,0 +1,124 @@
+namespace Enma.Core.Estado;
+
+/// <summary>
+/// Terreno encantado sobre una casilla concreta de una linea concreta.
+///
+/// Es una REGLA ANCLADA A UN SITIO: la crean kits como Floristas del Hollins
+/// o Madrerick, dura N turnos, y otras reglas pueden destruirla
+/// (Madrerick Q EVOL elimina una casilla de buffs del enemigo).
+/// </summary>
+public sealed class Terreno
+{
+    public required string Id { get; init; }
+    public required string Tipo { get; init; }
+    public required Bando BandoDeLaLinea { get; init; }
+    public required int Linea { get; init; }
+    public required Casilla Casilla { get; init; }
+    public int TurnosRestantes { get; set; }
+
+    /// <summary>true si sus efectos son beneficiosos para quien lo pisa.</summary>
+    public bool EsBuff { get; init; }
+
+    /// <summary>Reglas que aporta mientras esta activo.</summary>
+    public List<Reglas.Regla> Reglas { get; } = new();
+}
+
+/// <summary>
+/// Lo que ha pasado dentro del turno actual.
+///
+/// Hace falta porque varios kits leen el pasado inmediato:
+///   - Korkakov W EVOL: "si FALLAS tu spell anterior..."
+///   - Jaens Jeans R EVOL: "recuperas todo el CM GASTADO DE ESTE TURNO"
+///   - Hallen Q EVOL: "1 carga por cada HABILIDAD USADA este turno"
+/// Sin esto, esas habilidades no se pueden expresar como datos.
+/// </summary>
+public sealed class HistorialTurno
+{
+    public double CmGastado { get; set; }
+    public int HabilidadesUsadas { get; set; }
+    public int BasicosLanzados { get; set; }
+    public int ImpactosAcertados { get; set; }
+    public int ImpactosFallados { get; set; }
+
+    /// <summary>true si la ultima habilidad resuelta fallo por completo.</summary>
+    public bool UltimaHabilidadFallo { get; set; }
+
+    /// <summary>Contadores libres para casos que no merecen campo propio.</summary>
+    public Dictionary<string, double> Marcadores { get; } = new();
+
+    public double Marcador(string clave) => Marcadores.GetValueOrDefault(clave);
+
+    public void Reiniciar()
+    {
+        CmGastado = 0;
+        HabilidadesUsadas = 0;
+        BasicosLanzados = 0;
+        ImpactosAcertados = 0;
+        ImpactosFallados = 0;
+        UltimaHabilidadFallo = false;
+        Marcadores.Clear();
+    }
+}
+
+/// <summary>
+/// Estado completo de un combate. Es lo que el motor de reglas consulta.
+///
+/// El nucleo recibe un estado y una accion, y devuelve un estado nuevo mas una
+/// lista de eventos. La presentacion observa esos eventos; nunca los produce.
+/// </summary>
+public sealed class EstadoCombate
+{
+    public List<Combatiente> Combatientes { get; } = new();
+    public List<Terreno> Terrenos { get; } = new();
+
+    /// <summary>Barra de Carga Musical, compartida por todo el equipo aliado.</summary>
+    public double CmActual { get; set; }
+    public double CmMax { get; set; } = 12.0;
+
+    public double CmPct => CmMax <= 0 ? 0.0 : CmActual / CmMax;
+
+    /// <summary>Ciclo = turno completo del bando aliado + turno completo del enemigo.</summary>
+    public int Ciclo { get; set; }
+    public int Turno { get; set; }
+    public Bando BandoActivo { get; set; } = Bando.Aliado;
+    public bool ClasicalActivo { get; set; }
+
+    public HistorialTurno Historial { get; } = new();
+
+    /// <summary>Reglas vigentes que no vienen de un terreno (pasivas, emblemas, buffs...).</summary>
+    public List<Reglas.Regla> ReglasActivas { get; } = new();
+
+    /// <summary>Fuente de azar. Inyectada para que las simulaciones sean reproducibles.</summary>
+    public Combate.IAleatorio Rng { get; set; } = new Combate.AleatorioSemilla(0);
+
+    public Combatiente? Buscar(string id) => Combatientes.Find(c => c.Id == id);
+
+    public IEnumerable<Combatiente> Vivos => Combatientes.Where(c => !c.EnKo);
+
+    public IEnumerable<Combatiente> Del(Bando b) => Vivos.Where(c => c.Bando == b);
+
+    /// <summary>
+    /// Todas las reglas vigentes: las activas mas las que aportan los terrenos.
+    /// El evaluador no distingue de donde vienen.
+    /// </summary>
+    public IEnumerable<Reglas.Regla> TodasLasReglas()
+    {
+        foreach (var r in ReglasActivas) yield return r;
+        foreach (var t in Terrenos)
+            foreach (var r in t.Reglas)
+                yield return r;
+    }
+
+    /// <summary>Terreno que ocupa un combatiente ahora mismo, si lo hay.</summary>
+    public Terreno? TerrenoDe(Combatiente c) => Terrenos.Find(t =>
+        t.BandoDeLaLinea == c.Bando && t.Linea == c.Linea && t.Casilla == c.Posicion);
+
+    /// <summary>Recalcula la capacidad de CM y recorta el excedente.</summary>
+    public void RecalcularCm()
+    {
+        CmMax = Musica.CargaMusical.Capacidad(
+            Combatientes.Where(c => c.Bando == Bando.Aliado && !c.EnKo).Select(c => c.Storage),
+            Combatientes.Where(c => c.Bando == Bando.Aliado && c.EnKo).Select(c => c.Storage));
+        CmActual = Math.Min(CmActual, CmMax);
+    }
+}

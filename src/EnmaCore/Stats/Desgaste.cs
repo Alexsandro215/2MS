@@ -96,4 +96,19 @@ public sealed class Desgaste
     /// Son la excepcion, no un sistema de recuperacion.
     /// </summary>
     public void EventoQuitaDesgaste(double cantidad) => Recuperar(cantidad);
+
+    /// <summary>
+    /// Fija el desgaste a un valor absoluto. Lo necesitan los efectos que lo
+    /// imponen de golpe, como Kronwell R ("obtienes 70% de desgaste").
+    /// No pasa por los umbrales de curacion: es una imposicion, no acumulacion.
+    /// </summary>
+    public void Fijar(double valor)
+    {
+        Acumulado = Math.Clamp(valor, 0.0, 1.0);
+        _curacionAcumulada = 0.0;
+    }
+
+    /// <summary>Suma desgaste directamente, sin pasar por la curacion.</summary>
+    public void Sumar(double cantidad)
+        => Acumulado = Math.Clamp(Acumulado + cantidad, 0.0, 1.0);
 }
