@@ -57,8 +57,16 @@ public static class Constantes
     public const int NivelMax = 18;
 
     // ---- Desgaste (fatiga) ----
-    /// <summary>Cada 50% de la VIDA BASE curada (acumulado) genera +1% de desgaste.</summary>
-    public const double FraccionVidaPorPuntoDesgaste = 0.50;
+    /// <summary>
+    /// Cada 1/3 de la VIDA BASE curada (acumulado) genera +1% de desgaste.
+    ///
+    /// Es el DIAL de dureza de la run. Estaba en 0.50 y se bajo a un tercio,
+    /// lo que endurece el coste de depender de la curacion en un 50%.
+    ///
+    /// Un tercio exacto y no 0.33 porque hace la aritmetica limpia:
+    /// curarse una barra entera cuesta exactamente 3%.
+    /// </summary>
+    public const double FraccionVidaPorPuntoDesgaste = 1.0 / 3.0;
 
     /// <summary>Desgaste generado al cruzar el umbral.</summary>
     public const double DesgastePorUmbral = 0.01;

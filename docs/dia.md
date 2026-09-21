@@ -266,16 +266,19 @@ Ir al hospital **gasta los tres bloques del protagonista**. Es un día perdido p
 
 ### ⚠️ La tasa de generación hay que corregirla
 
-La regla heredada dice *cada 50% de HP base restaurada = +1% de desgaste*. **Con esa tasa, un 35% por campaña es inalcanzable**: exigiría curar **17,5 veces la barra de vida** en un solo bloque.
+La tasa vigente es *cada 1/3 de HP base restaurada = +1% de desgaste*. **Con esa tasa, un 35% por campaña sigue siendo inalcanzable**: exigiría curar **11,7 veces la barra de vida** en un solo bloque.
 
 | Tasa | Curación necesaria para 35% | Viable |
 |---|---|---|
-| 50% HP → 1% *(heredada)* | 17,5× la barra | ❌ |
+| 50% HP → 1% *(original)* | 17,5× la barra | ❌ |
+| **33% HP → 1%** *(vigente)* | **11,7× la barra** | ❌ todavía |
 | 20% HP → 1% | 7× la barra | Difícil |
 | **10% HP → 1%** *(propuesta)* | **3,5× la barra** | ✅ |
 | 5% HP → 1% | 1,75× la barra | ✅ combate duro normal |
 
 **Propuesta: 10% de HP base = 1% de desgaste.** Con eso, curarte tres veces y media la vida a lo largo de una campaña te deja en el 35% previsto.
+
+> ⚠️ **Conflicto abierto.** `formulas.md` §3 fija la tasa en 1/3 como dial de dureza del combate; este documento necesita ~1/10 para que cuadre la economía de la campaña. Son dos objetivos distintos tirando del mismo número, y hay que elegir cuál manda antes de dar por bueno el +35%.
 
 Sigue premiando lo mismo: **prevenir es más barato que reparar**. Escudos, evasión y mitigación no generan desgaste.
 

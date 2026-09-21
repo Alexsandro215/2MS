@@ -348,14 +348,14 @@ El 2% y el 3% leen **43.2** — ni 48, ni 68.2.
 ## 4.1 Generación
 
 ```
-Cada 50% de HP base restaurada (acumulado)  →  +1% de desgaste
+Cada 1/3 de HP base restaurada (acumulado)  →  +1% de desgaste
 ```
 
 ```
 applyFastHeal(objetivo, curación):
     hpActual = min(hpActual + curación, hpBase_eff)
     acumulado += curación
-    paso = 0.5 × hpBase_eff
+    paso = (1/3) × hpBase_eff
     mientras acumulado ≥ paso:
         acumulado −= paso
         desgaste += 1%        (clamp 0–100%)
@@ -425,7 +425,7 @@ HOSPITAL / TRATAMIENTO  →  baja MÁS RÁPIDO
 
 **Encadenar campañas** deja un saldo neto de **+25% por día**: cuatro seguidas llegan al tope del 100%. El sistema se autolimita sin reglas extra.
 
-> ⚠️ **La tasa de generación heredada (50% de HP base = 1%) es incompatible con el 35% por campaña**: exigiría curar 17,5 veces la barra. Propuesta: **10% de HP base = 1% de desgaste**. Ver [dia.md](dia.md) §11.
+> ⚠️ **La tasa de generación sigue sin cuadrar con el 35% por campaña.** Bajó de 1/2 a 1/3 de la barra, lo que reduce la curación necesaria de 17,5× a **11,7× la barra** — sigue siendo inalcanzable en un bloque. `dia.md` §11 propone **10% de HP base = 1%** (3,5× la barra). Pendiente de decidir cuál manda.
 
 > ### El desgaste es el ritmo de la campaña, no un castigo
 > Salir a misión se paga con **días**, y esos días compiten con los lazos, el entrenamiento y la historia. Encadenar campañas sin descanso es posible, pero se llega a la siguiente con las estadísticas mermadas.
@@ -1025,7 +1025,7 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 | **Desgaste real** | `desgasteActual × (1 − Resistencia al Desgaste)` |
 | **Desgaste efectivo** | `max(0, desgasteReal − supresión)` |
 | **Multiplicador de desgaste** | `1 − desgasteEfectivo` |
-| **Generación de desgaste** | Cada 50% de HP base curada → +1% |
+| **Generación de desgaste** | Cada 1/3 de HP base curada → +1% |
 | **Evasión efectiva** | `EVA × max(0.10, 1 − 0.03 × stacks)` |
 | **Acierto** | `5 + 90 × (PRESS / (PRESS + EVA_eff))` · clamp 5–95 |
 | **Daño bruto** | `ATK × multSkill × multContexto × multFinal` |
