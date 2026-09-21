@@ -470,7 +470,7 @@ La barra de vida no se acorta de golpe. El jugador **nota** que falla más, esqu
 ## 5.2 Acierto
 
 ```
-EVA_eff = EVA × max(0.10, 1 − 0.01 × stacks)
+EVA_eff = EVA × max(0.10, 1 − 0.03 × stacks)
 
 Hit% = 5 + 90 × ( PRESS / (PRESS + EVA_eff) )
 
@@ -478,6 +478,12 @@ Hit% = clamp(Hit%, 5, 95)
 ```
 
 > La forma de la fórmula garantiza que el acierto quede **siempre entre 5% y 95%**. Cuando `PRESS = EVA_eff`, el acierto es exactamente **50%**.
+
+> ### ✅ El valor por stack es 0.03
+>
+> El `0.01` del canon original queda **superado**. El 3% está calibrado para que el acierto máximo contra un objetivo evasivo suba **~+50% en late**, y lo hace solo: el mismo número da +14% en early y +48% en late, porque en late hay más golpes por ronda.
+>
+> Descartados: `0.01` (no mueve nada) · `0.04–0.05` (se pasan) · `0.08–0.10` (tocan el suelo del 10% a media ronda y borran la evasión). Desglose completo en [formulas.md](formulas.md) §4.
 
 **Tabla de referencia — PRESS del atacante = 50**
 
@@ -493,7 +499,7 @@ Hit% = clamp(Hit%, 5, 95)
 
 | Fuente | Vida del efecto |
 |---|---|
-| **Esquive con éxito** — el defensor esquiva y su EVA baja | Se reinicia **al terminar el turno del atacante** |
+| **Esquive con éxito** — el defensor esquiva y su EVA baja | Se reinicia al terminar el turno del **BANDO** atacante — persiste toda la ronda y lo aprovechan todos los aliados |
 | **Debuffs de skill o terreno** | Expiran por turnos, o se limpian con skill u objeto |
 
 ### Reglas de impacto
@@ -657,11 +663,17 @@ Modificadores conocidos: **Enfermo ×1.5** · **Terror −25%**.
 
 | | |
 |---|---|
-| **Disparador** | Iniciar el turno con la barra comunitaria **llena** |
-| **Efecto** | Aumento de la obtención de CM |
+| **Disparador** | ✅ **La ACCIÓN de Clasical**, cuando con ella la barra comunitaria llega al máximo |
+| **Aporte de la acción** | `storage propio (3 CM) × multiplicador de la sección musical` |
+| **Efecto** | ✅ **×1.5 a la obtención de CM de todas las fuentes**, multiplicándose con el multiplicador de la sección |
 | **Ventana** | Turno del bando aliado **y** turno del bando enemigo |
 | **Fin** | Al iniciar el siguiente turno aliado |
-| **Magnitud** | ❓ Depende del tema musical (§7.3) |
+
+> ### ⚠️ El disparador NO es "empezar el turno lleno"
+>
+> Esa regla **se autodestruye**: si tienes la barra llena lo natural es gastar, y si gastas no amaneces lleno. Simulada sobre 6 rondas no se activaba **ni una sola vez** en ninguna fase, ni jugando avaro ni guardando a propósito.
+>
+> Por eso el disparador es la acción: encender Clasical deja de ser algo que ocurre y pasa a ser algo que **alguien paga con su turno**. Encenderlo en el estribillo (×1.8) es mucho más barato que en calma. Ver [musica.md](musica.md) §3.
 
 > ### Clasical invierte la economía del recurso
 > Durante la partida el CM se administra. En Clasical **se gasta todo**. Y como la ventana cubre también el turno enemigo —donde recibir daño genera CM— el equipo **vacía la barra atacando y la rellena aguantando**, con la ganancia amplificada en ambos sentidos.
@@ -1014,7 +1026,7 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 | **Desgaste efectivo** | `max(0, desgasteReal − supresión)` |
 | **Multiplicador de desgaste** | `1 − desgasteEfectivo` |
 | **Generación de desgaste** | Cada 50% de HP base curada → +1% |
-| **Evasión efectiva** | `EVA × max(0.10, 1 − 0.01 × stacks)` |
+| **Evasión efectiva** | `EVA × max(0.10, 1 − 0.03 × stacks)` |
 | **Acierto** | `5 + 90 × (PRESS / (PRESS + EVA_eff))` · clamp 5–95 |
 | **Daño bruto** | `ATK × multSkill × multContexto × multFinal` |
 | **Daño verdadero** | `D_true = D_raw × DV` · ignora ARM y RM · **no** ignora escudos |
@@ -1064,7 +1076,7 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 
 | Sistema | Estado |
 |---|---|
-| **Efecto Emocional (E.EM.)** | Declarado desde hace tiempo. **Cero contenido.** Es una de las dos capas de identidad del juego. |
+| ~~Efecto Emocional (E.EM.)~~ | ✅ **Sistema escrito** — flags, perfiles por personaje, efectos en el día y en combate, flujo de resolución. Ver §9 y [emociones.md](emociones.md). Queda pendiente el **catálogo** de flags por personaje. |
 | **Enemigos e IA** | Juegan con las mismas reglas, pero falta: cómo deciden, perfiles de comportamiento, bestiario y construcción de encuentros. |
 | ~~Rasgos vs. pasivas~~ | ✅ **RESUELTO.** Sistema único: todo es **pasiva**. Los jefes solo llevan pasivas más fuertes. Catálogo **por construir desde cero**. |
 
@@ -1083,12 +1095,17 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 | § | Valor | Provisional |
 |---|---|---|
 | 1.2 | PRESS / EVA por casilla | 30 / 30 |
-| 7.1 | Bonus de tempo | ×2 (frente al +1/3 de CM MASTER) |
-| 2.4 | Coste de CM por tecla | Q1 · W2 · E3 · R4–5 |
-| 6.6 | Magnitud del bonus Clasical | — |
-| 5.2 | Desgaste de evasión por stack | 0.01 (hacen falta 90 esquives para el suelo) |
-| 2.3 | Valores de la acción Carga Musical | — |
 | 7.2 | Arma **media**: ¿melodía o pulso? | — |
+
+### Ya no son provisionales — ✅ cerrados
+
+| § | Valor | Cerrado en |
+|---|---|---|
+| 7.1 | Bonus de tempo · **×2** (el `+1/3` de CM MASTER queda superado) | [conflictos.md](conflictos.md) §D2 |
+| 5.2 | Desgaste de evasión · **0.03 por stack** | [formulas.md](formulas.md) §4 |
+| 6.6 | Magnitud de Clasical · **×1.5**, multiplicándose con la sección | [musica.md](musica.md) §3 |
+| 2.3 | Acción de Carga Musical · aporta **el storage propio (3 CM)** × multiplicador de sección | [musica.md](musica.md) §3 |
+| 2.4 | Coste de CM por tecla · **Q1 · W2 · E3 · R4**, con factor de fase ×1.00 / ×0.60 / ×0.40 | [formulas.md](formulas.md) §7 |
 
 ## C.4 Contenido pendiente
 
@@ -1100,7 +1117,7 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 | **Setto** y **Mertinoli** | Sin habilidad EVOL |
 | **Recuerdos** | Origen, persistencia entre runs, si están atados a un personaje |
 | **Habilidades de overworld** | Solo se conoce la de MÚSICA |
-| Sección *LISTA COMPLETA DE ARMAS, ARMADURAS, AMULETOS Y RASGOS* | Vacía en el documento |
+| Sección *LISTA COMPLETA DE ARMAS, ARMADURAS, AMULETOS Y RASGOS* | ✅ El **sistema** ya está escrito ([equipo.md](equipo.md): slots, clases, rareza, conjuntos). Falta el **catálogo** de piezas concretas con día y método de obtención. |
 
 ## C.5 Técnico
 

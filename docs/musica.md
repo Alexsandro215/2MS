@@ -385,7 +385,7 @@ La relación de cada enemigo con la música es **parte de su configuración**:
 
 ## 3. Modo CLASICAL
 
-**Se activa cuando el turno empieza con la barra comunitaria LLENA.**
+**Se activa con la ACCIÓN de Clasical, cuando con ella la barra comunitaria llega al máximo.**
 
 | | |
 |---|---|

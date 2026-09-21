@@ -430,10 +430,13 @@ Barra **compartida de equipo**. Si `CM_current > CM_max`, **se pierde el exceden
 | **PESADA** | 1/2 (a 1) | — |
 
 ```
-Bonus_tempo = CM_base × 1/3
-CM_total    = CM_base + Bonus_tempo
-Si falla el hit: CM = 0
+En tempo:         CM_total = CM_base × 2
+Fuera de tempo:   CM_total = CM_base
+Si falla el hit:  CM = 0
 ```
+
+> ⚠️ **El bonus de tempo es ×2**, no el `+1/3` de CM MASTER — ese valor queda **superado**.
+> Es lo que produce la tabla de arriba (`1/8 → 2/8`) y lo confirma la aritmética de golpes por CM (4/2/1). Ver [conflictos.md](conflictos.md) §D2.
 
 ### Generación por recibir daño
 
@@ -543,8 +546,15 @@ Ventana: turno aliado + turno enemigo · termina al iniciar el siguiente turno a
 
 El excedente al desbordar **se pierde**, lo que limita solo los multiplicadores altos sin necesidad de un tope artificial.
 
-- **CM MASTER (superado):** el disparador era el *overflow* (`CM_actual + ganancia > CM_max`).
-- **Vigente:** se activa al **iniciar el turno con la barra comunitaria llena**. Aumenta la obtención de CM durante el turno aliado **y el enemigo**, y termina al empezar el siguiente turno aliado.
+**Historial del disparador** — las dos versiones anteriores quedan **superadas**:
+
+| Versión | Disparador | Estado |
+|---|---|---|
+| CM MASTER | *Overflow*: `CM_actual + ganancia > CM_max` | ❌ superada |
+| Levantamiento | Iniciar el turno con la barra comunitaria llena | ❌ superada — se autodestruye (ver arriba) |
+| **Vigente** | **La acción de Clasical**, si con ella la barra llega al máximo | ✅ |
+
+Lo que no cambió entre versiones: el efecto dura el **turno aliado y el enemigo**, y termina al empezar el siguiente turno aliado.
 
 ---
 

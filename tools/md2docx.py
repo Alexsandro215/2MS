@@ -8,8 +8,10 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-DOCX = r"E:\TMS\BIOGRAFIAS 8de10 - TRABAJO.docx"
-MD   = r"E:\TMS\docs\manual-tecnico.md"
+import os
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DOCX = os.path.join(_ROOT, "BIOGRAFIAS 8de10 - TRABAJO.docx")
+MD   = os.path.join(_ROOT, "docs", "manual-tecnico.md")
 
 doc = docx.Document(DOCX)
 body = doc.element.body

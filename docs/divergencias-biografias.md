@@ -17,7 +17,7 @@ Son dos fórmulas distintas para lo mismo dentro del mismo documento. Además la
 
 **Sustituir por:**
 ```
-EVA_eff = EVA × max(0.10, 1 − 0.01 × stacks)
+EVA_eff = EVA × max(0.10, 1 − 0.03 × stacks)
 Hit%    = 5 + 90 × ( PRESS / (PRESS + EVA_eff) )     → siempre entre 5% y 95%
 ```
 
@@ -54,7 +54,7 @@ DEF_f   = max(0, DEF_objetivo − Pen_eff)
 
 **Dice:** Clasical = los **ataques especiales** (de ataque, mágico, apoyo, preparaciones). *"Carga de Clasical"*, *"medidor de Clasical"*.
 
-**Ahora:** los especiales son las **habilidades QWER**, y **CLASICAL es un modo**: se activa al empezar el turno con la barra comunitaria llena, aumenta la obtención de CM durante el turno aliado y el enemigo, y termina al iniciar el siguiente turno aliado.
+**Ahora:** los especiales son las **habilidades QWER**, y **CLASICAL es un modo**: se activa con la **acción de Clasical**, cuando con ella la barra comunitaria llega al máximo. Multiplica ×1.5 la obtención de CM durante el turno aliado y el enemigo, y termina al iniciar el siguiente turno aliado.
 
 > ⚠️ En el documento viejo "Clasical" significa cuatro cosas a la vez: el poder del mundo, los ataques especiales, el recurso y el medidor. Conviene que en el juego signifique **una**.
 

@@ -1,1 +1,2 @@
 - [E.N.M.A es un proyecto de vida](enma-proyecto-de-vida.md) — alcance enorme a propósito; no presionar para recortar ni lanzar pronto
+- [Flujo docs → Word](enma-flujo-docs-a-word.md) — los .md son la fuente; el .docx TRABAJO es artefacto generado, nunca se edita a mano

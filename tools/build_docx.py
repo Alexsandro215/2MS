@@ -7,9 +7,11 @@ from docx.shared import Pt, Inches
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-SRC = r"E:\TMS\BIOGRAFIAS 8de10.docx"
-DST = r"E:\TMS\BIOGRAFIAS 8de10 - TRABAJO.docx"
-D   = r"E:\TMS\docs"
+import os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.join(ROOT, "BIOGRAFIAS 8de10.docx")
+DST = os.path.join(ROOT, "BIOGRAFIAS 8de10 - TRABAJO.docx")
+D   = os.path.join(ROOT, "docs")
 
 shutil.copyfile(SRC, DST)
 doc = docx.Document(DST)
@@ -51,7 +53,18 @@ def left_bar(p):
 
 INLINE = re.compile(r'(\*\*.+?\*\*|`[^`]+`|\*[^*]+\*|~~.+?~~)')
 
+MDLINK = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+def deref(text):
+    """[texto](destino.md) -> texto  ·  en papel el destino no sirve de nada."""
+    def repl(m):
+        txt, dest = m.group(1), m.group(2)
+        # [formulas.md](formulas.md) -> formulas.md, sin duplicar
+        return txt
+    return MDLINK.sub(repl, text)
+
 def add_runs(p, text, size=None):
+    text = deref(text)
     for tok in INLINE.split(text):
         if not tok: continue
         if tok.startswith('**') and tok.endswith('**') and len(tok)>4:
@@ -218,11 +231,23 @@ print("manual-tecnico.md insertado")
 for titulo, archivo in [
     ("PASIVAS Y RECUERDOS",            "pasivas.md"),
     ("EFECTOS EMOCIONALES (E.EM.)",    "emociones.md"),
+    ("EFECTOS DE IMPACTO",             "impacto.md"),
     ("LAS RUNS",                        "runs.md"),
 ]:
     h = new_h1(titulo, last)
-    last = move_after(convert(D + "\\" + archivo, 2), h)
+    last = move_after(convert(os.path.join(D, archivo), 2), h)
     print(titulo, "insertado")
+
+# =========================================================
+# 3) LISTA COMPLETA DE ARMAS... (estaba vacia) -> equipo.md
+# =========================================================
+i_eq   = find(lambda t: t.startswith("LISTA COMPLETA DE ARMAS"))
+i_eqnd = find(lambda t: t.startswith("BASES PRINCIPALES PARA EL DESARROLLO GUIONAL"), i_eq+1)
+assert i_eq is not None and i_eqnd is not None, "anclas equipo"
+anchor_eq = list(body)[i_eq]
+delete_between(i_eq, i_eqnd)
+move_after(convert(os.path.join(D, "equipo.md"), 2), anchor_eq)
+print("equipo.md insertado")
 
 doc.save(DST)
 print("\nGUARDADO")
