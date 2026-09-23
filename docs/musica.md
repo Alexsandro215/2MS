@@ -309,25 +309,100 @@ Con el multiplicador de daño por arma ([formulas.md](formulas.md) §5), cada ar
 
 > Que **la media sea la mejor en algo** resuelve un problema clásico: el arma intermedia suele ser la opción sosa que no destaca en nada. Aquí tiene identidad propia y una razón para elegirla que no es "no me decido".
 
-### ⭐ Cada arma sigue una cosa distinta de la música
+### ⭐ Cada arma sigue una capa distinta de la música — ✅ CERRADO
 
-| Arma | Sigue | Por qué |
-|---|---|---|
-| **LIGERA** | **La MELODÍA** | No tiene carga que la frene, así que puede correr por encima de las notas. |
-| **PESADA** | **El PULSO** | Va directa a los tiempos fuertes: pocos golpes, cada uno en el beat. |
-| **MEDIA** | ❓ intermedio | Sin especificar. |
+Una canción tiene tres capas, y **cada arma se engancha a una**:
 
-> ### ⏸️ Decisión de alcance: por ahora, SOLO PULSO
->
-> **La melodía queda aparcada.** Se empieza implementando únicamente el **pulso** —para todas las armas— y se comprueba si eso solo ya funciona.
->
-> Según el resultado, la melodía se **arregla**, se **añade encima**, o se **descarta**.
->
-> Es la decisión correcta: la melodía es la parte más difícil de acertar (¿qué cuenta como "seguir la melodía" cuando la canción cambia?) y la más cara de producir. El pulso es binario y verificable. Si con pulso solo el combate ya se siente musical, la melodía es una mejora; si con pulso no se siente, la melodía tampoco lo iba a salvar.
+| Arma | Capa | Qué habilidad pide | Qué gana |
+|---|---|---|---|
+| **LIGERA** | **MELODÍA** | Fluir, arriesgar | Alargarse más allá del compás |
+| **MEDIA** | **PULSO** | Constancia | CM extra por golpe en tiempo |
+| **PESADA** | **COMPÁS** | Precisión | Daño extra al caer en el primer tiempo |
 
-> Esto resuelve la aparente contradicción de que la pesada se potencie **manteniendo el clic**: mantener no está reñido con el ritmo porque la pesada **no persigue notas rápidas, persigue el pulso**. Cargas y sueltas en el tiempo fuerte.
+> Esto es lo que hace que la música **no se pueda quitar**. Antes las figuras rítmicas —corchea, negra, blanca— eran nombres bonitos para «5, 3 y 1 golpes»: si borrabas la canción, el combate funcionaba igual. Ahora no. La música deja de ser ambientación y pasa a ser el mando.
+
+#### LIGERA — la melodía no respeta la barra
+
+Los básicos base van **al tempo**. Pero la ligera puede **seguir la melodía y continuar hasta el siguiente compás**.
+
+```
+COMPÁS 1          COMPÁS 2
+[ABABAB…]  ──▶    [ababab…]     ← continúa, pero al 25% de AD base
+ daño pleno        ⚠️ 25%
+```
+
+> ### Por qué renunciarías a tres cuartas partes de tu daño
 >
-> Y es una distinción que va mucho más allá de lo mecánico: **tocar la melodía y marcar el compás son dos formas reales de acompañar una canción**, y aquí son dos formas de jugar. La ligera improvisa por encima; la pesada sostiene la base. El arma no elige solo cuántos golpes das — elige **qué parte de la música eres**.
+> Porque hay dos cosas que se cobran **por impacto**, no por daño:
+>
+> - **Carga Musical** — cada golpe genera su 1/8, valga lo que valga
+> - **Desgaste de evasión** — y la ligera lo aplica **doble**
+>
+> Continuar con la melodía es **renunciar a matar para abrir al enemigo**. Que es exactamente el papel que la ligera ya tenía asignado —*«las ligeras abren desgastando, la pesada remata»*— pero convertido en **una decisión del jugador en el momento**, no en una propiedad pasiva del arma.
+>
+> El combo de equipo se vuelve legible: la ligera se alarga y deja al objetivo sin evasión; la pesada entra en el compás siguiente y remata.
+
+⚠️ Pendiente: **hasta dónde puede alargarse.** Un compás extra, o mientras se mantenga el input. Tiene que haber un tope.
+
+#### MEDIA — llegar al final del compás
+
+La media va **al pulso**. Con base 3 ocupa tres tiempos del compás; si el **Attack Speed** la lleva más lejos dentro de la barra, alcanza el **último tiempo**, y ahí está el premio.
+
+```
+4/4   |  1    2    3    4  |
+base  |       AB   AB   AB |        ← empieza en el 2
++AS   |  AB   AB   AB   AB |        ← llega al 4  ✔ CM extra
+```
+
+**El Attack Speed no regala el golpe: te lleva lo bastante lejos en el compás como para poder darlo.** Por eso no se suma con nada — es el vehículo, no el premio.
+
+⚠️ El extra es **pequeño**: un X% de su CM base por golpe en tiempo. Y es deliberado que sea pequeño, porque el verdadero premio está más allá:
+
+> ### La media es el motor de CLASICAL
+>
+> Lo que quieres de la media no es el goteo de CM: es **llegar antes al estado Clasical**, donde lo que toca es gastarlo todo a como dé lugar. El extra por golpe es un empujón hacia ese momento, no una recompensa en sí.
+
+#### PESADA — un solo golpe, en el uno
+
+La pesada cae en el **primer tiempo del compás**. Si acierta, el daño aumenta un ⚠️ X%.
+
+**No es todo o nada.** El bonus se reparte por cercanía: clavado da el máximo, y va bajando conforme te adelantas o te retrasas.
+
+```
+        antes          EL UNO          después
+    ├──────────┼──────────●──────────┼──────────┤
+       parcial      ▲ máximo            parcial
+```
+
+> Esto resuelve la contradicción de que la pesada se potencie **manteniendo el clic**: mantener no está reñido con el ritmo, porque la pesada no persigue notas rápidas — persigue el acento. Cargas durante el compás y sueltas en el uno.
+>
+> Y le da a la pesada la vía de poder que le faltaba. Hasta ahora, con base 1, el Attack Speed no le servía de nada y el arma era *«una promesa»* hasta subir la base. Con esto tiene una fuente de daño que **no depende de esa mejora**: depende de tu oído.
+
+⚠️ Pendiente: el X% del bonus y la anchura de la ventana.
+
+#### El triángulo que sale de todo esto
+
+| Arma | En la música | En el combate | La moneda que persigue |
+|---|---|---|---|
+| Ligera | melodía | **abre** | desgaste de EVA |
+| Media | pulso | **sostiene** | Carga Musical → Clasical |
+| Pesada | compás | **remata** | daño |
+
+Tres armas, tres capas musicales, tres papeles de combate y tres monedas distintas. Y una gradiente de dificultad que sale gratis: quien no tenga oído puede jugar la media y le irá bien; la pesada es para quien sí.
+
+> **Tocar la melodía, marcar el pulso y acentuar el compás son tres formas reales de acompañar una canción**, y aquí son tres formas de jugar. El arma ya no elige solo cuántos golpes das — elige **qué parte de la música eres**.
+
+#### Las habilidades QWER quedan fuera
+
+✅ **Los combos no tienen relación con el ritmo**, salvo que una habilidad concreta diga lo contrario.
+
+Es la decisión correcta y encaja con la arquitectura: lo normal es que no interactúen, y las excepciones son **contenido** —una regla más— no un caso especial en el motor.
+
+> ### Lo que esto cambia respecto a la versión anterior
+>
+> - La **media** tenía su capa sin especificar. Ya la tiene: el pulso.
+> - La **pesada** seguía el *pulso*; pasa a seguir el **compás**, que es más preciso y musicalmente más certero — el acento estructural, no cada latido.
+> - La **melodía estaba aparcada** por ser difusa: *«¿qué cuenta como seguir la melodía cuando la canción cambia?»*. Ya no es difusa: seguir la melodía es **continuar pulsando más allá de la línea de compás**. Eso es binario, medible e implementable, así que la razón para aparcarla desaparece.
 
 ---
 
