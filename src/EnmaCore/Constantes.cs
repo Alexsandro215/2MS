@@ -58,15 +58,17 @@ public static class Constantes
 
     // ---- Desgaste (fatiga) ----
     /// <summary>
-    /// Cada 50% de la VIDA BASE curada (acumulado) genera +1% de desgaste.
-    /// Curarse una barra entera cuesta 2%.
+    /// Cada 20% de la VIDA BASE curada (acumulado) genera +1% de desgaste.
+    /// Curarse una barra entera cuesta 5%.
     ///
-    /// Es el DIAL de dureza de la run. Se probo en 1/3 y se devolvio a 1/2.
+    /// Calibrado para el objetivo de diseno: que un jugador normal llegue a
+    /// LATE con ~35% de desgaste acumulado. Supone una run de ~40 combates,
+    /// con late empezando sobre el combate 27, y una curacion media del 25%
+    /// de la barra por combate.
     ///
-    /// ⚠️ Este numero tiene un conflicto abierto: dia.md 11 necesita ~1/10
-    /// para que cuadre el +35% de desgaste por campana. Ver ese documento.
+    /// Historial del dial: 1/2 -> se probo 1/3 -> se volvio a 1/2 -> 1/5.
     /// </summary>
-    public const double FraccionVidaPorPuntoDesgaste = 0.50;
+    public const double FraccionVidaPorPuntoDesgaste = 0.20;
 
     /// <summary>Desgaste generado al cruzar el umbral.</summary>
     public const double DesgastePorUmbral = 0.01;

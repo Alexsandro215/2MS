@@ -348,14 +348,14 @@ El 2% y el 3% leen **43.2** — ni 48, ni 68.2.
 ## 4.1 Generación
 
 ```
-Cada 50% de HP base restaurada (acumulado)  →  +1% de desgaste
+Cada 20% de HP base restaurada (acumulado)  →  +1% de desgaste
 ```
 
 ```
 applyFastHeal(objetivo, curación):
     hpActual = min(hpActual + curación, hpBase_eff)
     acumulado += curación
-    paso = 0.5 × hpBase_eff
+    paso = 0.2 × hpBase_eff
     mientras acumulado ≥ paso:
         acumulado −= paso
         desgaste += 1%        (clamp 0–100%)
@@ -425,7 +425,9 @@ HOSPITAL / TRATAMIENTO  →  baja MÁS RÁPIDO
 
 **Encadenar campañas** deja un saldo neto de **+25% por día**: cuatro seguidas llegan al tope del 100%. El sistema se autolimita sin reglas extra.
 
-> ⚠️ **La tasa de generación no cuadra con el 35% por campaña.** Con 1/2 de la barra harían falta **17,5× la barra** curadas en un bloque. `dia.md` §11 propone **10% de HP base = 1%** (3,5× la barra). Pendiente de decidir cuál manda, o de desacoplar ambos usos del número.
+> ✅ **Tasa calibrada: 1/5 de la barra.** El objetivo es que un jugador normal llegue a **late con ~35% de desgaste**, y con una run de ~40 combates eso da 34%. Ver [formulas.md](formulas.md) §3.
+>
+> ⚠️ Lo que sigue sin cuadrar es el **+35% por campaña** de [dia.md](dia.md) §11: con 1/5, una campaña de 5 oleadas genera ~6%, no 35%. Los números de la agenda de días (campaña +35, amanecer −10, hospital −25) están marcados como provisionales y hay que reescalarlos.
 
 > ### El desgaste es el ritmo de la campaña, no un castigo
 > Salir a misión se paga con **días**, y esos días compiten con los lazos, el entrenamiento y la historia. Encadenar campañas sin descanso es posible, pero se llega a la siguiente con las estadísticas mermadas.
@@ -1025,7 +1027,7 @@ Las casillas pueden **encantarse**. El terreno pertenece a la casilla.
 | **Desgaste real** | `desgasteActual × (1 − Resistencia al Desgaste)` |
 | **Desgaste efectivo** | `max(0, desgasteReal − supresión)` |
 | **Multiplicador de desgaste** | `1 − desgasteEfectivo` |
-| **Generación de desgaste** | Cada 50% de HP base curada → +1% |
+| **Generación de desgaste** | Cada 20% de HP base curada → +1% |
 | **Evasión efectiva** | `EVA × max(0.10, 1 − 0.03 × stacks)` |
 | **Acierto** | `5 + 90 × (PRESS / (PRESS + EVA_eff))` · clamp 5–95 |
 | **Daño bruto** | `ATK × multSkill × multContexto × multFinal` |

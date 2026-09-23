@@ -128,7 +128,7 @@ El modelo A es un número plano que no interactúa con nada.
 
 | Tema | Levantamiento | Canon | Decidir |
 |---|---|---|---|
-| ~~**Tasa de desgaste**~~ | ~~1% cada 50 de vida~~ | **1% cada 50% de la vida base** | ✅ **Proporcional**, para que no se rompa al escalar. ⚠️ La fracción exacta sigue en disputa: ver [dia.md](dia.md) §11 |
+| ~~**Tasa de desgaste**~~ | ~~1% cada 50 de vida~~ | **1% cada 20% de la vida base** | ✅ **RESUELTO.** Proporcional, y calibrado para llegar a late con ~35%. Ver [formulas.md](formulas.md) §3 |
 | ~~**Desgaste de EVA**~~ | ~~−15%~~ | ~~−1% por stack~~ | ✅ **RESUELTO — 3% por stack**, calibrado para +50% de acierto máximo en late |
 | ~~**Bonus de tempo**~~ | ~~+1/3~~ | **×2** | ✅ **RESUELTO** — confirmado por aritmética (4/2/1 golpes por CM) |
 | ~~**Fases de run**~~ | ~~Ultra Late~~ | ~~3 fases~~ | ✅ **RESUELTO — son 4.** Ultra Late = superado el LV18 y aún quedan batallas |

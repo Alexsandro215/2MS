@@ -78,53 +78,74 @@ public class DesgasteTests
     }
 
     [Fact]
-    public void Curarse_media_barra_cuesta_exactamente_un_uno_por_ciento()
+    public void Curarse_un_quinto_de_barra_cuesta_exactamente_un_uno_por_ciento()
     {
         // La regla es PROPORCIONAL: cuesta lo mismo seas quien seas
         // y estes en el nivel que estes.
         var d1 = new Desgaste();
-        d1.AplicarCuracion(curacion: 50, vidaBaseEfectiva: 100);
+        d1.AplicarCuracion(curacion: 20, vidaBaseEfectiva: 100);
         Assert.Equal(0.01, d1.Acumulado, 4);
 
         var d2 = new Desgaste();
-        d2.AplicarCuracion(curacion: 500, vidaBaseEfectiva: 1000);
+        d2.AplicarCuracion(curacion: 200, vidaBaseEfectiva: 1000);
         Assert.Equal(0.01, d2.Acumulado, 4);
     }
 
     [Fact]
-    public void Curarse_una_barra_entera_cuesta_dos_por_ciento()
+    public void Curarse_una_barra_entera_cuesta_cinco_por_ciento()
     {
         var d = new Desgaste();
         d.AplicarCuracion(curacion: 100, vidaBaseEfectiva: 100);
-        Assert.Equal(0.02, d.Acumulado, 4);
+        Assert.Equal(0.05, d.Acumulado, 4);
     }
 
     [Fact]
-    public void Proyeccion_a_final_de_run_moderada()
+    public void EL_OBJETIVO_DE_DISENO_llegar_a_late_con_unos_35_por_ciento()
     {
-        // formulas.md  3: curacion moderada (25% de barra) x 40 combates -> 20%
+        // Es la razon de ser del 1/5: un jugador normal —curandose un 25% de
+        // barra por combate— debe llegar a LATE rondando el 35%.
+        // Late empieza sobre el combate 27 de una run de ~40.
         var d = new Desgaste();
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 27; i++)
             d.AplicarCuracion(curacion: 25, vidaBaseEfectiva: 100);
-        Assert.Equal(0.20, d.Acumulado, 4);
+
+        Assert.InRange(d.Acumulado, 0.32, 0.37);
     }
 
     [Fact]
-    public void El_curandero_intensivo_llega_al_ochenta_por_ciento_a_los_40_combates()
+    public void Prevenir_sale_barato_y_depender_de_la_curacion_sale_caro()
     {
+        // La tesis del sistema, comprobada: al llegar a late, el que previene
+        // anda por el 20% y el que se apoya en el curandero por el 68%.
+        Assert.InRange(TrasCombates(27, curacionPorCombate: 15), 0.19, 0.21);
+        Assert.InRange(TrasCombates(27, curacionPorCombate: 50), 0.66, 0.69);
+
+        static double TrasCombates(int n, double curacionPorCombate)
+        {
+            var d = new Desgaste();
+            for (int i = 0; i < n; i++)
+                d.AplicarCuracion(curacionPorCombate, 100);
+            return d.Acumulado;
+        }
+    }
+
+    [Fact]
+    public void El_curandero_intensivo_agota_su_margen_antes_de_acabar_la_run()
+    {
+        // Curando media barra por combate se llega al tope a los 40.
         var d = new Desgaste();
         for (int i = 0; i < 40; i++)
-            d.AplicarCuracion(curacion: 100, vidaBaseEfectiva: 100);
-        Assert.Equal(0.80, d.Acumulado, 4);
+            d.AplicarCuracion(curacion: 50, vidaBaseEfectiva: 100);
+        Assert.Equal(1.00, d.Acumulado, 4);
     }
 
     [Fact]
     public void El_resto_por_debajo_del_umbral_no_se_pierde()
     {
-        // Tres curaciones del 20% acumulan 60%, que ya cruza la media barra.
+        // Tres curaciones del 8% acumulan 24%, que ya cruza el quinto de barra.
         var d = new Desgaste();
         for (int i = 0; i < 3; i++)
-            d.AplicarCuracion(curacion: 20, vidaBaseEfectiva: 100);
+            d.AplicarCuracion(curacion: 8, vidaBaseEfectiva: 100);
         Assert.Equal(0.01, d.Acumulado, 4);
     }
 

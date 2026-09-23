@@ -177,16 +177,30 @@ multiplicadorDesgaste = 1 − desgasteEfectivo
 ### Generación — ✅ DECIDIDO
 
 ```
-Cada 50% de la VIDA BASE recuperada (acumulado)  →  +1% de desgaste
+Cada 20% de la VIDA BASE recuperada (acumulado)  →  +1% de desgaste
 ```
 
-Es **proporcional**, no un umbral fijo de puntos. Curarte media barra cuesta 1% seas quien seas y estés en el nivel que estés, y **una barra entera cuesta 2%**.
+Es **proporcional**, no un umbral fijo de puntos. Curarte un quinto de barra cuesta 1% seas quien seas y estés en el nivel que estés, y **una barra entera cuesta 5%**.
+
+> ### ✅ El 1/5 sale de un objetivo de diseño, no de una intuición
+>
+> **Que un jugador normal llegue a LATE con ~35% de desgaste acumulado.**
+>
+> Con una run de ~40 combates, late empieza sobre el combate 27. Un jugador que se cure un 25% de barra por combate habrá curado 6,75 barras para entonces, y a 1/5 eso son **34%**.
+>
+> | Cómo juegas | Al llegar a late | Al final de la run |
+> |---|---|---|
+> | Curándote poco | 20% | 30% |
+> | **Normal** | **34%** | 50% |
+> | Apoyado en el curandero | 68% | 100% antes de acabar |
+>
+> La curva hace lo que el sistema dice en todas partes: **no castiga jugar normal, castiga depender de la curación.** El que previene llega entero; el que repara revienta su margen antes de terminar.
 
 > ### Por qué proporcional y no plano
 >
-> La vida crece con el nivel (`HP_base(L) = HP_MAX × g(L)`). Con un umbral fijo en puntos, curarte "media barra" costaría cada vez más desgaste conforme subes — **el mismo acto castigaría cinco veces más en LV18 que en LV1** sin que el jugador hiciera nada distinto.
+> La vida crece con el nivel (`HP_base(L) = HP_MAX × g(L)`). Con un umbral fijo en puntos, curarte "un quinto de barra" costaría cada vez más desgaste conforme subes — **el mismo acto castigaría cinco veces más en LV18 que en LV1** sin que el jugador hiciera nada distinto.
 >
-> Y penalizaría a los personajes de vida alta: un tanque curándose la mitad de su barra pagaría mucho más que un caster curándose la mitad de la suya. Los tanques ya reciben más daño y ya necesitan más curación; no hace falta cobrarles además una tarifa peor por unidad.
+> Y penalizaría a los personajes de vida alta: un tanque curándose un quinto de su barra pagaría mucho más que un caster curándose un quinto de la suya. Los tanques ya reciben más daño y ya necesitan más curación; no hace falta cobrarles además una tarifa peor por unidad.
 >
 > Es el mismo principio que se aplicó a Tempo: **ninguna regla debe romperse cuando las estadísticas escalan.**
 
@@ -194,22 +208,22 @@ Es **proporcional**, no un umbral fijo de puntos. Curarte media barra cuesta 1% 
 
 | Curación media por combate | 20 combates | 40 combates | 60 combates |
 |---|---|---|---|
-| Muy poca (10% de barra) | 4% | 8% | 12% |
-| **Moderada (25%)** | 10% | **20%** | 30% |
-| Alta (media barra) | 20% | 40% | 60% |
-| Intensiva (una barra) | 40% | 80% | **100%** |
+| Muy poca (10% de barra) | 10% | 20% | 30% |
+| **Moderada (25%)** | 25% | **50%** | 75% |
+| Alta (media barra) | 50% | **100%** | 100% |
+| Intensiva (una barra) | 100% | 100% | 100% |
 
-El sistema **no castiga jugar normal: castiga depender de la curación.** Con la Resistencia Desgaste al tope (cap 50%), un 20% acumulado baja a 10% real — invertir en ella importa sin ser obligatorio.
+Con la Resistencia Desgaste al tope (cap 50%), un 50% acumulado baja a **25% real** — invertir en ella deja de ser opcional para quien juegue apoyado en la curación, y sigue siendo prescindible para quien previene.
 
-> **Dial de ajuste:** esta fracción. Está en **1/2**; se probó en 1/3 (que sube el coste un 50% y lleva al curandero intensivo al tope a los 40 combates) y se devolvió a 1/2. Es un solo número en `Constantes.cs` y los tests dicen al instante qué cambia.
+> **Dial de ajuste:** esta fracción. Está en **1/5**. Historial: 1/2 → se probó 1/3 → se volvió a 1/2 → 1/5, este último ya calibrado contra el objetivo de los 35% en late. Es un solo número en `Constantes.cs` y los tests dicen al instante qué cambia.
 
-> ⚠️ **Este número tiene un conflicto abierto.** [dia.md](dia.md) §11 lo necesita en ~1/10 para que cuadre el +35% de desgaste por campaña, porque también gobierna la economía de días. Aquí se usa como dial de dureza del combate. Pendiente de decidir cuál manda, o de desacoplarlos.
+> ⚠️ **De qué depende el 1/5.** De que una run sean ~40 combates, que es lo que da por supuesto esta tabla pero [dia.md](dia.md) aún tiene como pendiente. Si la run resulta más larga, la fracción sube: 30 combates → 1/7 · **40 → 1/5** · 50 → 1/4 · 60 → 1/3,5.
 
 ```
 applyFastHeal(target, healAmount):
     hpCurrent = min(hpCurrent + healAmount, hpBase_eff)
     fastHealAccum += healAmount
-    step = 0.5 × hpBase_eff
+    step = 0.2 × hpBase_eff
     while fastHealAccum >= step:
         fastHealAccum -= step
         fatiguePct += 0.01     (clamp 0..1)

@@ -266,21 +266,27 @@ Ir al hospital **gasta los tres bloques del protagonista**. Es un día perdido p
 
 ### ⚠️ La tasa de generación hay que corregirla
 
-La tasa vigente es *cada 50% de HP base restaurada = +1% de desgaste*. **Con esa tasa, un 35% por campaña es inalcanzable**: exigiría curar **17,5 veces la barra de vida** en un solo bloque.
+La tasa vigente es *cada 20% de HP base restaurada = +1% de desgaste*, calibrada en [formulas.md](formulas.md) §3 para que un jugador normal llegue a **late con ~35% acumulado**. Pero eso es el total de la run, no de una campaña: **una campaña de 5 oleadas genera unos 6%**, no 35%.
 
-| Tasa | Curación necesaria para 35% | Viable |
+**Lo que hay que reescalar son los números de esta sección, no la tasa.** Con 1/5 y una campaña de 5 oleadas:
+
+| Cómo juegues esa campaña | Te curas | Desgaste que genera |
 |---|---|---|
-| **50% HP → 1%** *(vigente)* | **17,5× la barra** | ❌ |
-| 33% HP → 1% *(probado y descartado)* | 11,7× la barra | ❌ tampoco |
-| 20% HP → 1% | 7× la barra | Difícil |
-| **10% HP → 1%** *(propuesta)* | **3,5× la barra** | ✅ |
-| 5% HP → 1% | 1,75× la barra | ✅ combate duro normal |
+| Poco (25% de barra por combate) | 1,25 barras | **6%** |
+| Bastante (media barra) | 2,5 barras | **13%** |
+| Mucho (una barra) | 5 barras | **25%** |
 
-**Propuesta: 10% de HP base = 1% de desgaste.** Con eso, curarte tres veces y media la vida a lo largo de una campaña te deja en el 35% previsto.
+Así que la campaña media ronda el **6-13%**, no el 35%. Manteniendo las proporciones de la simetría original —campaña se limpia con una noche más un día de hospital— los valores quedarían sobre:
 
-> ⚠️ **Conflicto abierto.** `formulas.md` §3 fija la tasa en 1/2 como dial de dureza del combate; este documento necesita ~1/10 para que cuadre la economía de la campaña. Son dos objetivos distintos tirando del mismo número.
->
-> **Tercera vía, sin escribir todavía:** desacoplarlos. Que la curación genere desgaste a 1/2 *y además* la campaña imponga un desgaste fijo por salir, independiente de cuánto te cures. Así el combate castiga depender de la curación y el día mantiene su aritmética, sin que un solo número haga los dos trabajos.
+| Concepto | Antes ⚠️ | Propuesta |
+|---|---|---|
+| **Campaña media** | +35% | **+10%** |
+| **Amanecer** | −10% | **−3%** |
+| **Hospital** (día completo) | −25% | **−7%** |
+
+❓ Confirmar. La aritmética de abajo (encadenar campañas, la regla del amanecer) sigue funcionando igual con estos números, solo que a otra escala.
+
+> **Tercera vía, si se prefiere conservar el +35%:** desacoplar los dos usos. Que la curación genere desgaste a 1/5 *y además* salir de campaña cueste un desgaste fijo, independiente de cuánto te cures. Así el combate castiga depender de la curación y el día mantiene su aritmética original, sin que un solo número haga los dos trabajos.
 
 Sigue premiando lo mismo: **prevenir es más barato que reparar**. Escudos, evasión y mitigación no generan desgaste.
 
