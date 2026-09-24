@@ -36,6 +36,71 @@ public class RitmoTests
         Assert.Equal(1.00, BonusRitmico.MultiplicadorDano(ClaseArma.Ligera, Ritmo.Clavado), 4);
     }
 
+    [Fact]
+    public void La_melodia_da_TIEMPO_y_por_eso_caben_mas_golpes()
+    {
+        // No es que los golpes se desborden del compas: es que terminas el
+        // compas en curso y ademas el siguiente, y ese tiempo se llena.
+        //
+        // ⚠️ El ritmo exacto de la ligera (golpes por tiempo) esta sin fijar,
+        // asi que aqui se comprueban las PROPIEDADES, no una cifra concreta.
+        var (total, alVeinticinco) = BonusRitmico.GolpesConMelodia(
+            golpesBase: 7, tiemposRestantesDelCompas: 1, tiemposPorCompas: 4);
+
+        Assert.True(total > 7, "seguir la melodia tiene que dar MAS golpes");
+        Assert.True(alVeinticinco > 0, "alguno tiene que caer en el compas extra");
+        Assert.True(alVeinticinco < total, "no todos pueden estar al 25%");
+    }
+
+    [Fact]
+    public void Con_el_ejemplo_del_autor_siete_de_base_dan_nueve()
+    {
+        // "suponiendo tiene 7 BA y en dos compases se usa 9 BA"
+        // Eso sale con un ritmo de 1.5 golpes por tiempo en un 4/4, con 2
+        // tiempos restantes: 3 + 6 = 9.
+        //
+        // ⚠️ Ese 1.5 es una LECTURA del ejemplo, no un valor decidido.
+        var (total, _) = BonusRitmico.GolpesConMelodia(
+            golpesBase: 7, tiemposRestantesDelCompas: 2,
+            tiemposPorCompas: 4, golpesPorTiempo: 1.5);
+
+        Assert.Equal(9, total);
+    }
+
+    [Fact]
+    public void La_melodia_nunca_deja_al_arma_con_menos_golpes_de_los_suyos()
+    {
+        // Aunque quede poquisimo compas, no puede salir perdiendo.
+        var (total, _) = BonusRitmico.GolpesConMelodia(
+            golpesBase: 7, tiemposRestantesDelCompas: 0, tiemposPorCompas: 1, golpesPorTiempo: 1);
+        Assert.True(total >= 7);
+    }
+
+    [Fact]
+    public void Solo_se_puede_encadenar_UN_compas_extra()
+    {
+        // OJO: solo el siguiente. No es una racha que se gestiona.
+        Assert.Equal(1, BonusRitmico.CompasesExtraMaximos);
+
+        var (conMucho, _) = BonusRitmico.GolpesConMelodia(5, 4, 4, 2);
+        var (conPoco, _) = BonusRitmico.GolpesConMelodia(5, 0, 4, 2);
+
+        // La diferencia entre empezar el compas y acabarlo es, como mucho,
+        // un compas entero de golpes. Nunca dos.
+        Assert.True(conMucho - conPoco <= 4 * 2);
+    }
+
+    [Fact]
+    public void Los_golpes_del_compas_extra_son_los_que_valen_el_25_por_ciento()
+    {
+        var (total, alVeinticinco) = BonusRitmico.GolpesConMelodia(
+            golpesBase: 4, tiemposRestantesDelCompas: 2, tiemposPorCompas: 4);
+
+        // Lo que cabia en lo que quedaba del compas va a daño pleno;
+        // el resto, al 25%.
+        Assert.Equal(total - 4, alVeinticinco);
+    }
+
     // ----------------------------------------------------------------- MEDIA
 
     [Fact]

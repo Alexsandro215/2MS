@@ -323,13 +323,31 @@ Una canción tiene tres capas, y **cada arma se engancha a una**:
 
 #### LIGERA — la melodía no respeta la barra
 
-Los básicos base van **al tempo**. Pero la ligera puede **seguir la melodía y continuar hasta el siguiente compás**.
+Los básicos base van **al tempo**. Pero si la ligera **sigue la melodía**, no la cortan a mitad: **termina el compás en el que está y además el siguiente entero.**
+
+> ⚠️ **Solo el siguiente.** Un compás extra, no dos. No es una racha que se gestiona: es un sí o un no, una vez por turno.
 
 ```
-COMPÁS 1          COMPÁS 2
-[ABABAB…]  ──▶    [ababab…]     ← continúa, pero al 25% de AD base
- daño pleno        ⚠️ 25%
+COMPÁS EN CURSO           COMPÁS EXTRA              ✖ CORTE
+┌───────────────┐         ┌───────────────┐
+│ lo termina    │   ──▶   │ entero        │         no puede seguir
+│ daño pleno    │         │ ⚠️ 25% AD base │
+└───────────────┘         └───────────────┘
 ```
+
+### La melodía da TIEMPO, no desborda golpes
+
+Esto es lo que hay que entender bien, porque es contraintuitivo: **la ligera no se pasa del compás con los golpes que le sobran.** Lo que gana es **tiempo**, y como dispara a ritmo constante, ese tiempo de más se llena con golpes de más.
+
+```
+Base 7 BA
+Sin melodía      →  los que quepan donde te corten
+Con melodía      →  terminas este compás + el siguiente  →  caben 9
+                    los 2 de más, y todo lo que caiga en
+                    el compás extra, al 25%
+```
+
+**La melodía no te limita: te da más golpes, más flojos.**
 
 > ### Por qué renunciarías a tres cuartas partes de tu daño
 >
@@ -342,7 +360,7 @@ COMPÁS 1          COMPÁS 2
 >
 > El combo de equipo se vuelve legible: la ligera se alarga y deja al objetivo sin evasión; la pesada entra en el compás siguiente y remata.
 
-⚠️ Pendiente: **hasta dónde puede alargarse.** Un compás extra, o mientras se mantenga el input. Tiene que haber un tope.
+⚠️ Pendiente: **a qué ritmo dispara la ligera dentro del compás** (golpes por tiempo). De eso depende cuántos golpes caben de verdad en la ventana, y por tanto cuánto vale seguir la melodía. El ejemplo de arriba —7 de base, 9 con melodía— sale con 1,5 golpes por tiempo en un 4/4, pero ese número es una lectura del ejemplo, no una decisión tomada.
 
 #### MEDIA — llegar al final del compás
 

@@ -66,13 +66,22 @@ public static class BonusRitmico
     };
 
     /// <summary>
-    /// LIGERA. Los golpes que se alargan pasada la linea de compas aplican
-    /// solo el 25% del AD base. Se renuncia al dano a cambio de seguir
-    /// generando CM y erosionando evasion, que se cobran por impacto.
+    /// LIGERA. Los golpes que caen en el compas extra aplican solo el 25% del
+    /// AD base. Se renuncia al dano a cambio de seguir generando CM y
+    /// erosionando evasion, que se cobran POR IMPACTO y no por dano.
     /// </summary>
     public const double AdDeLaMelodia = 0.25;
 
-    /// <summary>⚠️ Provisional. Compases extra que la ligera puede encadenar.</summary>
+    /// <summary>
+    /// ✅ La melodia da TIEMPO, no desborda golpes.
+    ///
+    /// Seguir la melodia significa que no te cortan a mitad: terminas el
+    /// compas en el que estas y ademas el siguiente ENTERO. Uno solo, no dos.
+    ///
+    /// Como tienes mas tiempo, caben mas golpes de los que te tocaban. Es un
+    /// aumento de VOLUMEN a cambio de potencia, que es exactamente el papel
+    /// de la ligera: mas impactos = mas CM y mas desgaste de EVA.
+    /// </summary>
     public const int CompasesExtraMaximos = 1;
 
     /// <summary>⚠️ Provisional. MEDIA: extra de CM por golpe en el pulso.</summary>
@@ -123,12 +132,49 @@ public static class BonusRitmico
         => arma == ClaseArma.Media && r.EnTempo ? cmBase * ExtraCmPorPulso : 0.0;
 
     /// <summary>
-    /// Golpes extra que concede el ritmo. Solo la MEDIA, y solo al alcanzar
-    /// el ultimo tiempo del compas.
+    /// Golpes extra que concede el ritmo.
     ///
-    /// El Attack Speed NO regala este golpe: es lo que te lleva lo bastante
-    /// lejos dentro de la barra como para poder darlo. Por eso no se suman.
+    /// MEDIA: uno, al alcanzar el ultimo tiempo del compas. El Attack Speed
+    /// NO regala ese golpe — es lo que te lleva lo bastante lejos dentro de la
+    /// barra como para poder darlo. Por eso no se suman.
+    ///
+    /// LIGERA: ver <see cref="GolpesConMelodia"/>. Los suyos no salen de un
+    /// numero fijo sino del tiempo que gana.
     /// </summary>
     public static int GolpesExtra(ClaseArma arma, Ritmo r)
         => arma == ClaseArma.Media && r.EnUltimoTiempo && r.EnTempo ? 1 : 0;
+
+    /// <summary>
+    /// Golpes totales de la LIGERA al seguir la melodia.
+    ///
+    /// No te cortan a mitad: terminas el compas en curso y ademas el siguiente
+    /// entero. Como el arma dispara a ritmo constante, ese tiempo de mas se
+    /// traduce en golpes de mas.
+    /// </summary>
+    /// <param name="golpesBase">Los que tocarian sin melodia.</param>
+    /// <param name="tiemposRestantesDelCompas">Lo que queda del compas actual.</param>
+    /// <param name="tiemposPorCompas">4 en un 4/4.</param>
+    /// <param name="golpesPorTiempo">Ritmo del arma. La ligera toca corcheas: 2 por tiempo.</param>
+    /// <returns>
+    /// Total de golpes y cuantos de ellos caen en el compas extra, que son los
+    /// que valen el 25%.
+    /// </returns>
+    public static (int Total, int AlVeinticinco) GolpesConMelodia(
+        int golpesBase, int tiemposRestantesDelCompas,
+        int tiemposPorCompas = 4, double golpesPorTiempo = 2.0)
+    {
+        if (golpesBase <= 0) return (0, 0);
+
+        int cabenEnLoQueQueda = (int)Math.Floor(Math.Max(0, tiemposRestantesDelCompas) * golpesPorTiempo);
+        int cabenEnElExtra = (int)Math.Floor(tiemposPorCompas * golpesPorTiempo * CompasesExtraMaximos);
+
+        // La melodia da tiempo; el arma lo llena a su ritmo.
+        int total = cabenEnLoQueQueda + cabenEnElExtra;
+
+        // Pero nunca menos de los que te tocaban de base.
+        total = Math.Max(total, golpesBase);
+
+        int alVeinticinco = Math.Max(0, total - cabenEnLoQueQueda);
+        return (total, alVeinticinco);
+    }
 }
