@@ -16,7 +16,13 @@
 | **MEDIA** | **1/4** | negra | **3** | 4 |
 | **PESADA** | **1/2** | blanca | **1** | 2 |
 
-> No son números arbitrarios: **cada clase de arma es una subdivisión rítmica**. La ligera toca corcheas —muchas y rápidas—, la pesada toca blancas —pocas y largas—. Encaja con sus esquemas de input (spam de clics vs. mantener pulsado) y con su número de golpes por turno.
+> ### ✅ La figura gobierna la CM, no el ritmo de ataque
+>
+> El 1/8 – 1/4 – 1/2 no es arbitrario: sale de que **una corchea dura la mitad que una negra, y una negra la mitad que una blanca**. Una nota corta vale menos CM que una larga. Esa proporción es cierta siempre.
+>
+> Lo que la figura **no** hace es dictar a qué velocidad pegas. **El número de golpes lo fijan `base` y `Attack Speed`**, que son estadísticas, no música. Siete ataques pueden caber en un compás o estirarse por dos, según cómo vaya la canción — y eso está bien.
+>
+> ⚠️ *Corrige una lectura anterior de esta tabla, que la trataba como si la figura marcase el ritmo de ataque. No lo marca: marca cuánto vale cada impacto en recurso.*
 
 > ⚠️ Los básicos base **5 / 3 / 1** sustituyen a la estimación anterior de 7 / 5 / 3-1.
 
@@ -337,17 +343,29 @@ COMPÁS EN CURSO           COMPÁS EXTRA              ✖ CORTE
 
 ### La melodía da TIEMPO, no desborda golpes
 
-Esto es lo que hay que entender bien, porque es contraintuitivo: **la ligera no se pasa del compás con los golpes que le sobran.** Lo que gana es **tiempo**, y como dispara a ritmo constante, ese tiempo de más se llena con golpes de más.
+Esto es lo que hay que entender bien, porque es contraintuitivo: **la ligera no se pasa del compás con los golpes que le sobran.** Lo que gana es **tiempo** para seguir atacando al ritmo de la melodía.
 
 ```
 Base 7 BA
 Sin melodía      →  los que quepan donde te corten
 Con melodía      →  terminas este compás + el siguiente  →  caben 9
-                    los 2 de más, y todo lo que caiga en
-                    el compás extra, al 25%
 ```
 
 **La melodía no te limita: te da más golpes, más flojos.**
+
+### ✅ Lo que se pierde es AD, NO Carga Musical
+
+Aquí está la razón por la que alargarse compensa:
+
+| En el compás extra | |
+|---|---|
+| **AD por básico** | ⚠️ **25%** |
+| **Carga Musical** | **íntegra** |
+| **Desgaste de evasión** | **íntegro** — ni siquiera depende del daño, sale de que el defensor esquive |
+
+> La ligera **deja de ser fuente de daño y se convierte en motor de recurso y abrelatas de evasión.** No es un castigo por alargarse: es un cambio de papel dentro del mismo turno.
+>
+> Y es el papel que ya tenía asignado —*«las ligeras abren desgastando, la pesada remata»*— llevado al extremo y puesto en manos del jugador como una decisión del momento.
 
 > ### Por qué renunciarías a tres cuartas partes de tu daño
 >

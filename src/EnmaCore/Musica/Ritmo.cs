@@ -67,10 +67,23 @@ public static class BonusRitmico
 
     /// <summary>
     /// LIGERA. Los golpes que caen en el compas extra aplican solo el 25% del
-    /// AD base. Se renuncia al dano a cambio de seguir generando CM y
-    /// erosionando evasion, que se cobran POR IMPACTO y no por dano.
+    /// AD base.
+    ///
+    /// ✅ IMPORTANTE: el recorte es SOLO de AD. La Carga Musical se cobra
+    /// INTEGRA, y el desgaste de evasion tambien —ese ni siquiera depende del
+    /// dano, sale de que el defensor esquive—.
+    ///
+    /// Por eso alargarse compensa: dejas de ser fuente de dano y te conviertes
+    /// en motor de recurso y en abrelatas de evasion, que es el papel de la
+    /// ligera llevado al extremo.
     /// </summary>
     public const double AdDeLaMelodia = 0.25;
+
+    /// <summary>
+    /// Multiplicador de CM en el compas extra. Es 1.0 a proposito: la melodia
+    /// cuesta dano, no recurso.
+    /// </summary>
+    public const double CmDeLaMelodia = 1.0;
 
     /// <summary>
     /// ✅ La melodia da TIEMPO, no desborda golpes.
@@ -130,6 +143,16 @@ public static class BonusRitmico
     /// </summary>
     public static double ExtraCm(ClaseArma arma, Ritmo r, double cmBase)
         => arma == ClaseArma.Media && r.EnTempo ? cmBase * ExtraCmPorPulso : 0.0;
+
+    /// <summary>
+    /// Multiplicador de CM de un basico. Siempre 1.0 salvo que alguna regla
+    /// futura diga lo contrario.
+    ///
+    /// Existe para dejar constancia de que el recorte de la melodia NO llega
+    /// aqui: en el compas extra la ligera pega al 25% pero cobra la CM entera.
+    /// </summary>
+    public static double MultiplicadorCm(ClaseArma arma, Ritmo r)
+        => r.PasadoElCompas ? CmDeLaMelodia : 1.0;
 
     /// <summary>
     /// Golpes extra que concede el ritmo.

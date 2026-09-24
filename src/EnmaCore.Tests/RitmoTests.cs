@@ -68,6 +68,32 @@ public class RitmoTests
     }
 
     [Fact]
+    public void En_el_compas_extra_se_pierde_AD_pero_NO_CM()
+    {
+        // Es lo que hace que alargarse compense. La ligera deja de ser fuente
+        // de dano y se convierte en motor de recurso.
+        var fuera = new Ritmo(PasadoElCompas: true);
+
+        Assert.Equal(0.25, BonusRitmico.MultiplicadorDano(ClaseArma.Ligera, fuera), 4);
+        Assert.Equal(1.00, BonusRitmico.MultiplicadorCm(ClaseArma.Ligera, fuera), 4);
+    }
+
+    [Fact]
+    public void La_figura_ritmica_gobierna_la_CM_no_el_ritmo_de_ataque()
+    {
+        // Una corchea vale la mitad que una negra, y una negra la mitad que
+        // una blanca. De ahi 1/8, 1/4 y 1/2, y esa proporcion es cierta
+        // independientemente de cuantos golpes tenga el personaje, que los
+        // fijan base y Attack Speed.
+        double ligera = CargaMusical.BasePorImpacto(ClaseArma.Ligera);
+        double media = CargaMusical.BasePorImpacto(ClaseArma.Media);
+        double pesada = CargaMusical.BasePorImpacto(ClaseArma.Pesada);
+
+        Assert.Equal(media / 2.0, ligera, 6);
+        Assert.Equal(pesada / 2.0, media, 6);
+    }
+
+    [Fact]
     public void La_melodia_nunca_deja_al_arma_con_menos_golpes_de_los_suyos()
     {
         // Aunque quede poquisimo compas, no puede salir perdiendo.
