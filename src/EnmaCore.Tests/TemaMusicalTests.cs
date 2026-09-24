@@ -152,6 +152,60 @@ public class TemaMusicalTests
     public void El_multiplicador_depende_de_la_seccion(double t, double esperado)
         => Assert.Equal(esperado, Tema120().MultiplicadorEn(t), 6);
 
+    // ---------------------------------------------------------- serializacion
+
+    [Fact]
+    public void Lee_el_JSON_que_escribe_el_grabador()
+    {
+        // Formato exacto de proto/grabador-temas.
+        var json = """
+        {
+          "id": "boss_artur",
+          "archivo": "boss_artur.ogg",
+          "bpm": 132.00,
+          "tiemposPorCompas": 4,
+          "offset": 0.1840,
+          "secciones": [],
+          "melodia": [0.4500, 0.6800, 0.9100, 1.1300]
+        }
+        """;
+
+        var t = TemaMusical.DesdeJson(json);
+
+        Assert.Equal("boss_artur", t.Id);
+        Assert.Equal(132.0, t.Bpm, 4);
+        Assert.Equal(4, t.TiemposPorCompas);
+        Assert.Equal(0.184, t.Offset, 4);
+        Assert.Equal(4, t.PulsosDeMelodia.Count);
+        Assert.Equal(0.45, t.PulsosDeMelodia[0], 4);
+        Assert.True(t.TieneMelodia);
+    }
+
+    [Fact]
+    public void Un_tema_sin_melodia_se_lee_igual()
+    {
+        var t = TemaMusical.DesdeJson("""
+        { "id": "batalla_normal", "bpm": 110, "tiemposPorCompas": 3, "offset": 0, "melodia": [] }
+        """);
+
+        Assert.Equal(3, t.TiemposPorCompas);
+        Assert.False(t.TieneMelodia);
+    }
+
+    [Fact]
+    public void Ida_y_vuelta_por_JSON_conserva_el_tema()
+    {
+        var original = Tema120();
+        original.PulsosDeMelodia.AddRange([0.45, 0.68, 0.91]);
+
+        var copia = TemaMusical.DesdeJson(original.AJson());
+
+        Assert.Equal(original.Bpm, copia.Bpm, 4);
+        Assert.Equal(original.TiemposPorCompas, copia.TiemposPorCompas);
+        Assert.Equal(original.PulsosDeMelodia.Count, copia.PulsosDeMelodia.Count);
+        Assert.Equal(original.PulsosDeMelodia[1], copia.PulsosDeMelodia[1], 4);
+    }
+
     [Fact]
     public void Encender_Clasical_sale_mas_barato_en_el_estribillo()
     {

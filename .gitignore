@@ -15,3 +15,7 @@ obj/
 # Godot
 .godot/
 *.import
+
+# Audio de trabajo del grabador (no se versiona musica)
+proto/grabador-temas/audio/*
+!proto/grabador-temas/audio/.gitkeep

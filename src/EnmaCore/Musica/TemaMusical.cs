@@ -124,6 +124,78 @@ public sealed class TemaMusical
     /// <summary>true si el tema trae melodia marcada.</summary>
     public bool TieneMelodia => PulsosDeMelodia.Count > 0;
 
+    // -------------------------------------------------------------- serializacion
+
+    /// <summary>
+    /// Lee el JSON que escribe el grabador (proto/grabador-temas).
+    ///
+    /// Se hace a mano y no con System.Text.Json para que el nucleo no arrastre
+    /// dependencias: tiene que poder compilarse contra cualquier runtime.
+    /// </summary>
+    public static TemaMusical DesdeJson(string json)
+    {
+        string Cadena(string clave)
+        {
+            int i = json.IndexOf($"\"{clave}\"", StringComparison.Ordinal);
+            if (i < 0) return "";
+            int c = json.IndexOf(':', i);
+            if (c < 0) return "";
+            int fin = json.IndexOfAny([',', '}', ']'], c + 1);
+            if (fin < 0) fin = json.Length;
+            return json[(c + 1)..fin].Trim().Trim('"');
+        }
+
+        double Numero(string clave, double porDefecto)
+            => double.TryParse(Cadena(clave), System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out var v) ? v : porDefecto;
+
+        var tema = new TemaMusical
+        {
+            Id = Cadena("id"),
+            Bpm = Numero("bpm", 120),
+            TiemposPorCompas = (int)Numero("tiemposPorCompas", 4),
+            Offset = Numero("offset", 0)
+        };
+
+        // La melodia es una lista plana de numeros.
+        int m = json.IndexOf("\"melodia\"", StringComparison.Ordinal);
+        if (m >= 0)
+        {
+            int abre = json.IndexOf('[', m);
+            int cierra = json.IndexOf(']', abre + 1);
+            if (abre >= 0 && cierra > abre)
+            {
+                foreach (var trozo in json[(abre + 1)..cierra].Split(','))
+                {
+                    if (double.TryParse(trozo.Trim(),
+                        System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out var v))
+                        tema.PulsosDeMelodia.Add(v);
+                }
+            }
+        }
+
+        tema.PulsosDeMelodia.Sort();
+        return tema;
+    }
+
+    /// <summary>Escribe el mismo formato que lee el grabador.</summary>
+    public string AJson()
+    {
+        var ci = System.Globalization.CultureInfo.InvariantCulture;
+        var melodia = string.Join(", ", PulsosDeMelodia.Select(x => x.ToString("F4", ci)));
+        return $$"""
+        {
+          "id": "{{Id}}",
+          "bpm": {{Bpm.ToString("F2", ci)}},
+          "tiemposPorCompas": {{TiemposPorCompas}},
+          "offset": {{Offset.ToString("F4", ci)}},
+          "secciones": [],
+          "melodia": [{{melodia}}]
+        }
+        """;
+    }
+
     // -------------------------------------------------- puente con el nucleo
 
     /// <summary>

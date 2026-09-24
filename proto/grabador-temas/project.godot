@@ -1,0 +1,22 @@
+; Grabador de temas musicales para E.N.M.A.
+;
+; Marca a mano lo unico que no se puede calcular de una cancion: la melodia.
+; El pulso y el compas salen solos del BPM.
+
+config_version=5
+
+[application]
+
+config/name="Grabador de temas - E.N.M.A."
+config/description="Configura la rejilla ritmica y graba los pulsos de melodia."
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1400
+window/size/viewport_height=800
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
