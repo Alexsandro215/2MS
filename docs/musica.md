@@ -378,7 +378,32 @@ Aquí está la razón por la que alargarse compensa:
 >
 > El combo de equipo se vuelve legible: la ligera se alarga y deja al objetivo sin evasión; la pesada entra en el compás siguiente y remata.
 
-⚠️ Pendiente: **a qué ritmo dispara la ligera dentro del compás** (golpes por tiempo). De eso depende cuántos golpes caben de verdad en la ventana, y por tanto cuánto vale seguir la melodía. El ejemplo de arriba —7 de base, 9 con melodía— sale con 1,5 golpes por tiempo en un 4/4, pero ese número es una lectura del ejemplo, no una decisión tomada.
+### ✅ Qué se calcula y qué se graba
+
+Esta es la asimetría que decide cuánto trabajo de autoría cuesta cada arma:
+
+| Capa | Arma | ¿De dónde sale? |
+|---|---|---|
+| **Pulso** | Media | ✅ se **calcula** con el BPM |
+| **Compás** | Pesada | ✅ se **calcula** con el BPM y el compás |
+| **Melodía** | Ligera | ❌ se **graba**, canción por canción |
+
+Pero lo que se graba es **solo una lista de instantes** — cuándo empieza cada nota de la línea melódica. Ni alturas, ni duraciones, ni nombres de nota:
+
+```json
+{
+  "bpm": 132,
+  "tiemposPorCompas": 4,
+  "secciones": [ "calma 0.0", "base 24.0", "estribillo 72.0" ],
+  "melodia": [ 0.45, 0.68, 0.91, 1.13, 1.36, ... ]
+}
+```
+
+> Y el archivo por canción **tiene que existir igual**: las secciones y sus multiplicadores (§4) ya había que marcarlos a mano. La melodía no es una categoría nueva de trabajo, es **una línea más** en un archivo que ya estaba previsto.
+>
+> Además, una lista de inicios de nota es exactamente lo que produce un **detector de onsets**. Marcar una canción pasa de transcribirla a revisar lo que la máquina ya marcó.
+
+**Si un tema no trae melodía grabada, la ligera se alarga a su propio ritmo.** Funciona igual, solo que sin la sincronía fina. Eso permite marcar primero los temas que importan —bosses, historia— y dejar las batallas normales para después, o para nunca.
 
 #### MEDIA — llegar al final del compás
 
