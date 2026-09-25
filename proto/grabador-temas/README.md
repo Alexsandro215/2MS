@@ -52,6 +52,41 @@ No hay que acordarse de nada. Autoguarda **con cada marca**, al ajustar la rejil
 
 `S` sigue existiendo, pero solo para confirmar.
 
+## Precisión
+
+Con 6 minutos de canción en una barra de 1400 píxeles, cada píxel son casi **3 décimas de segundo**. Imposible clavar un límite de compás a ojo. Por eso hay tres herramientas.
+
+### Ajuste a rejilla — `N`, viene activado
+
+Es la que más resuelve. Un cambio de compás cae **siempre** sobre un tiempo del tramo anterior — no puede empezar a medio pulso. Así que los bordes de la selección se pegan solos al pulso más cercano.
+
+Con esto, **arrastrar a ojo ya es exacto**, siempre que el BPM del tramo anterior esté bien.
+
+### Zoom — rueda del ratón
+
+También `Z` / `A`, y `V` para volver a ver todo. En pantalla sale cuántos milisegundos vale cada píxel.
+
+Con zoom aparecen dos cosas más:
+
+- **Las líneas de rejilla dentro de la barra**, gruesas en el uno de cada compás. Ahí **ves** si el metrónomo cuadra, no solo lo oyes.
+- **Un minimapa** encima con la canción entera y la ventana marcada, para no perderse.
+
+### Empujar el borde — `,` y `.`
+
+Mueven **un tiempo exacto** el borde más cercano al cursor. Para cuando te pasaste o te faltó un compás y no quieres volver a arrastrar.
+
+## Seleccionar un rango
+
+**Arrastra sobre la barra.** Se marca con un borde del color del compás. Un clic suelto solo mueve el cursor.
+
+Con la selección activa, `C`, `T` y las flechas **editan la selección**, no el tramo del cursor. Cuando esté como quieres, **ENTER** lo escribe en el mapa: el rango pasa a ser su propio tramo y justo después se restaura lo que había.
+
+**Clic derecho** quita la selección sin aplicar nada.
+
+## La canción solo suena si la pides
+
+Clicar mueve el cursor y nada más. `P` reproduce, **desde donde esté el cursor**.
+
 ## Otras teclas
 
 | Tecla | Qué hace |
