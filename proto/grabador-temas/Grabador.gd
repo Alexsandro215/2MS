@@ -5,15 +5,16 @@ extends Control
 ## Marca a mano lo unico de una cancion que no se puede calcular: la MELODIA.
 ## El pulso y el compas salen solos del BPM.
 ##
-##   FASE 1 · REJILLA   BPM + compas + donde cae el primer tiempo
-##   FASE 2 · MELODIA   suena la cancion y pulsas cada nota
-##   FASE 3 · GUARDAR   JSON que el nucleo ya sabe leer
+## UNA SOLA PANTALLA, sin modos: ESPACIO marca melodia SIEMPRE, y las teclas
+## de la rejilla (T, G, C, flechas) estan disponibles todo el rato.
+##
+## La version anterior tenia fases y ESPACIO hacia dos cosas distintas segun
+## cual estuviera activa. Costo una sesion entera de trabajo: 621 pulsaciones
+## que reajustaban la rejilla en vez de marcar notas.
 ##
 ## Usa el mismo reloj de audio del prototipo anterior, y aplica la calibracion
 ## medida alli: las marcas se guardan donde OISTE la nota, no donde pulsaste.
 ##
-
-enum Fase { REJILLA, MELODIA }
 
 const CARPETA_AUDIO := "res://audio"
 const CARPETA_TEMAS := "res://temas"
@@ -25,7 +26,6 @@ var _offset_calibracion := -0.0276
 @onready var _repro: AudioStreamPlayer = $Reproductor
 @onready var _metronomo: AudioStreamPlayer = $Metronomo
 
-var _fase := Fase.REJILLA
 var _etiqueta: RichTextLabel
 
 # --- datos del tema ---
@@ -47,6 +47,7 @@ var _destello_marca := 0.0
 var _mensaje := ""
 var _mensaje_ttl := 0.0
 var _taps_bpm: Array[float] = []
+var _sin_guardar := false          # hay trabajo que aun no esta en disco
 
 
 func _ready() -> void:
@@ -57,8 +58,11 @@ func _ready() -> void:
 	set_process(true)
 
 
+## Guarda pase lo que pase. Cerrar con la X no puede costar el trabajo.
 func _notification(que: int) -> void:
 	if que == NOTIFICATION_WM_CLOSE_REQUEST:
+		if _id != "" and (not _melodia.is_empty() or _offset_rejilla != 0.0):
+			_guardar(true)
 		get_tree().quit()
 
 
@@ -152,7 +156,6 @@ func _cargar(i: int) -> void:
 	_repro.stream = stream
 	_id = nombre.get_basename()
 	_melodia.clear()
-	_fase = Fase.REJILLA
 	_latencia = AudioServer.get_output_latency()
 	_avisar("Cargado: %s" % nombre)
 
@@ -208,50 +211,69 @@ func _process(delta: float) -> void:
 func _unhandled_input(e: InputEvent) -> void:
 	if not (e is InputEventKey and e.pressed and not e.echo):
 		return
-	var k: int = e.keycode
 
-	# --- comunes ---
-	match k:
-		KEY_SPACE:
-			if _fase == Fase.MELODIA: _marcar_melodia()
-			else: _marcar_primer_tiempo()
-			return
-		KEY_ENTER, KEY_KP_ENTER:
-			_cambiar_fase(); return
-		KEY_P:
-			_reproducir_o_parar(); return
+	# UNA SOLA PANTALLA. Cada tecla hace SIEMPRE lo mismo, sin modos.
+	# Un modo invisible que cambia lo que hace la tecla principal es la
+	# forma mas rapida de que alguien pierda una sesion entera de trabajo.
+	match e.keycode:
+		# --- lo que se graba ---
+		KEY_SPACE: _marcar_melodia()
+		KEY_BACKSPACE: _borrar_ultima()
+		KEY_DELETE: _vaciar_melodia()
+
+		# --- la rejilla, que se calcula ---
+		KEY_G: _marcar_primer_tiempo()
+		KEY_T: _tap_bpm()
+		KEY_UP: _ajustar_bpm(1.0)
+		KEY_DOWN: _ajustar_bpm(-1.0)
+		KEY_RIGHT: _ajustar_bpm(0.1)
+		KEY_LEFT: _ajustar_bpm(-0.1)
+		KEY_C: _siguiente_compas()
+
+		# --- transporte y archivo ---
+		KEY_P: _reproducir_o_parar()
 		KEY_M:
 			_metronomo_activo = not _metronomo_activo
-			_avisar("Metronomo " + ("ON" if _metronomo_activo else "OFF")); return
-		KEY_S:
-			_guardar(); return
+			_avisar("Metrónomo " + ("ON" if _metronomo_activo else "OFF"))
+		KEY_S: _guardar()
 		KEY_BRACKETLEFT:
-			_cargar(_indice_archivo - 1); return
+			if _id != "": _guardar(true)
+			_cargar(_indice_archivo - 1)
 		KEY_BRACKETRIGHT:
-			_cargar(_indice_archivo + 1); return
+			if _id != "": _guardar(true)
+			_cargar(_indice_archivo + 1)
 		KEY_ESCAPE:
-			get_tree().quit(); return
+			if _id != "": _guardar(true)
+			get_tree().quit()
 
-	if _fase == Fase.REJILLA:
-		match k:
-			KEY_UP: _bpm += 1.0; _avisar("BPM %.1f" % _bpm)
-			KEY_DOWN: _bpm = maxf(20.0, _bpm - 1.0); _avisar("BPM %.1f" % _bpm)
-			KEY_RIGHT: _bpm += 0.1; _avisar("BPM %.1f" % _bpm)
-			KEY_LEFT: _bpm = maxf(20.0, _bpm - 0.1); _avisar("BPM %.1f" % _bpm)
-			KEY_C:
-				var ciclo: Array[int] = [3, 4, 6, 5, 7]
-				var i: int = ciclo.find(_tiempos_por_compas)
-				_tiempos_por_compas = ciclo[(i + 1) % ciclo.size()]
-				_avisar("Compás %d/4" % _tiempos_por_compas)
-			KEY_T: _tap_bpm()
-	else:
-		match k:
-			KEY_BACKSPACE:
-				if not _melodia.is_empty():
-					_melodia.remove_at(_melodia.size() - 1)
-					_avisar("Marca borrada (%d)" % _melodia.size())
-			KEY_DELETE:
-				_melodia.clear(); _avisar("Melodía vaciada")
+
+func _ajustar_bpm(d: float) -> void:
+	_bpm = maxf(20.0, _bpm + d)
+	_guardar(true)
+	_avisar("BPM %.1f" % _bpm)
+
+
+func _siguiente_compas() -> void:
+	var ciclo: Array[int] = [3, 4, 6, 5, 7]
+	var i: int = ciclo.find(_tiempos_por_compas)
+	_tiempos_por_compas = ciclo[(i + 1) % ciclo.size()]
+	_guardar(true)
+	_avisar("Compás %d/4" % _tiempos_por_compas)
+
+
+func _borrar_ultima() -> void:
+	if _melodia.is_empty():
+		_avisar("No hay marcas que borrar")
+		return
+	_melodia.remove_at(_melodia.size() - 1)
+	_guardar(true)
+	_avisar("Borrada · quedan %d" % _melodia.size())
+
+
+func _vaciar_melodia() -> void:
+	_melodia.clear()
+	_guardar(true)
+	_avisar("Melodía vaciada")
 
 
 func _reproducir_o_parar() -> void:
@@ -263,11 +285,6 @@ func _reproducir_o_parar() -> void:
 		_repro.play()
 
 
-func _cambiar_fase() -> void:
-	_fase = Fase.MELODIA if _fase == Fase.REJILLA else Fase.REJILLA
-	_avisar("FASE: " + ("MELODÍA" if _fase == Fase.MELODIA else "REJILLA"))
-
-
 ## En fase rejilla, ESPACIO fija donde cae el primer tiempo fuerte.
 func _marcar_primer_tiempo() -> void:
 	if not _repro.playing:
@@ -277,6 +294,8 @@ func _marcar_primer_tiempo() -> void:
 	# Se guarda el resto, para que la rejilla arranque en el compas correcto.
 	_offset_rejilla = fposmod(t, 60.0 / _bpm * _tiempos_por_compas)
 	_ultimo_tiempo_sonado = -1
+	_sin_guardar = true
+	_guardar(true)
 	_avisar("Primer tiempo en %.3f s" % _offset_rejilla)
 
 
@@ -303,6 +322,8 @@ func _marcar_melodia() -> void:
 	_melodia.append(t)
 	_melodia.sort()
 	_destello_marca = 1.0
+	# Autoguardado: el archivo es diminuto y perder marcas duele.
+	_guardar(true)
 
 
 func _avisar(txt: String) -> void:
@@ -316,9 +337,9 @@ func _ruta_tema() -> String:
 	return CARPETA_TEMAS + "/" + _id + ".json"
 
 
-func _guardar() -> void:
+func _guardar(silencioso: bool = false) -> void:
 	if _id == "":
-		_avisar("No hay canción cargada")
+		if not silencioso: _avisar("No hay canción cargada")
 		return
 
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(CARPETA_TEMAS))
@@ -335,12 +356,17 @@ func _guardar() -> void:
 
 	var f := FileAccess.open(_ruta_tema(), FileAccess.WRITE)
 	if f == null:
-		_avisar("No se pudo escribir el tema")
+		if not silencioso: _avisar("No se pudo escribir el tema")
 		return
 	f.store_string(JSON.stringify(datos, "  "))
 	f.close()
-	_avisar("Guardado: %s  (%d notas)" % [ProjectSettings.globalize_path(_ruta_tema()), _melodia.size()])
-	print("GUARDADO ", ProjectSettings.globalize_path(_ruta_tema()))
+
+	_sin_guardar = false
+	if not silencioso:
+		_avisar("Guardado: %d notas" % _melodia.size())
+	print("GUARDADO  %s  ·  %d notas  ·  BPM %.1f  ·  %d/4" % [
+		ProjectSettings.globalize_path(_ruta_tema()), _melodia.size(),
+		_bpm, _tiempos_por_compas])
 
 
 func _cargar_tema_si_existe() -> void:
@@ -384,32 +410,32 @@ func _actualizar_texto() -> void:
 		t, "[color=#88ff88]▶ sonando[/color]" if _repro.playing else "[color=#777788]■ parado[/color]"])
 	L.append("")
 
-	if _fase == Fase.REJILLA:
-		L.append("[b][color=#ffcc66]FASE 1 · REJILLA[/color][/b]  —  esto se CALCULA, no se graba")
-		L.append("")
-		L.append("  BPM ................ [b]%.1f[/b]      [color=#666677]↑↓ ±1   ←→ ±0.1   T golpear al ritmo[/color]" % _bpm)
-		L.append("  Compás ............. [b]%d/4[/b]        [color=#666677]C para cambiar[/color]" % _tiempos_por_compas)
-		L.append("  Primer tiempo en ... [b]%.3f s[/b]   [color=#666677]ESPACIO sobre el golpe fuerte[/color]" % _offset_rejilla)
-		L.append("")
-		L.append("  Un tiempo dura %.4f s · un compás %.4f s" % [
-			60.0 / _bpm, 60.0 / _bpm * _tiempos_por_compas])
-		L.append("")
-		L.append("  [color=#888899]Ajusta hasta que el metrónomo encaje con la canción.")
-		L.append("  Cuando encaje, ENTER para pasar a grabar la melodía.[/color]")
-	else:
-		L.append("[b][color=#88dd88]FASE 2 · MELODÍA[/color][/b]  —  esto hay que GRABARLO")
-		L.append("")
-		L.append("  Notas marcadas ..... [b]%d[/b]" % _melodia.size())
-		if not _melodia.is_empty():
-			L.append("  Última ............. %.3f s" % _melodia[-1])
-		L.append("")
-		L.append("  [b]Pulsa ESPACIO en cada nota de la melodía.[/b]")
-		L.append("")
-		L.append("  [color=#888899]RETROCESO borra la última · SUPR vacía todo")
-		L.append("  ENTER vuelve a la rejilla · S guarda[/color]")
+	# ---- LO QUE SE GRABA ----
+	L.append("[b][color=#88ff88]███  MELODÍA  ·  %d notas  ███[/color][/b]" % _melodia.size())
+	L.append("")
+	L.append("       [b]ESPACIO[/b]  marca una nota        [color=#666677](es LO ÚNICO que se graba)[/color]")
+	L.append("       RETROCESO  borra la última    SUPR  vacía todo")
+	if not _melodia.is_empty():
+		L.append("       [color=#666677]última en %.3f s[/color]" % _melodia[-1])
+	L.append("")
+	L.append("[color=#333344]  ───────────────────────────────────────────────────────────[/color]")
+	L.append("")
+
+	# ---- LO QUE SE CALCULA ----
+	L.append("[color=#ffcc66]REJILLA[/color]  [color=#666677]— esto no se graba, se calcula. Ajústalo una vez.[/color]")
+	L.append("")
+	L.append("  BPM ................ [b]%.1f[/b]      [color=#666677]↑↓ ±1   ←→ ±0.1   [b]T[/b] golpea al ritmo[/color]" % _bpm)
+	L.append("  Compás ............. [b]%d/4[/b]        [color=#666677][b]C[/b] para cambiar[/color]" % _tiempos_por_compas)
+	L.append("  Primer tiempo en ... [b]%.3f s[/b]   [color=#666677][b]G[/b] sobre un golpe fuerte[/color]" % _offset_rejilla)
+	L.append("  [color=#666677]un tiempo %.4f s · un compás %.4f s[/color]" % [
+		60.0 / _bpm, 60.0 / _bpm * _tiempos_por_compas])
+	L.append("")
+	L.append("  [color=#888899]Está bien cuando el clic agudo caiga siempre sobre el acento")
+	L.append("  de la canción y no se desplace con los segundos.[/color]")
 
 	L.append("")
-	L.append("  Calibración aplicada: %+.1f ms   ·   latencia de salida %.1f ms" % [
+	L.append("  [color=#88ff88]● Autoguardado[/color] — con cada marca y al cerrar · [color=#66aaff]temas/%s.json[/color]" % _id)
+	L.append("  [color=#666677]Calibración %+.1f ms · latencia %.1f ms[/color]" % [
 		_offset_calibracion * 1000.0, _latencia * 1000.0])
 
 	if _mensaje_ttl > 0.0:
@@ -417,7 +443,7 @@ func _actualizar_texto() -> void:
 		L.append("  [color=#66aaff]%s[/color]" % _mensaje)
 
 	L.append("")
-	L.append("[color=#666677]  P sonar/parar · M metrónomo · S guardar · ENTER cambiar fase · ESC salir[/color]")
+	L.append("[color=#666677]  P sonar/parar · M metrónomo · S guardar · [ ] cambiar canción · ESC salir[/color]")
 
 	_etiqueta.text = "\n".join(L)
 

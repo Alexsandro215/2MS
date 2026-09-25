@@ -10,56 +10,47 @@ El pulso y el compás salen solos del BPM. La melodía no sale de ningún sitio 
 2. Doble clic en `LANZAR.bat`.
 3. Fase 1, fase 2, guardar.
 
-## Fase 1 — La rejilla
+## Una sola pantalla, sin modos
 
-Aquí no grabas nada: **configuras**. De estos tres números sale todo lo demás.
+Cada tecla hace **siempre** lo mismo. No hay fases.
 
-| Tecla | Qué hace |
-|---|---|
-| **↑ ↓** | BPM ±1 |
-| **← →** | BPM ±0,1 |
-| **T** | Golpea al ritmo cuatro o más veces y deduce el BPM solo |
-| **C** | Cambia el compás: 3/4 → 4/4 → 6/4 → 5/4 → 7/4 |
-| **ESPACIO** | Marca dónde cae el **primer tiempo fuerte** |
-| **M** | Metrónomo on/off |
-
-El metrónomo suena distinto en el primer tiempo de cada compás. **Ajusta hasta que encaje con la canción** — cuando ya no lo oigas «desfasado», la rejilla está bien.
-
-En la línea de tiempo de abajo, las rayas naranjas son compases y las azules pulsos.
-
-**ENTER** para pasar a la fase 2.
-
-## Fase 2 — La melodía
-
-Suena la canción y **pulsas ESPACIO en cada nota** de la línea melódica.
+### Lo que se graba
 
 | Tecla | Qué hace |
 |---|---|
-| **ESPACIO** | Marca una nota |
+| **ESPACIO** | Marca una nota de la melodía |
 | **RETROCESO** | Borra la última |
 | **SUPR** | Vacía todas |
-| **ENTER** | Volver a la rejilla |
 
-Los puntos verdes de la línea de tiempo son tus marcas.
+Es lo único que se graba. Todo lo demás se calcula.
 
-No hace falta clavarlo: se aplica automáticamente **la calibración medida en la prueba del reloj de audio** (−27,6 ms en la máquina principal), así que se guarda donde *oíste* la nota, no donde *pulsaste*.
+### La rejilla
 
-## Guardar
+Se ajusta una vez y ya.
 
-**S**. Escribe `temas/<nombre>.json`:
+| Tecla | Qué hace |
+|---|---|
+| **T** | Golpea al ritmo cuatro o más veces y deduce el BPM |
+| **↑ ↓** | BPM ±1 |
+| **← →** | BPM ±0,1 |
+| **C** | Compás: 3/4 → 4/4 → 6/4 → 5/4 → 7/4 |
+| **G** | Fija dónde cae el primer tiempo fuerte |
 
-```json
-{
-  "id": "boss_artur",
-  "bpm": 132.0,
-  "tiemposPorCompas": 4,
-  "offset": 0.1840,
-  "secciones": [],
-  "melodia": [0.45, 0.68, 0.91, 1.13, ...]
-}
-```
+El metrónomo suena distinto en el uno de cada compás. **Está bien cuando el clic agudo cae siempre sobre el acento de la canción y no se desplaza con los segundos.**
 
-Ese formato es el que consume `TemaMusical` en el núcleo. Si vuelves a abrir la misma canción, **recupera lo que ya habías grabado**.
+En la línea de tiempo de abajo: rayas naranjas los compases, azules los pulsos, puntos verdes tus marcas.
+
+> ### ⚠️ Por qué no hay fases
+>
+> La primera versión tenía dos fases y **ESPACIO hacía algo distinto en cada una**. Costó una sesión entera de trabajo: 621 pulsaciones que reajustaban la rejilla en vez de marcar notas, porque el modo activo no se veía.
+>
+> Un modo invisible que cambia lo que hace la tecla principal es la forma más rápida de que alguien pierda su trabajo. Por eso ahora `G` fija la rejilla y `ESPACIO` solo marca melodía.
+
+## Se guarda solo
+
+No hay que acordarse de nada. Autoguarda **con cada marca**, al ajustar la rejilla, al cambiar de canción, al salir con ESC y **al cerrar con la X**.
+
+`S` sigue existiendo, pero solo para confirmar.
 
 ## Otras teclas
 
