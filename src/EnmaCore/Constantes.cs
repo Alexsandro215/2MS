@@ -85,10 +85,18 @@ public static class Constantes
 
     // ---- Carga Musical ----
     /// <summary>
-    /// En tempo, el basico vale el DOBLE. El +1/3 de CM MASTER queda superado.
-    /// Ver conflictos.md  D2.
+    /// Bonus de tempo GENERAL: cualquier arma que conecte en su capa gana un
+    /// +20% de CM en ese golpe.
+    ///
+    /// Es el premio pequeno. El grande se lo lleva la MEDIA, que es la
+    /// generadora del equipo — ver BonusRitmico.CmPorPulsoDeLaMedia.
+    ///
+    /// ⚠️ Antes era 2.0 para todas y la media tenia encima un +15% propio.
+    /// Se invirtieron: el x2 pasa a ser SOLO de la media, y este queda como el
+    /// suelo comun. Asi la media destaca de verdad como generadora en vez de
+    /// llevarse una propina sobre un bonus que ya tenia todo el mundo.
     /// </summary>
-    public const double BonusTempo = 2.0;
+    public const double BonusTempo = 0.20;
 
     /// <summary>Un KO aporta solo la mitad de su storage al pool de equipo.</summary>
     public const double StorageKoFactor = 0.5;

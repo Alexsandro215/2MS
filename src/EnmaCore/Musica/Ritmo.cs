@@ -97,11 +97,34 @@ public static class BonusRitmico
     /// </summary>
     public const int CompasesExtraMaximos = 1;
 
-    /// <summary>⚠️ Provisional. MEDIA: extra de CM por golpe en el pulso.</summary>
-    public const double ExtraCmPorPulso = 0.15;
+    /// <summary>
+    /// MEDIA: un basico que conecta EN EL PULSO vale el DOBLE de CM.
+    ///
+    /// Es el premio grande del sistema, y es suyo en exclusiva: la media es la
+    /// generadora del equipo y este numero es lo que la hace serlo. Las otras
+    /// dos se quedan con el suelo comun de Constantes.BonusTempo (+20%).
+    ///
+    /// No se suma al suelo comun — lo SUSTITUYE.
+    /// </summary>
+    public const double CmPorPulsoDeLaMedia = 2.0;
 
-    /// <summary>⚠️ Provisional. PESADA: bonus de dano al clavar el primer tiempo.</summary>
-    public const double BonusCompasMaximo = 0.50;
+    /// <summary>
+    /// PESADA. Un basico que cae en el primer tiempo del compas aplica el
+    /// 150% del AD.
+    ///
+    /// ✅ SOBRE QUE AD: el OPERATIVO DE ESE INSTANTE, ya con el desgaste
+    /// descontado. NO sobre el AD potencial del personaje a nivel maximo.
+    ///
+    /// Un personaje a nivel 9 con la mitad del AD que tendra a nivel 18 cobra
+    /// el 150% de LO QUE TIENE AHORA, no de lo que llegara a tener. Quien
+    /// llame a MultiplicadorDano tiene que multiplicar por la stat operativa
+    /// ya agregada (ver Stats/Agregacion), no por una base guardada.
+    ///
+    /// Es el mismo eje que <see cref="AdDeLaMelodia"/>: los dos son
+    /// multiplicadores del AD de ese momento, uno por debajo de 1 y otro por
+    /// encima.
+    /// </summary>
+    public const double AdDelCompas = 1.50;
 
     /// <summary>⚠️ Provisional. Medio ancho de la ventana del compas, en segundos.</summary>
     public const double VentanaCompas = 0.12;
@@ -118,8 +141,12 @@ public static class BonusRitmico
         // La media no cobra en dano: cobra en recurso.
         ClaseArma.Media => 1.0,
 
-        // La pesada escala con lo cerca que estuvo del uno. No es todo o nada.
-        ClaseArma.Pesada => 1.0 + BonusCompasMaximo * ProximidadAlCompas(r),
+        // La pesada cobra PLANO: dentro de la ventana es dentro. No se afina
+        // el premio por clavar el centro — la ventana ya es el margen de
+        // ayuda, y pedir precision fina encima convertiria el arma en un
+        // juego de ritmo dentro del juego de ritmo.
+        ClaseArma.Pesada => r.EnCompas && Math.Abs(r.Desfase) < VentanaCompas
+            ? AdDelCompas : 1.0,
 
         _ => 1.0
     };
@@ -128,6 +155,10 @@ public static class BonusRitmico
     /// Cuanto se acerco la pulsacion al primer tiempo del compas, en [0, 1].
     /// 1 es clavado; baja linealmente hacia los bordes de la ventana, tanto
     /// si te adelantas como si te retrasas.
+    ///
+    /// ⚠️ YA NO DECIDE EL DANO — la pesada cobra plano. Se conserva para
+    /// avisarle al jugador de lo cerca que estuvo, que es informacion util
+    /// aunque no cambie el resultado.
     /// </summary>
     public static double ProximidadAlCompas(Ritmo r)
     {
@@ -142,7 +173,9 @@ public static class BonusRitmico
     /// pequeno: el premio de verdad es llegar antes a CLASICAL.
     /// </summary>
     public static double ExtraCm(ClaseArma arma, Ritmo r, double cmBase)
-        => arma == ClaseArma.Media && r.EnTempo ? cmBase * ExtraCmPorPulso : 0.0;
+        => arma == ClaseArma.Media && r.EnTempo
+            ? cmBase * (CmPorPulsoDeLaMedia - 1.0)
+            : 0.0;
 
     /// <summary>
     /// Multiplicador de CM de un basico. Siempre 1.0 salvo que alguna regla

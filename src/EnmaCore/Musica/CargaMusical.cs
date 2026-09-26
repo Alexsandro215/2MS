@@ -73,9 +73,19 @@ public static class CargaMusical
     /// </summary>
     public static double GananciaPorImpacto(ClaseArma arma, bool enTempo, bool impacto = true)
     {
+        // Sin conectar no hay CM, y por tanto no hay nada que multiplicar.
+        // Es lo que obliga a abrir con la ligera antes de que la media pueda
+        // sostener: ver musica.md  1.
         if (!impacto) return 0.0;
+
         double cm = BasePorImpacto(arma);
-        return enTempo ? cm * Constantes.BonusTempo : cm;
+        if (!enTempo) return cm;
+
+        // La MEDIA se lleva el premio grande; el resto, el suelo comun.
+        // No se acumulan: o uno o el otro.
+        return arma == ClaseArma.Media
+            ? cm * BonusRitmico.CmPorPulsoDeLaMedia
+            : cm * (1.0 + Constantes.BonusTempo);
     }
 
     /// <summary>

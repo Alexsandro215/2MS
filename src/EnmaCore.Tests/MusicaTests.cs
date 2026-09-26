@@ -19,8 +19,11 @@ public class CargaMusicalTests
     {
         // x2, no el +1/3 de CM MASTER, que queda superado.
         Assert.Equal(0.125, CargaMusical.GananciaPorImpacto(ClaseArma.Ligera, enTempo: false), 4);
-        Assert.Equal(0.250, CargaMusical.GananciaPorImpacto(ClaseArma.Ligera, enTempo: true), 4);
+        // Suelo comun: +20%
+        Assert.Equal(0.150, CargaMusical.GananciaPorImpacto(ClaseArma.Ligera, enTempo: true), 4);
+        // La media se lleva el x2, que es suyo en exclusiva
         Assert.Equal(0.500, CargaMusical.GananciaPorImpacto(ClaseArma.Media, enTempo: true), 4);
+        Assert.Equal(0.600, CargaMusical.GananciaPorImpacto(ClaseArma.Pesada, enTempo: true), 4);
     }
 
     [Fact]

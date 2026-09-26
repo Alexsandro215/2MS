@@ -136,14 +136,14 @@ public class RitmoTests
 
         double extra = BonusRitmico.ExtraCm(ClaseArma.Media, new Ritmo(EnTempo: true), cmBase: 0.25);
         Assert.True(extra > 0);
-        Assert.Equal(0.25 * BonusRitmico.ExtraCmPorPulso, extra, 6);
+        Assert.Equal(0.25 * (BonusRitmico.CmPorPulsoDeLaMedia - 1.0), extra, 6);
     }
 
     [Fact]
     public void El_extra_de_cm_de_la_media_es_deliberadamente_pequeno()
     {
         // El premio de verdad no es el goteo: es llegar antes a CLASICAL.
-        Assert.InRange(BonusRitmico.ExtraCmPorPulso, 0.05, 0.25);
+        Assert.InRange(BonusRitmico.CmPorPulsoDeLaMedia, 1.5, 2.5);
     }
 
     [Fact]
@@ -176,23 +176,47 @@ public class RitmoTests
     // ---------------------------------------------------------------- PESADA
 
     [Fact]
-    public void La_pesada_cobra_el_bonus_entero_al_clavar_el_uno()
+    public void La_pesada_cobra_el_150_por_ciento_al_caer_en_el_uno()
     {
         double m = BonusRitmico.MultiplicadorDano(ClaseArma.Pesada, Ritmo.Clavado);
-        Assert.Equal(1.0 + BonusRitmico.BonusCompasMaximo, m, 4);
+        Assert.Equal(1.50, m, 4);
+        Assert.Equal(BonusRitmico.AdDelCompas, m, 4);
     }
 
     [Fact]
-    public void El_bonus_de_la_pesada_NO_es_todo_o_nada()
+    public void El_bonus_de_la_pesada_es_PLANO_dentro_de_la_ventana()
     {
-        // Baja por cercania, tanto si te adelantas como si te retrasas.
+        // Dentro es dentro. Rozar el borde paga igual que clavar el centro:
+        // la ventana ES el margen de ayuda, no un gradiente de punteria.
+        double clavado = BonusRitmico.MultiplicadorDano(ClaseArma.Pesada, Ritmo.Clavado);
         double mitadTarde = BonusRitmico.MultiplicadorDano(ClaseArma.Pesada,
             new Ritmo(Desfase: BonusRitmico.VentanaCompas / 2, EnCompas: true));
         double mitadPronto = BonusRitmico.MultiplicadorDano(ClaseArma.Pesada,
             new Ritmo(Desfase: -BonusRitmico.VentanaCompas / 2, EnCompas: true));
+        double casiElBorde = BonusRitmico.MultiplicadorDano(ClaseArma.Pesada,
+            new Ritmo(Desfase: BonusRitmico.VentanaCompas * 0.99, EnCompas: true));
 
-        Assert.Equal(1.0 + BonusRitmico.BonusCompasMaximo * 0.5, mitadTarde, 4);
+        Assert.Equal(1.50, mitadTarde, 4);
+        Assert.Equal(1.50, casiElBorde, 4);
+        Assert.Equal(clavado, mitadTarde, 6);
         Assert.Equal(mitadTarde, mitadPronto, 6);   // simetrico
+    }
+
+    /// <summary>
+    /// El 150% multiplica el AD QUE TIENES, no el que tendras a nivel maximo.
+    /// Aqui se fija el contrato para quien conecte esto al combate.
+    /// </summary>
+    [Fact]
+    public void El_150_por_ciento_es_del_AD_operativo_no_del_potencial()
+    {
+        double adANivel18 = 400.0;
+        double adANivel9ConDesgaste = 200.0;   // la mitad, ya descontado
+
+        double golpe = adANivel9ConDesgaste
+            * BonusRitmico.MultiplicadorDano(ClaseArma.Pesada, Ritmo.Clavado);
+
+        Assert.Equal(300.0, golpe, 4);
+        Assert.True(golpe < adANivel18);   // nunca alcanza el potencial por ritmo
     }
 
     [Fact]
