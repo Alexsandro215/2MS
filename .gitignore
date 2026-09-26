@@ -19,3 +19,6 @@ obj/
 # Audio de trabajo del grabador (no se versiona musica)
 proto/grabador-temas/audio/*
 !proto/grabador-temas/audio/.gitkeep
+
+# Copias de trabajo del grabador: son respaldo, no fuente.
+proto/grabador-temas/temas/copias/
