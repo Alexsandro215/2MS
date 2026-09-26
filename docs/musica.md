@@ -151,12 +151,44 @@ CONTADOR  (motor de fondo)
     la stat Tempo reduce X
     ▶ PERSISTE ENTRE TURNOS — ningún golpe se desperdicia
 
-BONUS RÍTMICO  (premio a la habilidad, aparte del contador)
-    todos los básicos del turno PULSADOS en tempo  →  ese turno genera ×1.5
-    ▶ se juzga sobre el INPUT, no sobre si el ataque conectó
+BONUS DE TEMPO  (sobre el contador)
+    básico CONECTADO y en tempo  →  esa CM vale ×2
+    ▶ por GOLPE, no por turno
+    ▶ sin conectar no hay CM, así que no hay nada que multiplicar
+
+BONUS POR ARMA  (cada una en su capa, por golpe)
+    pesada   →  150% del AD al caer en el primer tiempo
+    media    →  CM extra al caer en el pulso
+    ligera   →  la cadena de melodía → compás extra
 ```
 
-#### Por qué el ritmo se juzga sobre lo que pulsas, no sobre lo que conecta
+> ### ⚠️ No hay puerta por turno
+>
+> Una versión anterior exigía que **todos** los básicos del turno fueran en
+> tempo para cobrar un ×1.5 de turno. **Se retira.**
+>
+> No se sostiene porque **los básicos no tienen por qué encadenarse**: después
+> vienen los QWER opcionales, o guardar la CM para el siguiente personaje. Una
+> puerta todo-o-nada necesita un bloque cerrado, y el turno no lo es. ¿Dónde
+> acabaría? ¿Contaría el hueco en el que te paraste a decidir la skill?
+>
+> **Por golpe es lo único que se sostiene.** Cada básico se juzga en su propio
+> instante contra la capa de su arma.
+
+> ### ⚠️ La CM exige CONECTAR — y de ahí sale la composición
+>
+> Un básico que va en tempo pero **falla al enemigo no genera CM**. El contador
+> es de daño conectado; el tempo solo multiplica lo que ya generaste.
+>
+> **Eso es lo que hace obligatoria la secuencia del equipo.** Si la CM saliera
+> de golpes fallados, la media generaría igual contra cualquier rival y no
+> harían falta las ligeras. Al exigir conexión, contra evasión alta **hay que
+> abrir primero con la ligera** para que la media pueda sostener.
+>
+> *Abre → sostiene → remata* deja de ser una convención y pasa a ser
+> aritmética.
+
+#### Por qué la CADENA de la ligera sí se juzga sobre lo que pulsas
 
 Si el bonus exigiera que los golpes **conectaran** además de ir a tiempo, la puntería lo destruiría:
 
@@ -166,9 +198,9 @@ Si el bonus exigiera que los golpes **conectaran** además de ir a tiempo, la pu
 | Media | 3 | 6.4% | 14.1% | 26.2% |
 | Pesada | 1 | 40% | 52% | 64% |
 
-Con arma ligera el bonus saltaría **el 1% de los turnos**. Nunca se vería.
+Con arma ligera la cadena se completaría **el 1% de los turnos**. Nunca se vería — y la ligera es precisamente el arma que se lleva a los rivales evasivos, o sea justo donde más se falla.
 
-Juzgándolo sobre el input, depende **solo de la habilidad del jugador**:
+Juzgándola sobre el input, depende **solo de la habilidad del jugador**:
 
 | Arma | Golpes | Ritmo 70% | Ritmo 80% | Ritmo 90% |
 |---|---|---|---|---|
@@ -325,13 +357,61 @@ Una canción tiene tres capas, y **cada arma se engancha a una**:
 | **MEDIA** | **PULSO** | Constancia | CM extra por golpe en tiempo |
 | **PESADA** | **COMPÁS** | Precisión | Daño extra al caer en el primer tiempo |
 
+> ### Por qué ese reparto y no otro
+>
+> No es temático: es el único que funciona con **5 / 3 / 1 golpes**. Dentro de
+> un compás, cada capa ofrece un número fijo de líneas donde encajar un golpe:
+>
+> | Capa | Líneas por compás | Armas a las que les caben sus golpes |
+> |---|---|---|
+> | **Compás** | **1** | solo la pesada (1 golpe) |
+> | **Pulso** | 3 – 6, según el tramo | pesada y media (3) |
+> | **Melodía** | ~el doble que el pulso | las tres |
+>
+> El compás ofrece **una sola línea**: a una media de 3 golpes no le caben ahí,
+> y a una ligera de 5 menos. Por eso el reparto es forzado, y por eso la
+> flexibilidad solo existe **hacia capas más densas**, nunca hacia las más
+> escasas.
+>
+> Consecuencia práctica en una canción con compases variables: una ligera solo
+> podría apoyarse en el pulso en tramos de **6/4** (6 líneas ≥ 5 golpes). En
+> 4/4 perdería un golpe y en 3/4 dos.
+
 > Esto es lo que hace que la música **no se pueda quitar**. Antes las figuras rítmicas —corchea, negra, blanca— eran nombres bonitos para «5, 3 y 1 golpes»: si borrabas la canción, el combate funcionaba igual. Ahora no. La música deja de ser ambientación y pasa a ser el mando.
 
 #### LIGERA — la melodía no respeta la barra
 
 Los básicos base van **al tempo**. Pero si la ligera **sigue la melodía**, no la cortan a mitad: **termina el compás en el que está y además el siguiente entero.**
 
-> ⚠️ **Solo el siguiente.** Un compás extra, no dos. No es una racha que se gestiona: es un sí o un no, una vez por turno.
+> ⚠️ **Solo el siguiente.** Un compás extra, no dos.
+
+#### ✅ La cadena — CERRADO
+
+El compás extra **se gana sosteniendo la melodía sin parar**. La cadena vive
+mientras cada básico caiga en la nota **inmediatamente siguiente** a la del
+básico anterior.
+
+**Se corta por dos motivos, y solo por esos dos:**
+
+| Motivo | Qué pasa |
+|---|---|
+| **Desafinas** | el golpe no cae en ninguna nota → se corta ahí |
+| **Te paras** | dejas pasar una nota sin pulsarla → se corta ahí |
+
+**Lo que NO la corta:**
+
+- **Fallarle al enemigo.** La cadena se juzga sobre lo que **pulsas**. Es lo que
+  mantiene viva a la ligera contra un rival con evasión alta — que es
+  exactamente donde más se falla, y para lo que existe el arma.
+- **Los silencios de la canción.** Si no hay nota, no hay nada que dejar pasar.
+  Por eso se cuenta **por notas, no por tiempo**.
+
+La cadena **puede empezar en cualquier nota**: tú decides cuándo arrancarla. Lo
+que no puedes es soltarla a medias.
+
+> Esto convierte a la ligera en un **compromiso**: una vez arrancas, no te
+> puedes parar a pensar si tiras la skill. Es lo que le pide su propia columna
+> de la tabla — *fluir, arriesgar*.
 
 ```
 COMPÁS EN CURSO           COMPÁS EXTRA              ✖ CORTE
@@ -340,6 +420,47 @@ COMPÁS EN CURSO           COMPÁS EXTRA              ✖ CORTE
 │ daño pleno    │         │ ⚠️ 25% AD base │
 └───────────────┘         └───────────────┘
 ```
+
+### ✅ La SEGUNDA VOZ y el compás gratis — CERRADO
+
+Algunos tramos tienen una **segunda línea melódica de fondo**, densa. Donde la
+hay, ese compás es un **BONUS EXPERTO**.
+
+**La regla:**
+
+| | |
+|---|---|
+| **Enganchar** | el primer golpe tiene que caer en la **primera nota del compás** |
+| **Seguir** | cada golpe, en la nota siguiente |
+| **El premio** | mientras aciertes, esos ataques **no gastan BA** |
+| **El fallo** | al primero, se acaba el regalo y **empiezan a gastarse los BA reales** desde ahí |
+| **El alcance** | solo **ese compás**, de principio a fin. No se encadena con el siguiente |
+
+> ### Por qué el premio escala con la habilidad
+>
+> No es todo o nada. **Lo que te llevaste, te lo llevaste**: cada nota clavada
+> antes del fallo es un ataque gratis que ya cobraste. Uno mediocre saca tres,
+> uno bueno saca doce, y ninguno se va con las manos vacías.
+>
+> Es lo contrario de la cadena de la primera melodía, que sí es binaria. Dos
+> mecánicas de ritmo con curvas de premio distintas.
+
+> ### ⚠️ No se acumula con la extensión
+>
+> Terminar bien un compás experto **no da además el compás extra** de la
+> primera melodía. Son dos premios al mismo esfuerzo.
+
+> ### No hay nada que marcar
+>
+> Un compás es experto **si tiene notas de segunda voz**. La marca se deduce
+> del contenido, así que no hay una lista aparte que mantener ni que se pueda
+> desincronizar del audio.
+
+**Entrar o no es una decisión del jugador.** En los tramos de semifusas el
+bonus es tan goloso que se va a por él siempre; en otros menos densos, igual
+compensa más guardar los BA. Eso es estrategia, no una casilla obligatoria.
+
+*Implementado en `TemaMusical.ResolverExperto`.*
 
 ### La melodía da TIEMPO, no desborda golpes
 
@@ -439,7 +560,27 @@ La pesada cae en el **primer tiempo del compás**. Si acierta, el daño aumenta 
 >
 > Y le da a la pesada la vía de poder que le faltaba. Hasta ahora, con base 1, el Attack Speed no le servía de nada y el arma era *«una promesa»* hasta subir la base. Con esto tiene una fuente de daño que **no depende de esa mejora**: depende de tu oído.
 
-⚠️ Pendiente: el X% del bonus y la anchura de la ventana.
+#### ✅ El bonus de la pesada — CERRADO
+
+Un básico que cae en el primer tiempo del compás aplica el **150 % del AD**.
+
+**Plano dentro de la ventana.** Rozar el borde paga igual que clavar el centro:
+la ventana ya es el margen de ayuda. Pedir además precisión fina convertiría el
+arma en un juego de ritmo dentro del juego de ritmo.
+
+> ### ⚠️ Sobre qué AD — el operativo de ese instante
+>
+> El 150 % se aplica al **AD que el personaje tiene en ese momento, ya con el
+> desgaste descontado.** No al AD potencial que tendrá a nivel máximo.
+>
+> Un personaje a **nivel 9** con la mitad del AD que llegará a tener a nivel 18
+> cobra el 150 % de **lo que tiene ahora**. El ritmo **nunca** te adelanta
+> progresión: multiplica tu estado actual, no tu techo.
+>
+> Es el mismo eje que el 25 % de la ligera en el compás extra — dos
+> multiplicadores del AD del momento, uno por debajo de 1 y otro por encima.
+
+⚠️ Pendiente: **la anchura de la ventana** (provisional: ±120 ms).
 
 #### El triángulo que sale de todo esto
 
