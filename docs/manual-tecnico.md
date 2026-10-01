@@ -112,6 +112,15 @@ CICLO = turno completo del bando aliado + turno completo del bando enemigo
 
 El jugador **elige qué personaje abre**; desde ahí el orden avanza **de derecha a izquierda**. Existe un menú de consulta del orden de equipo tras cada combate.
 
+| Regla | Detalle |
+|---|---|
+| **Quién abre** | Lo elige el jugador, en **cada** turno de bando |
+| **El resto** | Automático: de derecha a izquierda, y al llegar al extremo **vuelve al otro lado** |
+| **Saltarse la vez** | ❌ No se puede. Hasta que uno cierra su turno no entra el siguiente |
+| **El que entra por SWAP** | Ocupa el sitio del que sale, pero **no actúa hasta el turno siguiente** |
+
+✅ **RESUELTO.** El bando enemigo usa la misma, como el resto de reglas (Apéndice C.1: *juegan con las mismas reglas*).
+
 ---
 
 # 2. EL TURNO

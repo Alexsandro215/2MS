@@ -75,14 +75,20 @@ public sealed record Selector(
     public List<Combatiente> Resolver(EstadoCombate e, Contexto ctx)
     {
         var portador = ctx.Portador;
+
+        // El banquillo no esta en el combate, y a un escondido no lo alcanza
+        // el bando contrario: ni objetivo, ni area. Sus compañeros si, que es
+        // lo que permite curarlo ahi dentro. Ver tablero.md  5.
+        bool Alcanzable(Combatiente c) => c.Bando == portador?.Bando || c.Zona == Zona.Front;
+
         IEnumerable<Combatiente> conjunto = Ambito switch
         {
             Ambito.Yo => portador is null ? [] : [portador],
             Ambito.Objetivo => ctx.Objetivo is null ? [] : [ctx.Objetivo],
-            Ambito.Aliados => e.Vivos.Where(c => c.Bando == portador?.Bando && c.Id != portador?.Id),
-            Ambito.AliadosConmigo => e.Vivos.Where(c => c.Bando == portador?.Bando),
-            Ambito.Enemigos => e.Vivos.Where(c => c.Bando != portador?.Bando),
-            Ambito.Todos => e.Vivos,
+            Ambito.Aliados => e.EnCampo.Where(c => c.Bando == portador?.Bando && c.Id != portador?.Id),
+            Ambito.AliadosConmigo => e.EnCampo.Where(c => c.Bando == portador?.Bando),
+            Ambito.Enemigos => e.EnCampo.Where(c => c.Bando != portador?.Bando && Alcanzable(c)),
+            Ambito.Todos => e.EnCampo.Where(Alcanzable),
             _ => []
         };
 

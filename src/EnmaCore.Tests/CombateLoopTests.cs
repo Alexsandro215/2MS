@@ -243,6 +243,7 @@ public class BucleCombateTests
         var r1 = m.Ejecutar(new AtaqueBasico { ActorId = "a1", ObjetivoId = "rival" });
         int fallos = r1.Impactos.Count(i => !i.Acerto);
         Assert.True(fallos > 0, "con EVA 400 deberia fallar algun golpe");
+        m.Ejecutar(new Pasar { ActorId = "a1" });
 
         // El segundo aliado hereda la erosion sin haber hecho nada.
         var r2 = m.Ejecutar(new AtaqueBasico { ActorId = "a2", ObjetivoId = "rival" });
@@ -356,27 +357,39 @@ public class BucleCombateTests
     }
 
     [Fact]
-    public void Desde_la_casilla_defensiva_los_objetos_gratis_no_gastan_la_ventana()
+    public void Desde_la_casilla_defensiva_el_objeto_gratis_no_arranca_la_espera()
     {
-        // La casilla defensiva no da un objeto extra: elimina la espera.
+        // La casilla defensiva no da un objeto extra: elimina la espera. El
+        // turno siguiente vuelve a estar disponible, gratis.
         var m = Duelo.Montar(posAliada: Casilla.Defensiva);
 
-        Assert.True(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true }).Permitida);
-        Assert.True(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true }).Permitida);
+        var r = m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true });
+        Assert.True(r.Permitida);
+        Assert.False(r.CierraTurno);
+
+        m.Ejecutar(new Pasar { ActorId = "yo" });
+        m.CerrarTurnoDeBando();
+        m.CerrarTurnoDeBando();
+
+        r = m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true });
+        Assert.False(r.CierraTurno);                  // otra vez gratis
     }
 
     [Fact]
-    public void Fuera_de_la_defensiva_el_objeto_gratis_es_uno_por_ventana()
+    public void El_objeto_gratis_es_uno_por_ventana_y_repetir_cuesta_el_turno()
     {
+        // formulas.md  11: reutilizarlo sin que toque se puede, pero deja de
+        // ser gratis y consume el turno.
         var m = Duelo.Montar(posAliada: Casilla.Neutral);
 
-        Assert.True(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true }).Permitida);
+        Assert.False(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true }).CierraTurno);
+
+        // Comida y consumible son independientes
+        Assert.False(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "vendaje" }).CierraTurno);
 
         var r = m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "pan", EsComida = true });
-        Assert.False(r.Permitida);
-
-        // Pero comida y consumible son independientes
-        Assert.True(m.Ejecutar(new UsarObjeto { ActorId = "yo", ObjetoId = "vendaje" }).Permitida);
+        Assert.True(r.Permitida);
+        Assert.True(r.CierraTurno);
     }
 
     [Fact]

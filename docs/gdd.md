@@ -194,7 +194,7 @@ Es decir: DEFENSIVA es la **postura de apoyo/lanzador**. Se va ahí a curar, pot
 
 Dentro del bando aliado, **el jugador elige quién empieza**, y a partir de ahí el orden avanza **de derecha a izquierda**.
 
-❓ Confirmar: ¿el jugador solo escoge el punto de inicio y el resto es automático (derecha→izquierda, con vuelta al extremo)? ¿O elige libremente uno por uno?
+✅ **RESUELTO:** el jugador solo escoge quién abre. Desde ahí el orden es automático, de derecha a izquierda, con vuelta al extremo, y **nadie se salta su vez**. Se vuelve a elegir en cada turno de bando. Ver [manual-tecnico.md](manual-tecnico.md) §1.4.
 ❓ ¿Quién abre la ronda, aliados o enemigos? ¿Depende de algo (emboscada, iniciativa)?
 ❓ ¿Se puede pasar/aplazar el turno de un personaje?
 

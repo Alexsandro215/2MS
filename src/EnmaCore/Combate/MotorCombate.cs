@@ -44,36 +44,134 @@ public sealed class MotorCombate
     /// <summary>Quien entro en modo QWER: ya no puede volver a basicos.</summary>
     private readonly HashSet<string> _enModoQwer = new();
 
-    /// <summary>Objetos gratis consumidos en la ventana actual, por bando.</summary>
-    private readonly Dictionary<Bando, (bool Comida, bool Consumible)> _objetosGratis = new();
+    /// <summary>
+    /// Tandas de basicos lanzadas este turno. Una tanda son todos los golpes
+    /// del arma; se lanza una por turno, salvo que algo la doble (Artens W).
+    /// </summary>
+    private readonly Dictionary<string, int> _tandasDeBasicos = new();
+
+    /// <summary>
+    /// Quien ya empezo la ofensiva. Desde ahi solo quedan basicos, QWER o
+    /// pasar: se cerraron su movimiento, su ventana de objetos y las demas
+    /// vias. El turno se elige UNA vez. Ver manual-tecnico.md  2.1.
+    /// </summary>
+    private readonly HashSet<string> _enOfensiva = new();
+
+    /// <summary>
+    /// REGLA DE COMPROMISO: quien uso un objeto gratis desde la DEFENSIVA
+    /// queda anclado ahi el resto de su turno. Ver tablero.md  3.
+    /// </summary>
+    private readonly HashSet<string> _comprometidos = new();
+
+    /// <summary>Quien abrio el turno del bando y desde que linea.</summary>
+    private string? _abridor;
+    private int _lineaAbridor;
+
+    /// <summary>Quien esta a mitad de su turno: ha actuado y aun no lo ha cerrado.</summary>
+    private string? _enCurso;
+
+    private bool _huida;
+
+    /// <summary>
+    /// La comida y el consumible gratis de cada bando: si ya se usaron en
+    /// esta ventana, y cuantos turnos del bando faltan para que vuelvan.
+    /// </summary>
+    private sealed class ObjetosGratis
+    {
+        public bool ComidaUsada, ConsumibleUsado;
+        public int EsperaComida, EsperaConsumible;
+    }
+
+    private readonly Dictionary<Bando, ObjetosGratis> _objetos = new()
+    {
+        [Bando.Aliado] = new(),
+        [Bando.Enemigo] = new(),
+    };
 
     public MotorCombate(EstadoCombate estado, Evaluador? evaluador = null)
     {
         Estado = estado;
         _ev = evaluador ?? new Evaluador();
         _res = new Resolvedor(_ev);
-        _objetosGratis[Bando.Aliado] = (false, false);
-        _objetosGratis[Bando.Enemigo] = (false, false);
     }
 
     public Desenlace Desenlace
     {
         get
         {
-            bool aliadosVivos = Estado.Del(Bando.Aliado).Any();
-            bool enemigosVivos = Estado.Del(Bando.Enemigo).Any();
+            if (_huida) return Desenlace.Huida;
+
+            // Cuenta quien esta en el combate. El banquillo no pelea: si
+            // el front entero cae, el banquillo solo salva la partida si
+            // alguien de el puede entrar por su cuenta.
+            bool aliadosVivos = Estado.DelCampo(Bando.Aliado).Any() || HayRelevoPosible(Bando.Aliado);
+            bool enemigosVivos = Estado.DelCampo(Bando.Enemigo).Any();
             if (!enemigosVivos) return Desenlace.VictoriaAliada;
             if (!aliadosVivos) return Desenlace.DerrotaAliada;
             return Desenlace.EnCurso;
         }
     }
 
-    /// <summary>Combatientes del bando activo que aun no han actuado y pueden hacerlo.</summary>
+    private bool HayRelevoPosible(Bando b)
+        => Estado.Combatientes.Any(c => c.Bando == b && c.EnKo && c.Zona == Zona.Front)
+           && Estado.Del(b).Any(c => c.Zona == Zona.Banquillo && Flujo.PuedeRelevarDesdeBanquillo(Estado, c));
+
+    // ---------------------------------------------------------- orden de turnos
+
+    /// <summary>
+    /// El bando activo en orden de turno: de DERECHA A IZQUIERDA, empezando
+    /// por quien abrio y dando la vuelta al llegar al extremo. Antes de que
+    /// nadie abra, desde el extremo derecho.
+    ///
+    /// ⚠️ "Derecha" es la linea mas alta. Si en pantalla las lineas se pintan
+    /// al reves, se cambia aqui y solo aqui.
+    /// </summary>
+    private List<Combatiente> Orden()
+    {
+        var bando = Estado.Combatientes
+            .Select((c, i) => (c, i))
+            .Where(x => x.c.Bando == Estado.BandoActivo && x.c.Zona != Zona.Banquillo)
+            .ToList();
+        if (bando.Count == 0) return [];
+
+        int lineas = Math.Max(6, bando.Max(x => x.c.Linea) + 1);
+        int inicio = _abridor is null ? lineas - 1 : _lineaAbridor;
+
+        return bando
+            .OrderBy(x => ((inicio - x.c.Linea) % lineas + lineas) % lineas)
+            .ThenBy(x => x.i)
+            .Select(x => x.c)
+            .ToList();
+    }
+
+    /// <summary>Los que aun no han actuado y pueden hacerlo, EN ORDEN de turno.</summary>
     public IEnumerable<Combatiente> PendientesDeActuar()
-        => Estado.Del(Estado.BandoActivo)
-                 .Where(c => !_yaActuaron.Contains(c.Id) && Flujo.PuedeActuar(Estado, c));
+        => Orden().Where(c => !_yaActuaron.Contains(c.Id) && Flujo.PuedeActuar(Estado, c));
+
+    /// <summary>
+    /// De quien es el turno ahora.
+    ///
+    /// null mientras nadie haya abierto: el jugador elige quien abre, y puede
+    /// ser cualquiera de <see cref="PendientesDeActuar"/>. Desde ahi el orden
+    /// sigue solo y nadie se salta su vez.
+    /// </summary>
+    public Combatiente? ActorDeTurno
+    {
+        get
+        {
+            if (_enCurso is not null)
+            {
+                var c = Estado.Buscar(_enCurso);
+                if (c is not null && c.Zona != Zona.Banquillo && Flujo.PuedeActuar(Estado, c))
+                    return c;
+            }
+            return _abridor is null ? null : PendientesDeActuar().FirstOrDefault();
+        }
+    }
 
     // ----------------------------------------------------------------- acciones
+
+    private static ResultadoAccion No(string motivo) => new(false, motivo, [], [], false);
 
     public ResultadoAccion Ejecutar(Accion accion)
     {
@@ -86,23 +184,52 @@ public sealed class MotorCombate
         if (actor.Bando != Estado.BandoActivo) return new(false, "no es su bando", impactos, cambios, false);
         if (!Flujo.PuedeActuar(Estado, actor)) return new(false, "no puede actuar", impactos, cambios, false);
 
-        switch (accion)
+        // El relevo desde el banquillo va por fuera del orden: no es el turno
+        // de nadie, lo concede una pasiva.
+        bool relevo = accion is Swap && actor.Zona == Zona.Banquillo;
+        if (!relevo)
         {
-            case AtaqueBasico b: return Basico(b, actor, impactos, cambios);
-            case UsarHabilidad h: return Habilidad(h, actor, impactos, cambios);
-            case Defender: return Defensa(actor, cambios);
-            case CargarMusica cm: return Cargar(cm, actor, cambios);
-            case Moverse m: return Mover(m, actor, cambios);
-            case UsarObjeto o: return Objeto(o, actor, cambios);
-            case Esconderse: return Esconder(actor, cambios);
-            case Pasar: return Terminar(actor, "pasa", impactos, cambios);
-            default: return new(false, "accion desconocida", impactos, cambios, false);
+            if (actor.Zona == Zona.Banquillo) return No("esta en el banquillo");
+            if (_yaActuaron.Contains(actor.Id)) return No("ya actuo este turno");
+
+            var turno = ActorDeTurno;
+            if (turno is not null && turno.Id != actor.Id)
+                return No($"es el turno de {turno.Id}");
+
+            if (_enOfensiva.Contains(actor.Id) && accion is not (AtaqueBasico or UsarHabilidad or Pasar))
+                return No("ya empezo la ofensiva: solo quedan basicos, QWER o pasar");
         }
+
+        var r = accion switch
+        {
+            AtaqueBasico b => Basico(b, actor, impactos, cambios),
+            UsarHabilidad h => Habilidad(h, actor, impactos, cambios),
+            Defender => Defensa(actor, cambios),
+            CargarMusica cm => Cargar(cm, actor, cambios),
+            Moverse m => Mover(m, actor, cambios),
+            UsarObjeto o => Objeto(o, actor, cambios),
+            Esconderse h => Esconder(h, actor, cambios),
+            SalirDelEscondite => Salir(actor, cambios),
+            Swap s => Cambiar(s, actor, cambios),
+            Huir => Huida(actor, cambios),
+            Pasar => Terminar(actor, "pasa", impactos, cambios),
+            _ => No("accion desconocida")
+        };
+
+        if (r.Permitida && !relevo)
+        {
+            if (_abridor is null) { _abridor = actor.Id; _lineaAbridor = actor.Linea; }
+            _enCurso = r.CierraTurno ? null : actor.Id;
+        }
+        return r;
     }
 
     private ResultadoAccion Basico(AtaqueBasico b, Combatiente actor,
         List<EventoImpacto> impactos, List<Cambio> cambios)
     {
+        if (actor.Zona == Zona.Escondite)
+            return No("escondido no se puede atacar");
+
         // Regla de modo: una vez en QWER, no se vuelve a los basicos.
         if (_enModoQwer.Contains(actor.Id))
             return new(false, "ya entro en modo QWER", impactos, cambios, false);
@@ -114,6 +241,15 @@ public sealed class MotorCombate
         var objetivo = Estado.Buscar(b.ObjetivoId);
         if (objetivo is null || objetivo.EnKo)
             return new(false, "objetivo invalido", impactos, cambios, false);
+        if (objetivo.Zona != Zona.Front)
+            return No("objetivo fuera de alcance: escondido o en el banquillo");
+
+        int tandas = _tandasDeBasicos.GetValueOrDefault(actor.Id);
+        if (tandas >= Flujo.AccionesDisponibles(Estado, actor))
+            return No("ya lanzo sus basicos este turno");
+
+        _tandasDeBasicos[actor.Id] = tandas + 1;
+        _enOfensiva.Add(actor.Id);
 
         int golpes = CargaMusical.Golpes(
             CargaMusical.GolpesBase(actor.Arma),
@@ -152,6 +288,19 @@ public sealed class MotorCombate
     {
         char tecla = char.ToUpperInvariant(h.Tecla);
 
+        if (actor.Zona == Zona.Escondite)
+            return No("escondido no se pueden usar habilidades");
+
+        if (h.ObjetivoId is not null)
+        {
+            var objetivo = Estado.Buscar(h.ObjetivoId);
+            if (objetivo is null)
+                return No("objetivo invalido");
+            if (objetivo.Zona == Zona.Banquillo
+                || (objetivo.Bando != actor.Bando && objetivo.Zona != Zona.Front))
+                return No("objetivo fuera de alcance: escondido o en el banquillo");
+        }
+
         if (!_teclasUsadas.TryGetValue(actor.Id, out var usadas))
             _teclasUsadas[actor.Id] = usadas = new HashSet<char>();
         if (usadas.Contains(tecla))
@@ -166,6 +315,7 @@ public sealed class MotorCombate
         Estado.Historial.HabilidadesUsadas++;
         usadas.Add(tecla);
         _enModoQwer.Add(actor.Id);
+        _enOfensiva.Add(actor.Id);
 
         // Las reglas de la habilidad son datos: el motor solo dispara el evento.
         int veces = Flujo.RepeticionesDeHabilidad(Estado, actor);
@@ -204,8 +354,14 @@ public sealed class MotorCombate
 
     private ResultadoAccion Mover(Moverse m, Combatiente actor, List<Cambio> cambios)
     {
+        if (actor.Zona == Zona.Escondite)
+            return No("esta escondido: primero tiene que salir");
+
         if (actor.TieneFlag("anclado") || actor.TieneFlag("inmovil"))
             return new(false, "esta anclado o inmovil", new List<EventoImpacto>(), cambios, false);
+
+        if (_comprometidos.Contains(actor.Id))
+            return No("uso un objeto gratis desde la defensiva: queda anclado ahi este turno");
 
         actor.Posicion = m.Destino;
         cambios.Add(new Cambio("mover", actor.Id, m.Destino.ToString(), 0));
@@ -213,36 +369,140 @@ public sealed class MotorCombate
         return new(true, "", new List<EventoImpacto>(), cambios, false);
     }
 
+    /// <summary>
+    /// Ventana pre-ofensiva. Ver formulas.md  11 y tablero.md  3.
+    ///
+    ///   · 1 comida y 1 consumible GRATIS por bando y ventana, independientes
+    ///   · cada uno tarda 3 turnos del bando en volver
+    ///   · usarlo desde la DEFENSIVA no arranca esa espera... pero ancla ahi
+    ///   · usarlo sin que toque —ya usado, o esperando— se puede, pero deja de
+    ///     ser gratis: CONSUME EL TURNO y no reinicia la espera
+    /// </summary>
     private ResultadoAccion Objeto(UsarObjeto o, Combatiente actor, List<Cambio> cambios)
     {
         var impactos = new List<EventoImpacto>();
-        var (comida, consumible) = _objetosGratis[actor.Bando];
-        bool yaUsado = o.EsComida ? comida : consumible;
-
-        // La casilla DEFENSIVA elimina la espera: usar un objeto gratis desde
-        // ahi no arranca su cooldown de 3 turnos.
-        bool desdeDefensiva = actor.Posicion == Casilla.Defensiva;
-
-        if (yaUsado && !o.EsGadget && !desdeDefensiva)
-            return new(false, "el objeto gratis ya se uso en esta ventana", impactos, cambios, false);
-
-        if (!desdeDefensiva)
-            _objetosGratis[actor.Bando] = o.EsComida ? (true, consumible) : (comida, true);
 
         var r = _ev.Resolver(Estado, new Evento(Disparador.AlUsarObjeto, actor.Id, o.ObjetivoId, 0, o.ObjetoId));
         cambios.AddRange(r.Cambios);
 
         // Un gadget SIEMPRE consume turno.
-        return o.EsGadget
-            ? Terminar(actor, "usa gadget", impactos, cambios)
-            : new(true, "", impactos, cambios, false);
+        if (o.EsGadget) return Terminar(actor, "usa gadget", impactos, cambios);
+
+        var v = _objetos[actor.Bando];
+        bool usado = o.EsComida ? v.ComidaUsada : v.ConsumibleUsado;
+        int espera = o.EsComida ? v.EsperaComida : v.EsperaConsumible;
+
+        if (usado || espera > 0)
+            return Terminar(actor, "usa un objeto que no era gratis", impactos, cambios);
+
+        bool desdeDefensiva = actor.Zona == Zona.Front && actor.Posicion == Casilla.Defensiva;
+        int nuevaEspera = desdeDefensiva ? 0 : Constantes.CooldownObjetoGratis;
+        if (o.EsComida) { v.ComidaUsada = true; v.EsperaComida = nuevaEspera; }
+        else { v.ConsumibleUsado = true; v.EsperaConsumible = nuevaEspera; }
+
+        if (desdeDefensiva)
+        {
+            _comprometidos.Add(actor.Id);
+            cambios.Add(new Cambio("compromiso", actor.Id, "anclado en la defensiva", 0));
+        }
+
+        return new(true, "", impactos, cambios, false);
     }
 
-    private ResultadoAccion Esconder(Combatiente actor, List<Cambio> cambios)
+    /// <summary>
+    /// HIDE, propio o de un compañero en K.O. Los escondites son del entorno y
+    /// los pelean los dos bandos: si no queda ninguno libre, no hay donde ir.
+    /// </summary>
+    private ResultadoAccion Esconder(Esconderse h, Combatiente actor, List<Cambio> cambios)
     {
-        actor.Flags["oculto"] = 1;
-        cambios.Add(new Cambio("esconder", actor.Id, "oculto", 0));
-        return Terminar(actor, "se esconde", new List<EventoImpacto>(), cambios);
+        var oculto = h.OcultoId is null ? actor : Estado.Buscar(h.OcultoId);
+        if (oculto is null) return No("no existe a quien esconder");
+        if (actor.Zona != Zona.Front || oculto.Zona != Zona.Front)
+            return No("solo se esconde desde el front");
+        if (oculto != actor && (oculto.Bando != actor.Bando || !oculto.EnKo))
+            return No("a otro solo se le esconde si es un compañero en K.O.");
+        if (Estado.EsconditesLibres <= 0)
+            return No("no queda ningun escondite libre");
+
+        oculto.Zona = Zona.Escondite;
+        cambios.Add(new Cambio("esconder", oculto.Id, "escondite", 0));
+        return Terminar(actor, oculto == actor ? "se esconde" : $"esconde a {oculto.Id}",
+            new List<EventoImpacto>(), cambios);
+    }
+
+    /// <summary>Salir es gratis, pero siempre a la DEFENSIVA.</summary>
+    private ResultadoAccion Salir(Combatiente actor, List<Cambio> cambios)
+    {
+        if (actor.Zona != Zona.Escondite) return No("no esta escondido");
+
+        actor.Zona = Zona.Front;
+        actor.Posicion = Casilla.Defensiva;
+        cambios.Add(new Cambio("salir", actor.Id, Casilla.Defensiva.ToString(), 0));
+        _ev.Resolver(Estado, new Evento(Disparador.AlEntrarEnCasilla, actor.Id));
+        return new(true, "", new List<EventoImpacto>(), cambios, false);
+    }
+
+    /// <summary>
+    /// SWAP. El que entra hereda la casilla y la linea exactas del que sale, y
+    /// no actua hasta el turno siguiente: si lo hiciera, cambiar seria gratis.
+    /// </summary>
+    private ResultadoAccion Cambiar(Swap s, Combatiente actor, List<Cambio> cambios)
+    {
+        var entrante = Estado.Buscar(s.EntranteId);
+        var saliente = s.SalienteId is null ? actor : Estado.Buscar(s.SalienteId);
+        if (entrante is null || saliente is null) return No("cambio invalido");
+        if (entrante.Bando != actor.Bando || saliente.Bando != actor.Bando)
+            return No("solo se cambia dentro del propio bando");
+        if (entrante.Zona != Zona.Banquillo || entrante.EnKo)
+            return No("el que entra tiene que estar en el banquillo y en pie");
+        if (saliente.Zona != Zona.Front)
+            return No("el que sale tiene que estar en el front");
+
+        bool relevo = actor.Zona == Zona.Banquillo;
+        if (relevo)
+        {
+            if (entrante != actor) return No("desde el banquillo solo puede entrar uno mismo");
+            if (!saliente.EnKo) return No("el relevo desde el banquillo es para un compañero en K.O.");
+            if (!Flujo.PuedeRelevarDesdeBanquillo(Estado, actor))
+                return No("relevar desde el banquillo necesita una pasiva que lo permita");
+        }
+        else if (saliente != actor && !saliente.EnKo)
+        {
+            return No("a otro solo se le cambia si esta en K.O.");
+        }
+
+        entrante.Zona = Zona.Front;
+        entrante.Linea = saliente.Linea;
+        entrante.Posicion = saliente.Posicion;
+        saliente.Zona = Zona.Banquillo;
+        _yaActuaron.Add(entrante.Id);
+
+        cambios.Add(new Cambio("swap", saliente.Id, $"entra {entrante.Id}", 0));
+        _ev.Resolver(Estado, new Evento(Disparador.AlEntrarEnCasilla, entrante.Id));
+
+        return relevo
+            ? new(true, "releva desde el banquillo", new List<EventoImpacto>(), cambios, true)
+            : Terminar(actor, "cambio", new List<EventoImpacto>(), cambios);
+    }
+
+    /// <summary>
+    /// ESCAPE. Huye el equipo entero o no huye nadie; si sale mal, el turno
+    /// se pierde igual.
+    ///
+    /// ⚠️ Por ahora solo huye el bando del jugador: no hay desenlace para un
+    /// enemigo que escapa.
+    /// </summary>
+    private ResultadoAccion Huida(Combatiente actor, List<Cambio> cambios)
+    {
+        if (actor.Bando != Bando.Aliado) return No("los enemigos no huyen");
+        if (!Estado.SePuedeHuir) return No("de este combate no se puede huir");
+
+        bool sale = Estado.Rng.Siguiente() < Estado.ProbabilidadDeHuida;
+        if (sale) _huida = true;
+        cambios.Add(new Cambio("huida", "equipo", sale ? "lograda" : "fallida", 0));
+
+        return Terminar(actor, sale ? "huye" : "intenta huir y no puede",
+            new List<EventoImpacto>(), cambios);
     }
 
     private ResultadoAccion Terminar(Combatiente actor, string motivo,
@@ -255,7 +515,16 @@ public sealed class MotorCombate
     }
 
     /// <summary>Cierra el turno de un personaje sin mas accion.</summary>
-    public void CerrarTurnoDe(string actorId) => _yaActuaron.Add(actorId);
+    public void CerrarTurnoDe(string actorId)
+    {
+        _yaActuaron.Add(actorId);
+        if (_enCurso == actorId) _enCurso = null;
+        if (_abridor is null && Estado.Buscar(actorId) is { } c)
+        {
+            _abridor = c.Id;
+            _lineaAbridor = c.Linea;
+        }
+    }
 
     // -------------------------------------------------------- avance de turnos
 
@@ -273,7 +542,17 @@ public sealed class MotorCombate
         _yaActuaron.Clear();
         _teclasUsadas.Clear();
         _enModoQwer.Clear();
-        _objetosGratis[Estado.BandoActivo] = (false, false);
+        _tandasDeBasicos.Clear();
+        _enOfensiva.Clear();
+        _comprometidos.Clear();
+        _abridor = null;
+        _enCurso = null;
+
+        // Se cierra la ventana de objetos del bando, y su espera avanza un turno.
+        var v = _objetos[Estado.BandoActivo];
+        v.ComidaUsada = v.ConsumibleUsado = false;
+        v.EsperaComida = Math.Max(0, v.EsperaComida - 1);
+        v.EsperaConsumible = Math.Max(0, v.EsperaConsumible - 1);
 
         if (Estado.BandoActivo == Bando.Aliado)
         {
@@ -287,7 +566,9 @@ public sealed class MotorCombate
 
         // Un K.O. debe atenderse antes del siguiente turno del villano.
         // Si llega y sigue en K.O. -> remate -> muerte definitiva.
-        foreach (var c in Estado.Combatientes.Where(c => c.EnKo && c.Bando == Bando.Aliado))
+        // Solo al que sigue EXPUESTO en el front: cambiarlo al banquillo o
+        // esconderlo es justo la forma de atenderlo.
+        foreach (var c in Estado.Combatientes.Where(c => c.EnKo && c.Bando == Bando.Aliado && c.Zona == Zona.Front))
         {
             if (c.Flags.ContainsKey("atendido")) { c.Flags.Remove("atendido"); continue; }
             cambios.Add(new Cambio("muerte", c.Id, "rematado tras K.O. no atendido", 0));

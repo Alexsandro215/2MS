@@ -11,6 +11,15 @@ public enum Bando { Aliado, Enemigo }
 public enum Casilla { Defensiva = 0, Neutral = 1, Ofensiva = 2 }
 
 /// <summary>
+/// Donde esta un combatiente. Ver tablero.md  1, 5 y 6.
+///
+///   FRONT      peleando, en su linea de 3 casillas
+///   BANQUILLO  esperando un cambio. Los enemigos no tienen
+///   ESCONDITE  fuera de alcance del rival. Uno por personaje
+/// </summary>
+public enum Zona { Front, Banquillo, Escondite }
+
+/// <summary>
 /// Catalogo de estadisticas. Fuente: manual-tecnico.md  3.2 a  3.4.
 ///
 /// Nota de nomenclatura: los documentos usan PRESS, PRES y ACC para la misma
@@ -55,7 +64,13 @@ public sealed class Combatiente
     public Bando Bando { get; init; }
     public Casilla Posicion { get; set; } = Casilla.Neutral;
 
-    /// <summary>Linea que ocupa dentro del bando (0..5).</summary>
+    /// <summary>Front, banquillo o escondite.</summary>
+    public Zona Zona { get; set; } = Zona.Front;
+
+    /// <summary>
+    /// Linea que ocupa dentro del bando (0..5). Tambien fija su sitio en el
+    /// orden de turnos, que avanza de derecha a izquierda.
+    /// </summary>
     public int Linea { get; set; }
 
     public int Nivel { get; set; } = 1;
@@ -69,7 +84,7 @@ public sealed class Combatiente
     /// </summary>
     public Dictionary<string, double> Contadores { get; } = new();
 
-    /// <summary>Flags de estado: "anclado", "inmovil", "inmune_ee", "oculto", "invulnerable".</summary>
+    /// <summary>Flags de estado: "anclado", "inmovil", "inmune_ee", "invulnerable".</summary>
     public Dictionary<string, int> Flags { get; } = new();
 
     public double Hp { get; set; }

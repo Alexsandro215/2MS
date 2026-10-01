@@ -43,7 +43,14 @@ public enum TipoFlujo
     MovimientoForzado,
 
     /// <summary>Artens R: fija un objetivo y no se puede cambiar durante la accion.</summary>
-    FijarObjetivo
+    FijarObjetivo,
+
+    /// <summary>
+    /// Quien la lleva puede, DESDE EL BANQUILLO, entrar a relevar a un
+    /// compañero en K.O. sin que nadie del front gaste su turno en ello.
+    /// Es una pasiva: sin ella, sacar a un caido cuesta el turno de alguien.
+    /// </summary>
+    RelevoDesdeBanquillo
 }
 
 /// <summary>
@@ -59,7 +66,10 @@ public sealed record ReglaFlujo
     public Condicion? Condicion { get; init; }
     public Selector Alcance { get; init; } = Selector.Yo;
 
-    /// <summary>Cuantos turnos dura. 0 = solo la accion en curso.</summary>
+    /// <summary>
+    /// Cuantos turnos dura. 0 = solo la accion en curso. Negativo = todo el
+    /// combate, que es lo que necesita una pasiva.
+    /// </summary>
     public int Turnos { get; init; }
 
     /// <summary>Para Preparacion: en cuantos turnos se resuelve.</summary>
@@ -122,6 +132,18 @@ public sealed class EstadoFlujo
             if (f.Alcance.Resolver(e, ctx).Exists(c => c.Id == quien.Id)) return false;
         }
         return true;
+    }
+
+    /// <summary>true si una pasiva le deja relevar a un caido desde el banquillo.</summary>
+    public bool PuedeRelevarDesdeBanquillo(EstadoCombate e, Combatiente quien)
+    {
+        foreach (var f in Activas.Where(f => f.Tipo == TipoFlujo.RelevoDesdeBanquillo))
+        {
+            var ctx = new Contexto(quien, quien, null);
+            if (f.Condicion is not null && !f.Condicion.Cumple(e, ctx)) continue;
+            if (f.Alcance.Resolver(e, ctx).Exists(c => c.Id == quien.Id)) return true;
+        }
+        return false;
     }
 
     /// <summary>Cuantas veces se aplica una habilidad. Rudentlein R la dobla.</summary>

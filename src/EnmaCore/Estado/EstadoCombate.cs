@@ -91,11 +91,34 @@ public sealed class EstadoCombate
     /// <summary>Fuente de azar. Inyectada para que las simulaciones sean reproducibles.</summary>
     public Combate.IAleatorio Rng { get; set; } = new Combate.AleatorioSemilla(0);
 
+    // ---- el entorno ----
+
+    /// <summary>
+    /// Escondites del entorno, de 0 a 3. Los pelean los DOS bandos: uno por
+    /// personaje, y quien llega primero lo ocupa. Un entorno con 0 es un
+    /// entorno agresivo. Ver tablero.md  5.
+    /// </summary>
+    public int Escondites { get; set; }
+
+    /// <summary>Flag de escape por combate: contra jefes y villanos no se huye.</summary>
+    public bool SePuedeHuir { get; set; } = true;
+
+    /// <summary>⚠️ Provisional. Probabilidad de que salga bien un intento de huida.</summary>
+    public double ProbabilidadDeHuida { get; set; } = 0.5;
+
+    public int EsconditesLibres => Escondites - Combatientes.Count(c => c.Zona == Zona.Escondite);
+
     public Combatiente? Buscar(string id) => Combatientes.Find(c => c.Id == id);
 
     public IEnumerable<Combatiente> Vivos => Combatientes.Where(c => !c.EnKo);
 
+    /// <summary>Todos los del bando que siguen vivos, banquillo incluido.</summary>
     public IEnumerable<Combatiente> Del(Bando b) => Vivos.Where(c => c.Bando == b);
+
+    /// <summary>Vivos que estan en el combate: el front y los escondidos, no el banquillo.</summary>
+    public IEnumerable<Combatiente> EnCampo => Vivos.Where(c => c.Zona != Zona.Banquillo);
+
+    public IEnumerable<Combatiente> DelCampo(Bando b) => EnCampo.Where(c => c.Bando == b);
 
     /// <summary>
     /// Todas las reglas vigentes: las activas mas las que aportan los terrenos.

@@ -140,6 +140,12 @@ Un personaje del front puede ocultarse en un escondite del entorno.
 >
 > Un entorno con 0 escondites es, por tanto, un entorno **agresivo**: nadie se puede refugiar, ni tus KO ni sus casters.
 
+### Salir del escondite
+
+✅ **RESUELTO.** Salir es **gratis**, pero se sale **siempre a la casilla DEFENSIVA**. Desde ahí no hay AD, así que para atacar ese mismo turno hay que avanzar primero, y el movimiento ya es libre.
+
+> Esconderse no te deja reaparecer donde más daño haces: vuelves por la puerta de atrás.
+
 ---
 
 ## 6. SWAP (cambio)
@@ -149,6 +155,8 @@ El personaje que hace swap **se va al banquillo** y el seleccionado ocupa su lug
 **El que entra aparece en la casilla exacta donde estaba el que salió.** El swap no reposiciona: hereda la posición.
 
 > Consecuencia táctica: puedes usar el swap para **meter a alguien directamente en ofensiva o en defensiva** sin gastar el movimiento. Y al revés — sacar a un herido de la ofensiva mete al recambio en esa misma casilla expuesta.
+
+**El que entra no actúa hasta el turno siguiente.** Si actuara, cambiar sería gratis.
 
 ---
 
@@ -219,6 +227,14 @@ Solo deja de ocuparla si el equipo hace algo al respecto:
 | **Ocultarlo en un escondite** | Se lo saca de la línea y deja de ser objetivo. |
 
 > Esto es lo que le da dientes a la ventana de remate (§2.1 del GDD): el caído **se queda ahí, visible y golpeable**, hasta que alguien gaste recursos en sacarlo. Y como el K.O. además recorta el pool de CM del equipo, ignorarlo cuesta por partida doble.
+
+### Quién lo saca
+
+✅ **RESUELTO.** Por defecto, **un aliado del front gasta su turno** en cambiar al caído por alguien del banquillo, o en esconderlo. A un compañero en pie no se le puede cambiar desde fuera: el swap de un personaje sano lo decide él en su turno.
+
+**Una pasiva puede cambiar eso.** Lo previsto es que alguien del banquillo entre **por su cuenta** a relevar a un caído, sin que nadie del front gaste su turno. Es una regla de flujo (`RelevoDesdeBanquillo`), no una excepción del motor: otra pasiva puede decir otra cosa.
+
+Sacado del front, al banquillo o al escondite, **ya no está expuesto y no se le remata**.
 
 ---
 

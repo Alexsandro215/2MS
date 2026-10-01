@@ -59,15 +59,47 @@ public sealed record Moverse : Accion
     public override bool CierraTurno => false;
 }
 
-/// <summary>Cambiar un personaje del front por uno del banquillo.</summary>
+/// <summary>
+/// SWAP. Uno del front se va al banquillo y entra otro del banquillo.
+/// El que entra hereda la casilla y la linea exactas del que sale, y no
+/// actua hasta el turno siguiente.
+///
+/// Sin <see cref="SalienteId"/> sale el propio actor. Con el, el actor gasta
+/// su turno en sacar a un compañero en K.O. Y si el actor esta en el
+/// banquillo, es un RELEVO: entra el mismo, y solo puede hacerlo si una
+/// pasiva se lo concede (TipoFlujo.RelevoDesdeBanquillo).
+/// </summary>
 public sealed record Swap : Accion
 {
     public required string EntranteId { get; init; }
+    public string? SalienteId { get; init; }
     public override bool CierraTurno => true;
 }
 
-/// <summary>Esconderse. Solo para quienes estan en el front.</summary>
+/// <summary>
+/// HIDE. Esconderse: no targeteable para el rival, sin basicos ni skills,
+/// pero con los objetos disponibles.
+///
+/// Con <see cref="OcultoId"/>, el actor gasta su turno en esconder a un
+/// compañero en K.O.: se lo saca de la linea y deja de estar expuesto.
+/// </summary>
 public sealed record Esconderse : Accion
+{
+    public string? OcultoId { get; init; }
+    public override bool CierraTurno => true;
+}
+
+/// <summary>
+/// Salir del escondite. Es gratis, pero se sale SIEMPRE a la casilla
+/// defensiva: para atacar ese turno hay que avanzar primero.
+/// </summary>
+public sealed record SalirDelEscondite : Accion
+{
+    public override bool CierraTurno => false;
+}
+
+/// <summary>ESCAPE. Huida de todo el equipo, con probabilidad de exito.</summary>
+public sealed record Huir : Accion
 {
     public override bool CierraTurno => true;
 }

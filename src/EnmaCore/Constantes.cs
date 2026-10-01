@@ -106,4 +106,11 @@ public static class Constantes
 
     /// <summary>CLASICAL multiplica x1.5 toda obtencion de CM.</summary>
     public const double ClasicalMultiplicador = 1.5;
+
+    // ---- Objetos gratis (ventana pre-ofensiva) ----
+    /// <summary>
+    /// Turnos del bando que tarda en volver la comida o el consumible gratis.
+    /// Usarlo desde la casilla DEFENSIVA no arranca esta espera. Ver formulas.md  11.
+    /// </summary>
+    public const int CooldownObjetoGratis = 3;
 }
