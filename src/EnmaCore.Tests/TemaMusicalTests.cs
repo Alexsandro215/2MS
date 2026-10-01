@@ -328,6 +328,186 @@ public class TemaMusicalTests
         Assert.Equal(6, r.Gratis);
     }
 
+    // ------------------------------------- mapa de tempo: lo que SUENA
+
+    /// <summary>
+    /// 120 BPM. Un 4/4 —compas de 2 s— y un 3/4 cuyo borde se puso a MITAD
+    /// del segundo compas, en 3.0. Su rejilla no arranca hasta la siguiente
+    /// linea de compas, en 4.0: entre 3.0 y 4.0 sigue sonando el 4/4.
+    /// </summary>
+    private static TemaMusical ConBordeAMitad()
+    {
+        var t = new TemaMusical { Id = "deriva", Bpm = 120 };
+        t.Rejilla.AddRange([new Tramo(0.0, 120, 4), new Tramo(3.0, 120, 3)]);
+        return t;
+    }
+
+    [Fact]
+    public void Entre_el_borde_y_el_origen_sigue_sonando_el_tramo_anterior()
+    {
+        var t = ConBordeAMitad();
+
+        // 3.5 esta pasado el borde, pero el 3/4 aun no ha empezado.
+        Assert.Equal(0, t.TramoEn(3.5));
+        Assert.Equal(1, t.CompasEn(3.5));
+        Assert.Equal(3, t.TiempoEn(3.5));
+        Assert.Equal(2.0, t.InicioDelCompas(3.5), 6);
+        Assert.Equal(2.0, t.DuracionCompasEn(3.5), 6);
+
+        // En 4.0 si.
+        Assert.Equal(1, t.TramoEn(4.0));
+        Assert.Equal(2, t.CompasEn(4.0));
+        Assert.Equal(1.5, t.DuracionCompasEn(4.0), 6);
+    }
+
+    [Fact]
+    public void Ningun_instante_cae_en_un_compas_que_aun_no_ha_empezado()
+    {
+        // Lo que se rompia: con el tramo decidido por el borde, 3.5 caia en
+        // el compas 2 —que empieza en 4.0— y el compas 1 quedaba a medias.
+        var t = ConBordeAMitad();
+        for (double x = 0; x < 10; x += 0.05)
+        {
+            var (desde, hasta) = t.LimitesDelCompas(t.CompasEn(x));
+            Assert.True(desde <= x + 1e-9 && x < hasta + 1e-9,
+                $"t={x:F2} cae en [{desde:F3}, {hasta:F3})");
+            Assert.Equal(desde, t.InicioDelCompas(x), 6);
+        }
+    }
+
+    [Fact]
+    public void La_pesada_se_juzga_contra_el_compas_DEL_TRAMO()
+    {
+        // Antes el compas salia del BPM y el compas sueltos, como si toda la
+        // cancion fuera un 4/4. El 4/4 de «Missin Power» vuelve en 4.8837,
+        // que para un 4/4 continuo caeria justo a mitad de compas.
+        var t = ConRejilla();
+        for (int c = 0; c < 6; c++)
+        {
+            double uno = t.LimitesDelCompas(c).Desde;
+            var r = t.Evaluar(uno, ClaseArma.Pesada);
+            Assert.True(r.EnCompas, $"compas {c} ({uno:F4} s)");
+            Assert.Equal(0.0, r.Desfase, 6);
+        }
+
+        // Y en el 3/4: su segundo compas empieza en 5.5, no en 6.0.
+        var b = ConBordeAMitad();
+        Assert.True(b.Evaluar(5.5, ClaseArma.Pesada).EnCompas);
+        Assert.False(b.Evaluar(6.0, ClaseArma.Pesada).EnCompas);
+    }
+
+    [Fact]
+    public void La_media_se_juzga_contra_el_pulso_DEL_TRAMO()
+    {
+        // 120 BPM y luego 90: los tiempos del segundo tramo van cada 0.667 s.
+        var t = new TemaMusical { Id = "frena", Bpm = 120 };
+        t.Rejilla.AddRange([new Tramo(0.0, 120, 4), new Tramo(2.0, 90, 4)]);
+
+        double segundo = 2.0 + 60.0 / 90.0;
+        Assert.True(t.Evaluar(segundo, ClaseArma.Media).EnTempo);
+        Assert.Equal(0.0, t.DesfaseAlPulso(segundo), 6);
+        Assert.False(t.Evaluar(2.5, ClaseArma.Media).EnTempo);   // a 120 si lo seria
+    }
+
+    [Fact]
+    public void El_ultimo_tiempo_es_el_del_compas_que_suena()
+    {
+        // El golpe extra de la media sale en el ULTIMO tiempo. En un 6/4 el
+        // cuarto no lo es; antes, con 4 tiempos fijos, se daba a mitad.
+        var t = ConRejilla();
+        var (seis, _) = t.LimitesDelCompas(2);
+        double tiempo = 60.0 / 172.0;
+        const double tarde = 0.02;   // en tempo, sin depender del redondeo
+
+        var cuarto = t.Evaluar(seis + 3 * tiempo + tarde, ClaseArma.Media);
+        Assert.Equal(6, cuarto.TiemposPorCompas);
+        Assert.False(cuarto.EnUltimoTiempo);
+        Assert.Equal(0, BonusRitmico.GolpesExtra(ClaseArma.Media, cuarto));
+
+        var sexto = t.Evaluar(seis + 5 * tiempo + tarde, ClaseArma.Media);
+        Assert.True(sexto.EnUltimoTiempo);
+        Assert.Equal(1, BonusRitmico.GolpesExtra(ClaseArma.Media, sexto));
+
+        // Y en un 3/4 el tercero si lo es.
+        var tercero = ConBordeAMitad().Evaluar(5.0, ClaseArma.Media);
+        Assert.Equal(3, tercero.TiemposPorCompas);
+        Assert.True(tercero.EnUltimoTiempo);
+    }
+
+    [Fact]
+    public void La_extension_dura_lo_que_dura_el_compas_siguiente()
+    {
+        var t = ConRejilla();
+
+        // Desde el ultimo 4/4: el siguiente es el 6/4, que acaba en 4.8837.
+        Assert.Equal(t.LimitesDelCompas(2).Hasta, t.FinDeLaExtension(2.0), 6);
+        Assert.Equal(4.8837, t.FinDeLaExtension(2.0), 4);
+
+        // Desde el 6/4: el siguiente vuelve a ser un 4/4.
+        Assert.Equal(t.LimitesDelCompas(3).Hasta, t.FinDeLaExtension(3.5), 6);
+        Assert.Equal(6.2791, t.FinDeLaExtension(3.5), 4);
+    }
+
+    // ----------------------------------------------- la cancion de verdad
+
+    /// <summary>
+    /// «Missin Power» entera, tal cual la guarda el grabador: 41 tramos de
+    /// 4/4, 6/4, 3/4 y 2/4 con los bordes puestos a ojo. Es la prueba de que
+    /// el nucleo dice del archivo lo mismo que el editor.
+    /// </summary>
+    private static TemaMusical MissinPower()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null && !Directory.Exists(Path.Combine(dir.FullName, "proto")))
+            dir = dir.Parent;
+        Assert.NotNull(dir);
+
+        string ruta = Path.Combine(dir!.FullName,
+            "proto", "grabador-temas", "temas", "Missin Power.json");
+        return TemaMusical.DesdeJson(File.ReadAllText(ruta));
+    }
+
+    [Fact]
+    public void En_Missin_Power_cada_compas_vale_para_la_pesada_y_cada_tiempo_para_la_media()
+    {
+        var t = MissinPower();
+        int ultimo = t.CompasEn(t.PulsosDeMelodia[^1]);
+
+        for (int c = 0; c <= ultimo; c++)
+        {
+            var (desde, hasta) = t.LimitesDelCompas(c);
+            var pesada = t.Evaluar(desde, ClaseArma.Pesada);
+            Assert.True(pesada.EnCompas, $"compas {c} ({desde:F3} s)");
+            Assert.Equal(c, t.CompasEn((desde + hasta) / 2));
+
+            double tiempo = t.DuracionTiempoEn(desde);
+            int tiempos = (int)Math.Round((hasta - desde) / tiempo);
+            for (int k = 0; k < tiempos; k++)
+            {
+                double pulso = desde + k * tiempo;
+                Assert.True(t.Evaluar(pulso, ClaseArma.Media).EnTempo,
+                    $"compas {c}, tiempo {k} ({pulso:F3} s)");
+
+                var r = t.Evaluar(pulso + tiempo / 4, ClaseArma.Media);
+                Assert.Equal(k, r.TiempoDelCompas);
+                Assert.Equal(tiempos, r.TiemposPorCompas);
+            }
+        }
+    }
+
+    [Fact]
+    public void En_Missin_Power_ningun_instante_cae_en_un_compas_futuro()
+    {
+        // Sus tramos 11 a 14 arrancan entre 0.7 y 1.35 s despues de su borde.
+        var t = MissinPower();
+        for (double x = 0; x < t.PulsosDeMelodia[^1]; x += 0.05)
+        {
+            var (desde, hasta) = t.LimitesDelCompas(t.CompasEn(x));
+            Assert.True(desde <= x + 1e-9 && x < hasta + 1e-9,
+                $"t={x:F2} cae en [{desde:F3}, {hasta:F3})");
+        }
+    }
+
     // ------------------------------------------------- bonus experto
 
     /// <summary>
@@ -571,6 +751,37 @@ public class TemaMusicalTests
     {
         Assert.Equal(0, Tema120().GolpesEnCadena([1.0, 1.25]));
         Assert.False(Tema120().CadenaCompleta([1.0, 1.25]));
+    }
+
+    [Fact]
+    public void La_cadena_se_juzga_con_el_techo_DEL_TEMA()
+    {
+        // El ensayo del grabador juzga con su "toleranciaMs". Antes el nucleo
+        // usaba 80 ms fijos, y un golpe que el editor daba por bueno aqui
+        // rompia la cadena.
+        var t = TemaMusical.DesdeJson("""
+        { "id": "x", "toleranciaMs": 150.0,
+          "rejilla": [ { "desde": 0.0, "bpm": 120.0, "compas": 4 } ],
+          "melodia": [1.0, 2.0, 3.0, 4.0] }
+        """);
+        double[] tarde = [1.12, 2.12, 3.12, 4.12];
+
+        Assert.True(t.CadenaCompleta(tarde));
+        Assert.Equal(4, t.GolpesEnCadena(tarde));
+
+        // Pasar un techo a mano sigue mandando sobre el del tema.
+        Assert.Equal(0, t.GolpesEnCadena(tarde, 0.08));
+    }
+
+    [Fact]
+    public void El_bonus_experto_se_juzga_con_el_techo_DEL_TEMA()
+    {
+        var t = new TemaMusical { Id = "x", Bpm = 120, VentanaMelodia = 0.15 };
+        t.PulsosDeFondo.AddRange([4.0, 4.3, 4.6]);
+        double[] tarde = [4.12, 4.42, 4.72];
+
+        Assert.True(t.ResolverExperto(2, tarde).Completo);
+        Assert.False(t.ResolverExperto(2, tarde, 0.08).Enganchado);
     }
 
     [Fact]

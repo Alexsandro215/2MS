@@ -458,7 +458,7 @@ func _y_aciertos() -> float:
 ## Una negra es un tiempo; la redonda son cuatro; la corchea, medio.
 func _dur_figura(fig: int, t: float, con_puntillo: bool = false) -> float:
 	if _tramos.is_empty(): return 0.0
-	var d: float = (60.0 / _bpm_en(t)) * (4.0 / float(fig))
+	var d: float = (60.0 / _bpm_sonando(t)) * (4.0 / float(fig))
 	return d * 1.5 if con_puntillo else d
 
 
@@ -488,14 +488,14 @@ func _nombre_figura_actual() -> String:
 ## propia resolucion, y el puntillo parte el paso por la mitad porque ahi es
 ## donde caen los ritmos con puntillo.
 func _paso_rejilla(t: float) -> float:
-	var tiempo: float = 60.0 / _bpm_en(t)
+	var tiempo: float = 60.0 / _bpm_sonando(t)
 	var paso: float = minf(_dur_figura(_figura, t), tiempo)
 	return paso * 0.5 if _puntillo else paso
 
 
 func _encajar_figura(t: float) -> float:
 	if _tramos.is_empty(): return t
-	var i := _tramo_en(t)
+	var i := _tramo_sonando(t)
 	var paso: float = _paso_rejilla(t)
 	if paso <= 0.0: return t
 	var org: float = _origen_de(i)
@@ -1075,7 +1075,7 @@ func _mover_borde(i: int, nuevo: float) -> void:
 ## aproximado en un limite exacto.
 func _pegar_a_rejilla(t: float) -> float:
 	if not _ajustar_a_rejilla or _tramos.is_empty(): return t
-	var i := _tramo_en(t)
+	var i := _tramo_sonando(t)
 	var paso: float = 60.0 / float(_tramos[i]["bpm"])
 	var org: float = _origen_de(i)
 	return org + roundf((t - org) / paso) * paso
@@ -1128,7 +1128,11 @@ func _ver_todo() -> void:
 
 # -------------------------------------------------------------- mapa de tempo
 
-## Indice del tramo que contiene un instante.
+## Indice del tramo que contiene un instante, POR SU BORDE.
+##
+## Es el de EDICION: el tramo que pusiste ahi, el que cambian el BPM, el compas
+## y la seleccion. Para todo lo que suena —metronomo, rejilla, figuras,
+## ensayo— vale _tramo_sonando, que no es lo mismo.
 func _tramo_en(t: float) -> int:
 	var idx := 0
 	for i in _tramos.size():
@@ -1143,6 +1147,31 @@ func _bpm_en(t: float) -> float:
 
 func _compas_en(t: float) -> int:
 	return int(_tramos[_tramo_en(t)]["compas"])
+
+
+## Indice del tramo cuya REJILLA suena en un instante, POR SU ORIGEN REAL.
+##
+## El borde dice QUE compas cambia; la rejilla nueva no arranca hasta la
+## siguiente linea de compas del tramo anterior. Entre el borde y el origen
+## sigue sonando el compas de antes. Decidirlo por el borde hacia que el
+## metronomo diera un clic de mas justo en el borde, y que ese trozo se
+## contara con la rejilla nueva estirada hacia atras.
+##
+## Tiene que calcularse IGUAL que TemaMusical.TramoEn en el nucleo.
+func _tramo_sonando(t: float) -> int:
+	var idx := 0
+	for i in range(1, _tramos.size()):
+		if _origen_de(i) <= t: idx = i
+		else: break
+	return idx
+
+
+func _bpm_sonando(t: float) -> float:
+	return float(_tramos[_tramo_sonando(t)]["bpm"])
+
+
+func _compas_sonando(t: float) -> int:
+	return int(_tramos[_tramo_sonando(t)]["compas"])
 
 
 ## ORIGEN REAL de la rejilla de cada tramo.
@@ -1197,18 +1226,18 @@ func _origen_de(i: int) -> float:
 
 ## Numero de pulso dentro de SU tramo, contado desde el origen real.
 func _pulso_local(t: float) -> int:
-	var i := _tramo_en(t)
+	var i := _tramo_sonando(t)
 	var dur: float = 60.0 / float(_tramos[i]["bpm"])
 	return int(floorf((t - _origen_de(i)) / dur))
 
 
 func _es_inicio_compas(t: float) -> bool:
-	return posmod(_pulso_local(t), _compas_en(t)) == 0
+	return posmod(_pulso_local(t), _compas_sonando(t)) == 0
 
 
 ## Identificador global de pulso, para no repetir el clic.
 func _sello_pulso(t: float) -> int:
-	return _tramo_en(t) * 1000000 + _pulso_local(t)
+	return _tramo_sonando(t) * 1000000 + _pulso_local(t)
 
 
 ## Parte un tramo nuevo aqui. Hereda BPM y compas del anterior.
@@ -2600,10 +2629,10 @@ func _objetivo_mas_cercano(t: float) -> float:
 
 	_indice_objetivo = -1
 
-	var i := _tramo_en(t)
+	var i := _tramo_sonando(t)
 	var org: float = _origen_de(i)
-	var paso: float = 60.0 / _bpm_en(t)
-	if _arma == 2: paso *= float(_compas_en(t))
+	var paso: float = 60.0 / float(_tramos[i]["bpm"])
+	if _arma == 2: paso *= float(int(_tramos[i]["compas"]))
 	return org + roundf((t - org) / paso) * paso
 
 
@@ -2990,7 +3019,7 @@ func _draw() -> void:
 		var guardia := 0
 		while tt <= v.y and guardia < 2000:
 			guardia += 1
-			var i_tr: int = _tramo_en(tt)
+			var i_tr: int = _tramo_sonando(tt)
 			var tr2: Dictionary = _tramos[i_tr]
 			var paso: float = 60.0 / float(tr2["bpm"])
 			var desde2: float = _origen_de(i_tr)
@@ -3250,7 +3279,7 @@ func _draw() -> void:
 	var cy := 130.0
 	var cx := w - ANCHO_COLUMNA * 0.5
 	var fuerte := _es_inicio_compas(t)
-	var cc: Color = COLORES_COMPAS.get(_compas_en(t), Color.WHITE)
+	var cc: Color = COLORES_COMPAS.get(_compas_sonando(t), Color.WHITE)
 	if not fuerte: cc = cc.darkened(0.35)
 	var r := (22.0 if not fuerte else 30.0) + _destello_pulso * 16.0
 	draw_circle(Vector2(cx, cy), r, cc.lerp(Color.WHITE, _destello_pulso * 0.55))
@@ -3260,7 +3289,7 @@ func _draw() -> void:
 			Color(0.5, 1.0, 0.5, _destello_marca), 3.0)
 
 	# ---- puntos del compas: cuantos tiempos tiene y en cual vas ----
-	var n := _compas_en(t)
+	var n := _compas_sonando(t)
 	var tiempo_actual := posmod(_pulso_local(t), n)
 	for k in n:
 		var px := cx - (n - 1) * 11.0 + k * 22.0

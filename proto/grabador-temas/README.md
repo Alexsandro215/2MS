@@ -309,6 +309,10 @@ Si no lo mide, la siguiente no puede empezar donde la pusiste: se va a la
 línea de compás siguiente. Y como cada origen se calcula desde el anterior,
 el error se arrastra.
 
+Entre el borde y ese origen **sigue sonando el compás anterior**: el metrónomo,
+la rejilla, el ensayo y el núcleo del juego lo cuentan así. El borde solo
+decide qué tramo editas.
+
 El panel lo dice con números: **cuántos compases mide el tramo** y **cuánto se
 desplaza el siguiente**, en ms y en pulsos. Por encima de 30 ms avisa en rojo,
 porque ahí ya se oye.

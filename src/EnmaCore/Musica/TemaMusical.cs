@@ -73,14 +73,22 @@ public sealed class TemaMusical
         ? Rejilla
         : [new Tramo(Offset, Bpm, TiemposPorCompas)];
 
-    /// <summary>Indice del tramo que manda en un instante.</summary>
-    public int TramoEn(double t)
+    /// <summary>
+    /// Indice del tramo cuya rejilla manda en un instante.
+    ///
+    /// ⚠️ Se decide por el ORIGEN REAL de cada tramo, no por el borde que se
+    /// coloco. Entre el borde y el origen sigue sonando el compas del tramo
+    /// anterior: decidirlo por el borde hacia que el instante cayera en un
+    /// compas que aun no habia empezado, y el anterior quedaba inalcanzable.
+    /// </summary>
+    public int TramoEn(double t) => TramoEn(t, Origenes());
+
+    private static int TramoEn(double t, double[] o)
     {
-        var tr = Tramos;
         int idx = 0;
-        for (int i = 0; i < tr.Count; i++)
+        for (int i = 1; i < o.Length; i++)
         {
-            if (tr[i].Desde <= t) idx = i;
+            if (o[i] <= t) idx = i;
             else break;
         }
         return idx;
@@ -142,7 +150,7 @@ public sealed class TemaMusical
     {
         var o = Origenes();
         var antes = CompasesAntes(o);
-        int i = TramoEn(t);
+        int i = TramoEn(t, o);
         double dentro = Math.Max(0, t - o[i]);
         return antes[i] + (int)Math.Floor(dentro / Tramos[i].DuracionCompas);
     }
@@ -151,7 +159,7 @@ public sealed class TemaMusical
     public int TiempoEn(double t)
     {
         var o = Origenes();
-        int i = TramoEn(t);
+        int i = TramoEn(t, o);
         var tr = Tramos[i];
         double dentro = Math.Max(0, t - o[i]) % tr.DuracionCompas;
         return (int)Math.Floor(dentro / tr.DuracionTiempo);
@@ -161,7 +169,7 @@ public sealed class TemaMusical
     public double InicioDelCompas(double t)
     {
         var o = Origenes();
-        int i = TramoEn(t);
+        int i = TramoEn(t, o);
         double bar = Tramos[i].DuracionCompas;
         return o[i] + Math.Floor(Math.Max(0, t - o[i]) / bar) * bar;
     }
@@ -186,24 +194,38 @@ public sealed class TemaMusical
     /// Instante en que acaba el compas SIGUIENTE al que contiene a t.
     /// Es el limite de la extension de la melodia de la ligera: terminas el
     /// compas en curso y ademas el siguiente, y ahi se corta.
+    ///
+    /// Por los LIMITES REALES de ese compas siguiente: si es de 6/4 dura la
+    /// mitad mas que uno de 4/4, y si cae ya en otro tramo, se mide con el suyo.
     /// </summary>
     public double FinDeLaExtension(double t)
-        => InicioDelCompas(t) + DuracionCompas * (1 + BonusRitmico.CompasesExtraMaximos);
+        => LimitesDelCompas(CompasEn(t) + BonusRitmico.CompasesExtraMaximos).Hasta;
 
     /// <summary>Desfase con signo respecto al tiempo (pulso) mas cercano.</summary>
-    public double DesfaseAlPulso(double t)
-    {
-        double rel = t - Offset;
-        double masCercano = Math.Round(rel / DuracionTiempo) * DuracionTiempo;
-        return rel - masCercano;
-    }
+    public double DesfaseAlPulso(double t) => DesfaseALaRejilla(t, alCompas: false);
 
     /// <summary>Desfase con signo respecto al inicio de compas mas cercano.</summary>
-    public double DesfaseAlCompas(double t)
+    public double DesfaseAlCompas(double t) => DesfaseALaRejilla(t, alCompas: true);
+
+    /// <summary>
+    /// Desfase con signo respecto a la linea mas cercana de la rejilla que
+    /// SUENA en ese instante: cada tiempo, o cada primer tiempo.
+    ///
+    /// ⚠️ Antes se medía con el BPM y el compas sueltos, como si la cancion
+    /// entera fuera un solo tramo. En «Missin Power» eso daba por fallados
+    /// 189 de sus 330 primeros tiempos.
+    ///
+    /// Basta con redondear dentro del tramo que suena: el origen del tramo
+    /// siguiente cae en una linea de compas de este por construccion, asi que
+    /// la linea del cambio tambien se encuentra.
+    /// </summary>
+    private double DesfaseALaRejilla(double t, bool alCompas)
     {
-        double rel = t - Offset;
-        double masCercano = Math.Round(rel / DuracionCompas) * DuracionCompas;
-        return rel - masCercano;
+        var o = Origenes();
+        int i = TramoEn(t, o);
+        double paso = alCompas ? Tramos[i].DuracionCompas : Tramos[i].DuracionTiempo;
+        double rel = t - o[i];
+        return rel - Math.Round(rel / paso) * paso;
     }
 
     /// <summary>
@@ -297,21 +319,23 @@ public sealed class TemaMusical
     /// Son dos premios al mismo esfuerzo y no se acumulan.
     /// </summary>
     public IntentoExperto ResolverExperto(
-        int compas, IReadOnlyList<double> golpes, double techo = 0.08)
+        int compas, IReadOnlyList<double> golpes, double? techo = null)
     {
         var notas = FondoDelCompas(compas);
         if (notas.Count == 0) return new IntentoExperto(false, false, 0, false);
         if (golpes.Count == 0) return new IntentoExperto(true, false, 0, false);
 
+        double tope = techo ?? VentanaMelodia;
+
         // Enganchar = el primer golpe cae en la PRIMERA nota del compas.
-        if (Math.Abs(golpes[0] - notas[0]) > VentanaDeFondo(0, notas, techo))
+        if (Math.Abs(golpes[0] - notas[0]) > VentanaDeFondo(0, notas, tope))
             return new IntentoExperto(true, false, 0, false);
 
         int gratis = 1;
         for (int g = 1; g < golpes.Count && gratis < notas.Count; g++)
         {
             int siguiente = gratis;
-            if (Math.Abs(golpes[g] - notas[siguiente]) > VentanaDeFondo(siguiente, notas, techo))
+            if (Math.Abs(golpes[g] - notas[siguiente]) > VentanaDeFondo(siguiente, notas, tope))
                 break;                                  // fallo: se acaba aqui
             gratis++;
         }
@@ -333,6 +357,10 @@ public sealed class TemaMusical
     /// <summary>
     /// Techo de la ventana de acierto, en segundos. Es UN solo numero para toda
     /// la cancion; cada nota lo recorta segun lo pegada que este a su vecina.
+    ///
+    /// Sale del "toleranciaMs" del grabador, y es el que usan la cadena y el
+    /// bonus experto cuando no se les pasa otro: el ensayo del grabador juzga
+    /// con este mismo numero, y el nucleo tiene que decir lo mismo.
     /// </summary>
     public double VentanaMelodia { get; init; } = 0.08;
 
@@ -402,14 +430,15 @@ public sealed class TemaMusical
     /// Cuantos golpes de <paramref name="golpes"/> entraron en la cadena antes
     /// de romperse. Si devuelve el total, la cadena aguanto entera.
     /// </returns>
-    public int GolpesEnCadena(IReadOnlyList<double> golpes, double techo = 0.08)
+    public int GolpesEnCadena(IReadOnlyList<double> golpes, double? techo = null)
     {
         if (golpes.Count == 0 || !TieneMelodia) return 0;
 
+        double tope = techo ?? VentanaMelodia;
         int anterior = -1;
         for (int g = 0; g < golpes.Count; g++)
         {
-            int nota = NotaEn(golpes[g], techo);
+            int nota = NotaEn(golpes[g], tope);
 
             if (nota < 0) return g;                        // desafino
             if (anterior >= 0 && nota != anterior + 1)
@@ -424,7 +453,7 @@ public sealed class TemaMusical
     /// true si la cadena aguanto los golpes enteros. Es la condicion para
     /// cobrar el compas extra.
     /// </summary>
-    public bool CadenaCompleta(IReadOnlyList<double> golpes, double techo = 0.08)
+    public bool CadenaCompleta(IReadOnlyList<double> golpes, double? techo = null)
         => golpes.Count > 0 && GolpesEnCadena(golpes, techo) == golpes.Count;
 
     // -------------------------------------------------------------- serializacion
@@ -563,12 +592,14 @@ public sealed class TemaMusical
         bool pasado = !double.IsNaN(inicioDeLaAccion)
                       && CompasEn(t) > CompasEn(inicioDeLaAccion);
 
+        // Los del compas QUE SUENA, no los sueltos del tema: en un 3/4 el
+        // ultimo tiempo es el tercero, y en un 6/4 el cuarto no lo es.
         return new Ritmo(
             Desfase: desfase,
             EnTempo: Math.Abs(DesfaseAlPulso(t)) <= ventana,
             EnCompas: Math.Abs(DesfaseAlCompas(t)) <= ventana,
             PasadoElCompas: pasado,
             TiempoDelCompas: TiempoEn(t),
-            TiemposPorCompas: TiemposPorCompas);
+            TiemposPorCompas: Tramos[TramoEn(t)].TiemposPorCompas);
     }
 }
