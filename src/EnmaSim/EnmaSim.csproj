@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SIMULADOR DE COMBATES.
+
+    Juega combates enteros con el nucleo, sin abrir el motor, para ver como
+    salen los numeros. Es un cliente mas de EnmaCore, como lo sera el juego.
+    Como se lanza: ver el principio de Program.cs.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Enma.Sim</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EnmaCore\EnmaCore.csproj" />
+  </ItemGroup>
+
+</Project>

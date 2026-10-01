@@ -26,6 +26,15 @@ RPG táctico por turnos con capa musical. Combate posicional en línea, habilida
 | [`docs/lore-contexto.md`](docs/lore-contexto.md) | Mundo, distritos, estructura social |
 | [`docs/conflictos.md`](docs/conflictos.md) | Divergencias pendientes de decidir |
 
+## Código
+
+| Ruta | Qué es |
+|---|---|
+| `src/EnmaCore` | El núcleo determinista: stats, reglas, combate, música |
+| `src/EnmaCore.Tests` | Los tests (`dotnet test src/Enma.slnx`) |
+| `src/EnmaSim` | Simulador: juega combates enteros (`dotnet run --project src/EnmaSim`) |
+| `proto/grabador-temas` | Editor de temas musicales en Godot |
+
 ## Fuentes originales
 
 | Ruta | Qué es |
