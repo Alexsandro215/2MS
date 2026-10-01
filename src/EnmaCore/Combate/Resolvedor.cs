@@ -16,7 +16,8 @@ public sealed record EventoImpacto(
     double CmDefensor,
     bool ProvocoKo,
     bool PorUltimaBala,
-    string? ElementoAplicado);
+    string? ElementoAplicado,
+    bool Remato = false);
 
 /// <summary>
 /// Ventana elemental del ciclo.
@@ -87,6 +88,18 @@ public sealed class Resolvedor(Evaluador evaluador)
 
         e.Historial.ImpactosAcertados++;
 
+        // ---- REMATE. A un caido le basta con que el golpe conecte. ----
+        // Sirve cualquier dano, y por eso no se calcula: conectar es morir.
+        // ⚠️ No genera CM: el contador es de dano conectado, y aqui no hay dano.
+        if (defensor.EnKo)
+        {
+            defensor.Muerto = true;
+            _ev.Resolver(e, new Evento(Disparador.AlMorir, defensor.Id, atacante.Id));
+            e.RecalcularCm();
+            return new EventoImpacto(atacante.Id, defensor.Id, true,
+                0, 0, false, 0, 0, false, false, null, Remato: true);
+        }
+
         // ---- 2. DANO ----
         bool critDecidido = e.Rng.Siguiente() * 100.0 < _ev.ResolverStat(e, atacante, Stat.Crit);
 
@@ -118,24 +131,23 @@ public sealed class Resolvedor(Evaluador evaluador)
         if (defendActivo) defensor.Flags.Remove("defendiendo");
 
         // ---- 3. POST-HIT INMEDIATO: Carga Musical ----
-        bool enTempo = e.ClasicalActivo || atacante.TieneFlag("en_tempo");
+        // Cada uno alimenta la barra de SU bando, y CLASICAL multiplica solo
+        // lo que gana el bando que lo tiene encendido.
+        var barraAtacante = e.Barra(atacante.Bando);
+        var barraDefensor = e.Barra(defensor.Bando);
+
+        bool enTempo = barraAtacante.ClasicalActivo || atacante.TieneFlag("en_tempo");
         double cmAtacante = golpe.EsBasico
             ? CargaMusical.GananciaPorImpacto(atacante.Arma, enTempo)
             : 0.0;
         double cmDefensor = CargaMusical.GananciaAlRecibir(
             atacante.Arma, defendActivo, defensor.TieneFlag("invulnerable"));
 
-        if (e.ClasicalActivo)
-        {
-            cmAtacante *= Constantes.ClasicalMultiplicador;
-            cmDefensor *= Constantes.ClasicalMultiplicador;
-        }
+        if (barraAtacante.ClasicalActivo) cmAtacante *= Constantes.ClasicalMultiplicador;
+        if (barraDefensor.ClasicalActivo) cmDefensor *= Constantes.ClasicalMultiplicador;
 
-        // Solo el bando aliado alimenta la barra compartida.
-        double aporte = 0;
-        if (atacante.Bando == Bando.Aliado) aporte += cmAtacante;
-        if (defensor.Bando == Bando.Aliado) aporte += cmDefensor;
-        e.CmActual = Math.Clamp(e.CmActual + aporte, 0, e.CmMax);
+        barraAtacante.Sumar(cmAtacante);
+        barraDefensor.Sumar(cmDefensor);
 
         // ---- 4. PASIVAS ON-HIT / ON-BEING-HIT ----
         _ev.Resolver(e, new Evento(Disparador.AlGolpear, atacante.Id, defensor.Id, r.Final));
@@ -186,6 +198,7 @@ public sealed class Resolvedor(Evaluador evaluador)
         if (ko)
         {
             defensor.EnKo = true;
+            defensor.TurnosEnKo = 0;
             _ev.Resolver(e, new Evento(Disparador.AlCaerEnKo, defensor.Id, atacante.Id));
             // ---- 8. Recalcular capacidad de CM y recortar de inmediato ----
             e.RecalcularCm();

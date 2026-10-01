@@ -90,9 +90,9 @@ public sealed record LeerGlobal(Global Que, string Nombre = "") : Expr
 {
     public override double Evaluar(EstadoCombate e, Contexto ctx) => Que switch
     {
-        Global.CmActual => e.CmActual,
-        Global.CmMax => e.CmMax,
-        Global.CmPct => e.CmPct,
+        Global.CmActual => ctx.BarraDelPortador(e).Actual,
+        Global.CmMax => ctx.BarraDelPortador(e).Max,
+        Global.CmPct => ctx.BarraDelPortador(e).Pct,
         Global.Turno => e.Turno,
         Global.Ciclo => e.Ciclo,
         Global.CmGastadoEsteTurno => e.Historial.CmGastado,

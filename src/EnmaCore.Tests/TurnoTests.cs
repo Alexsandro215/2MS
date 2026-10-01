@@ -5,6 +5,12 @@ using Xunit;
 
 namespace Enma.Core.Tests;
 
+/// <summary>Azar que siempre devuelve lo mismo: 0 acierta siempre, 0.99 nunca.</summary>
+internal sealed class AzarFijo(double valor) : IAleatorio
+{
+    public double Siguiente() => valor;
+}
+
 /// <summary>
 /// Los huecos del turno: orden, fases, compromiso, escondite, swap y huida.
 /// Fuente: manual-tecnico.md  1.4, 2.1 a 2.3, y tablero.md  3, 5, 6 y 9.
@@ -286,8 +292,11 @@ public class EsconditeTests
         Assert.True(m.Ejecutar(new Esconderse { ActorId = "a2", OcultoId = "a1" }).Permitida);
         Assert.Equal(Zona.Escondite, a1.Zona);
 
+        // Llega el turno enemigo en que se le podria rematar, y no se puede.
+        m.OtroCiclo();
         m.CerrarTurnoDeBando();
-        Assert.DoesNotContain(m.CerrarTurnoDeBando(), c => c.Tipo == "muerte");
+        Assert.False(a1.Rematable);
+        Assert.False(m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "a1" }).Permitida);
     }
 }
 
@@ -328,9 +337,10 @@ public class SwapTests
         Assert.Equal(Zona.Banquillo, a1.Zona);
         Assert.Equal(1, m.Estado.Buscar("suplente")!.Linea);
 
-        // Ya no esta expuesto: al cerrar el ciclo no hay remate.
+        // Ya no esta expuesto: cuando llega el turno del remate, no hay remate.
+        m.OtroCiclo();
         m.CerrarTurnoDeBando();
-        Assert.DoesNotContain(m.CerrarTurnoDeBando(), c => c.Tipo == "muerte");
+        Assert.False(a1.Rematable);
     }
 
     [Fact]
@@ -410,5 +420,58 @@ public class HuidaTests
         var m = Duelo.Montar();
         m.Estado.SePuedeHuir = false;
         Assert.False(m.Ejecutar(new Huir { ActorId = "yo" }).Permitida);
+    }
+}
+
+public class BarrasDeCmTests
+{
+    [Fact]
+    public void Cada_bando_llena_su_propia_barra()
+    {
+        var m = Duelo.Montar();
+        m.Estado.CmActual = 0;
+        m.Estado.BarraEnemiga.Actual = 0;
+        m.CerrarTurnoDeBando();
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "yo" });
+
+        Assert.Equal(r.Impactos.Sum(i => i.CmAtacante), m.Estado.BarraEnemiga.Actual, 6);
+        Assert.Equal(r.Impactos.Sum(i => i.CmDefensor), m.Estado.CmActual, 6);
+    }
+
+    [Fact]
+    public void Una_habilidad_enemiga_se_paga_con_la_barra_enemiga()
+    {
+        var m = Duelo.Montar();                       // tu barra: 12 de 12
+        m.Estado.BarraEnemiga.Max = 12;
+        m.Estado.BarraEnemiga.Actual = 12;
+        m.CerrarTurnoDeBando();
+
+        Assert.True(m.Ejecutar(new UsarHabilidad { ActorId = "rival", Tecla = 'Q' }).Permitida);
+        Assert.Equal(12.0, m.Estado.CmActual, 6);      // la tuya, intacta
+        Assert.True(m.Estado.BarraEnemiga.Actual < 12.0);
+    }
+
+    [Fact]
+    public void Sin_CM_propio_el_enemigo_no_lanza_aunque_tu_barra_este_llena()
+    {
+        var m = Duelo.Montar();
+        m.Estado.BarraEnemiga.Actual = 0;
+        m.CerrarTurnoDeBando();
+
+        Assert.False(m.Ejecutar(new UsarHabilidad { ActorId = "rival", Tecla = 'Q' }).Permitida);
+    }
+
+    [Fact]
+    public void El_Clasical_de_un_bando_no_multiplica_al_otro()
+    {
+        var m = Duelo.Montar();
+        m.Estado.ClasicalActivo = true;               // el tuyo
+        m.CerrarTurnoDeBando();
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "yo" });
+
+        Assert.Equal(0.25, r.Impactos[0].CmAtacante, 6);          // el rival, sin x1.5
+        Assert.Equal(0.125 * 1.5, r.Impactos[0].CmDefensor, 6);   // lo tuyo al recibir, si
     }
 }

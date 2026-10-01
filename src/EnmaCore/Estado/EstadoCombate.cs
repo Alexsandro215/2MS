@@ -61,6 +61,24 @@ public sealed class HistorialTurno
 }
 
 /// <summary>
+/// Barra de Carga Musical de UN bando, compartida por todos sus miembros.
+///
+/// Cada bando tiene la suya y con las mismas reglas: la llena su propio
+/// bando, la gasta su propio bando y su CLASICAL es solo suyo. Antes habia
+/// una sola, y una habilidad enemiga se pagaba con el CM del jugador.
+/// </summary>
+public sealed class BarraCm
+{
+    public double Actual { get; set; }
+    public double Max { get; set; } = 12.0;
+    public bool ClasicalActivo { get; set; }
+
+    public double Pct => Max <= 0 ? 0.0 : Actual / Max;
+
+    public void Sumar(double cantidad) => Actual = Math.Clamp(Actual + cantidad, 0, Max);
+}
+
+/// <summary>
 /// Estado completo de un combate. Es lo que el motor de reglas consulta.
 ///
 /// El nucleo recibe un estado y una accion, y devuelve un estado nuevo mas una
@@ -71,17 +89,26 @@ public sealed class EstadoCombate
     public List<Combatiente> Combatientes { get; } = new();
     public List<Terreno> Terrenos { get; } = new();
 
-    /// <summary>Barra de Carga Musical, compartida por todo el equipo aliado.</summary>
-    public double CmActual { get; set; }
-    public double CmMax { get; set; } = 12.0;
+    public BarraCm BarraAliada { get; } = new();
+    public BarraCm BarraEnemiga { get; } = new();
 
-    public double CmPct => CmMax <= 0 ? 0.0 : CmActual / CmMax;
+    public BarraCm Barra(Bando b) => b == Bando.Aliado ? BarraAliada : BarraEnemiga;
+
+    // La barra aliada es la del jugador, y la que lee casi todo: estos
+    // atajos la dejan a mano sin tener que nombrar el bando.
+
+    /// <summary>CM de la barra aliada.</summary>
+    public double CmActual { get => BarraAliada.Actual; set => BarraAliada.Actual = value; }
+    public double CmMax { get => BarraAliada.Max; set => BarraAliada.Max = value; }
+    public double CmPct => BarraAliada.Pct;
+
+    /// <summary>CLASICAL del bando aliado.</summary>
+    public bool ClasicalActivo { get => BarraAliada.ClasicalActivo; set => BarraAliada.ClasicalActivo = value; }
 
     /// <summary>Ciclo = turno completo del bando aliado + turno completo del enemigo.</summary>
     public int Ciclo { get; set; }
     public int Turno { get; set; }
     public Bando BandoActivo { get; set; } = Bando.Aliado;
-    public bool ClasicalActivo { get; set; }
 
     public HistorialTurno Historial { get; } = new();
 
@@ -136,12 +163,19 @@ public sealed class EstadoCombate
     public Terreno? TerrenoDe(Combatiente c) => Terrenos.Find(t =>
         t.BandoDeLaLinea == c.Bando && t.Linea == c.Linea && t.Casilla == c.Posicion);
 
-    /// <summary>Recalcula la capacidad de CM y recorta el excedente.</summary>
+    /// <summary>
+    /// Recalcula la capacidad de CM de los dos bandos y recorta el excedente.
+    /// Activo x1, K.O. x0.5, muerto x0. Ver manual-tecnico.md  6.1.
+    /// </summary>
     public void RecalcularCm()
     {
-        CmMax = Musica.CargaMusical.Capacidad(
-            Combatientes.Where(c => c.Bando == Bando.Aliado && !c.EnKo).Select(c => c.Storage),
-            Combatientes.Where(c => c.Bando == Bando.Aliado && c.EnKo).Select(c => c.Storage));
-        CmActual = Math.Min(CmActual, CmMax);
+        foreach (var b in new[] { Bando.Aliado, Bando.Enemigo })
+        {
+            var barra = Barra(b);
+            barra.Max = Musica.CargaMusical.Capacidad(
+                Combatientes.Where(c => c.Bando == b && !c.EnKo).Select(c => c.Storage),
+                Combatientes.Where(c => c.Bando == b && c.EnKo && !c.Muerto).Select(c => c.Storage));
+            barra.Actual = Math.Min(barra.Actual, barra.Max);
+        }
     }
 }

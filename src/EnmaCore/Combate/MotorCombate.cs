@@ -238,9 +238,14 @@ public sealed class MotorCombate
         if (actor.Posicion == Casilla.Defensiva)
             return new(false, "los basicos estan prohibidos en la casilla defensiva", impactos, cambios, false);
 
+        // Un caido deja de ser objetivo normal. Solo se le vuelve a atacar
+        // para REMATARLO: el bando contrario, y pasada su ventana de rescate.
         var objetivo = Estado.Buscar(b.ObjetivoId);
-        if (objetivo is null || objetivo.EnKo)
+        if (objetivo is null || objetivo.Muerto)
             return new(false, "objetivo invalido", impactos, cambios, false);
+        bool remate = objetivo.EnKo;
+        if (remate && (!objetivo.Rematable || objetivo.Bando == actor.Bando))
+            return No("objetivo invalido: esta en K.O. y aun no se le puede rematar");
         if (objetivo.Zona != Zona.Front)
             return No("objetivo fuera de alcance: escondido o en el banquillo");
 
@@ -268,7 +273,7 @@ public sealed class MotorCombate
         // No se puede cambiar de objetivo entre golpe y golpe: todos van al mismo.
         for (int i = 0; i < golpes; i++)
         {
-            if (objetivo.EnKo) break;
+            if (objetivo.Muerto || (objetivo.EnKo && !remate)) break;
             var golpe = new Resolvedor.Golpe(
                 new Impacto(TipoDano.Fisico, 0, MultSkill: mult),
                 EsBasico: true,
@@ -307,10 +312,11 @@ public sealed class MotorCombate
             return new(false, $"la tecla {tecla} ya se uso este turno", impactos, cambios, false);
 
         double coste = CargaMusical.Coste(tecla, FaseDeLaRun());
-        if (Estado.CmActual < coste)
+        var barra = Estado.Barra(actor.Bando);
+        if (barra.Actual < coste)
             return new(false, "CM insuficiente", impactos, cambios, false);
 
-        Estado.CmActual -= coste;
+        barra.Actual -= coste;
         Estado.Historial.CmGastado += coste;
         Estado.Historial.HabilidadesUsadas++;
         usadas.Add(tecla);
@@ -338,16 +344,19 @@ public sealed class MotorCombate
 
     private ResultadoAccion Cargar(CargarMusica cm, Combatiente actor, List<Cambio> cambios)
     {
-        var (encendido, resultante) = CargaMusical.IntentarClasical(
-            Estado.CmActual, Estado.CmMax, actor.Storage, cm.MultiplicadorSeccion);
+        var barra = Estado.Barra(actor.Bando);
+        string equipo = actor.Bando == Bando.Aliado ? "equipo" : "enemigos";
 
-        Estado.CmActual = resultante;
+        var (encendido, resultante) = CargaMusical.IntentarClasical(
+            barra.Actual, barra.Max, actor.Storage, cm.MultiplicadorSeccion);
+
+        barra.Actual = resultante;
         if (encendido)
         {
-            Estado.ClasicalActivo = true;
-            cambios.Add(new Cambio("clasical", "equipo", "encendido", resultante));
+            barra.ClasicalActivo = true;
+            cambios.Add(new Cambio("clasical", equipo, "encendido", resultante));
         }
-        cambios.Add(new Cambio("cm", "equipo", "carga-musical", resultante));
+        cambios.Add(new Cambio("cm", equipo, "carga-musical", resultante));
 
         return Terminar(actor, "carga musica", new List<EventoImpacto>(), cambios);
     }
@@ -557,26 +566,14 @@ public sealed class MotorCombate
         if (Estado.BandoActivo == Bando.Aliado)
         {
             Estado.BandoActivo = Bando.Enemigo;
+            EmpiezaElTurnoDe(Bando.Enemigo);
             return cambios;
         }
 
         // ---- Fin de ciclo ----
         Estado.BandoActivo = Bando.Aliado;
         Estado.Ciclo++;
-
-        // Un K.O. debe atenderse antes del siguiente turno del villano.
-        // Si llega y sigue en K.O. -> remate -> muerte definitiva.
-        // Solo al que sigue EXPUESTO en el front: cambiarlo al banquillo o
-        // esconderlo es justo la forma de atenderlo.
-        foreach (var c in Estado.Combatientes.Where(c => c.EnKo && c.Bando == Bando.Aliado && c.Zona == Zona.Front))
-        {
-            if (c.Flags.ContainsKey("atendido")) { c.Flags.Remove("atendido"); continue; }
-            cambios.Add(new Cambio("muerte", c.Id, "rematado tras K.O. no atendido", 0));
-            _ev.Resolver(Estado, new Evento(Disparador.AlMorir, c.Id));
-        }
-
-        // CLASICAL termina al iniciar el siguiente turno aliado.
-        Estado.ClasicalActivo = false;
+        EmpiezaElTurnoDe(Bando.Aliado);
 
         // La ventana elemental se reinicia al terminar el turno del villano.
         _res.Ventana.Reiniciar();
@@ -588,6 +585,25 @@ public sealed class MotorCombate
 
         Estado.RecalcularCm();
         return cambios;
+    }
+
+    /// <summary>
+    /// Lo que pasa al empezar el turno de un bando.
+    ///
+    /// CLASICAL se apaga: dura hasta el siguiente turno del bando que lo
+    /// encendio.
+    ///
+    /// Y sus caidos cuentan un turno mas en K.O. Ese turno es la VENTANA DE
+    /// RESCATE: si al llegar el siguiente turno rival siguen expuestos en el
+    /// front, ya se les puede rematar. El remate no es automatico: lo hace un
+    /// golpe del rival, y puede fallar. Ver manual-tecnico.md  10.3.
+    /// </summary>
+    private void EmpiezaElTurnoDe(Bando b)
+    {
+        Estado.Barra(b).ClasicalActivo = false;
+
+        foreach (var c in Estado.Combatientes.Where(c => c.Bando == b))
+            c.TurnosEnKo = c.EnKo && !c.Muerto ? c.TurnosEnKo + 1 : 0;
     }
 
     private FaseCm FaseDeLaRun()

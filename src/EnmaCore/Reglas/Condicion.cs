@@ -94,7 +94,7 @@ public sealed record EsBando(Bando Bando, Selector? Quien = null) : Condicion
 /// <summary>Modo CLASICAL encendido.</summary>
 public sealed record ClasicalActivo : Condicion
 {
-    public override bool Cumple(EstadoCombate e, Contexto ctx) => e.ClasicalActivo;
+    public override bool Cumple(EstadoCombate e, Contexto ctx) => ctx.BarraDelPortador(e).ClasicalActivo;
 }
 
 /// <summary>

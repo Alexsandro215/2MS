@@ -611,6 +611,8 @@ La habilidad escala desde la referencia ofensiva del momento, **no** desde un da
 
 > ⚠️ **Cambio respecto a la versión 1.x:** la Carga Musical **ya no es individual**. Es una **barra compartida de equipo**.
 
+> ⚠️ **Provisional — el bando enemigo tiene su propia barra**, con las mismas reglas: la llenan sus golpes y los que recibe, la gastan sus habilidades, y su CLASICAL es solo suyo. Es la lectura literal de *"juegan con las mismas reglas"* (Apéndice C.1). Antes el motor solo tenía una barra, y una habilidad enemiga se pagaba con el CM del jugador. Pendiente de confirmar al diseñar los enemigos.
+
 ## 6.1 Capacidad
 
 ```

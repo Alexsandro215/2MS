@@ -130,4 +130,13 @@ public sealed record Selector(
 public sealed record Contexto(
     Combatiente? Portador = null,
     Combatiente? Objetivo = null,
-    Evento? Evento = null);
+    Evento? Evento = null)
+{
+    /// <summary>
+    /// La barra de CM del equipo de quien lleva la regla. Una regla sin
+    /// portador —un emblema, el entorno— mira la del jugador.
+    /// </summary>
+    public BarraCm BarraDelPortador(EstadoCombate e) => e.Barra(Portador?.Bando ?? Bando.Aliado);
+
+    public string NombreDelEquipo() => Portador?.Bando == Bando.Enemigo ? "enemigos" : "equipo";
+}

@@ -84,12 +84,34 @@ public sealed class Combatiente
     /// </summary>
     public Dictionary<string, double> Contadores { get; } = new();
 
-    /// <summary>Flags de estado: "anclado", "inmovil", "inmune_ee", "invulnerable".</summary>
+    /// <summary>
+    /// Flags de estado: "anclado", "inmovil", "inmune_ee", "invulnerable", y
+    /// "atendido" —le estan dando primeros auxilios: no se le remata—.
+    /// </summary>
     public Dictionary<string, int> Flags { get; } = new();
 
     public double Hp { get; set; }
     public double Escudo { get; set; }
     public bool EnKo { get; set; }
+
+    /// <summary>
+    /// Muerte definitiva: lo remataron estando en K.O. Sigue contando como
+    /// caido, pero ya no aporta nada a la barra ni se le puede volver a rematar.
+    /// </summary>
+    public bool Muerto { get; set; }
+
+    /// <summary>
+    /// Turnos de su bando que ha EMPEZADO en K.O. Con uno basta: su bando ya
+    /// tuvo su ventana de rescate. Ver manual-tecnico.md  10.3.
+    /// </summary>
+    public int TurnosEnKo { get; set; }
+
+    /// <summary>
+    /// Se le puede rematar: caido, expuesto en el front, con la ventana de
+    /// rescate ya pasada, y sin nadie dandole primeros auxilios.
+    /// </summary>
+    public bool Rematable => EnKo && !Muerto && Zona == Zona.Front
+                             && TurnosEnKo >= 1 && !TieneFlag("atendido");
 
     public Stats.Desgaste Desgaste { get; } = new();
     public Musica.ClaseArma Arma { get; set; } = Musica.ClaseArma.Media;

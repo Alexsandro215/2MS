@@ -294,35 +294,78 @@ public class BucleCombateTests
     }
 
     [Fact]
-    public void Un_KO_no_atendido_se_remata_al_cerrar_el_ciclo()
+    public void Un_KO_sin_rescatar_se_remata_en_el_siguiente_turno_enemigo()
     {
-        var caido = Escenario.Pj("caido");
-        var vivo = Escenario.Pj("vivo");
-        var e = Escenario.Combate(caido, vivo, Escenario.Pj("rival", Bando.Enemigo));
-        var m = new MotorCombate(e);
+        // manual-tecnico.md  10.3: cae en el turno enemigo N, su equipo tiene
+        // un turno para rescatarlo, y en el N+1 el rival puede rematarlo.
+        var m = Mesa.Montar();
+        var a1 = m.Estado.Buscar("a1")!;
+        var rematar = new AtaqueBasico { ActorId = "rival", ObjetivoId = "a1" };
+        m.Estado.Rng = new AzarFijo(0.0);              // todo acierta
 
-        caido.EnKo = true;
+        m.CerrarTurnoDeBando();                        // turno enemigo N: cae
+        a1.EnKo = true;
+        Assert.False(m.Ejecutar(rematar).Permitida);   // recien caido: aun no
 
-        m.CerrarTurnoDeBando();                    // aliados -> enemigos
-        var cambios = m.CerrarTurnoDeBando();      // enemigos -> fin de ciclo
+        m.CerrarTurnoDeBando();                        // turno aliado: ventana de rescate
+        Assert.False(a1.Muerto);                       // cerrar el ciclo ya no mata
 
-        Assert.Contains(cambios, c => c.Tipo == "muerte" && c.ObjetivoId == "caido");
+        m.CerrarTurnoDeBando();                        // turno enemigo N+1
+        var r = m.Ejecutar(rematar);
+        Assert.True(r.Permitida);
+        Assert.Contains(r.Impactos, i => i.Remato);
+        Assert.True(a1.Muerto);
     }
 
     [Fact]
-    public void Un_KO_atendido_sobrevive_al_ciclo()
+    public void El_remate_pasa_por_el_acierto_y_puede_fallar()
     {
-        var caido = Escenario.Pj("caido");
-        var e = Escenario.Combate(caido, Escenario.Pj("rival", Bando.Enemigo));
-        var m = new MotorCombate(e);
+        var m = Mesa.Montar();
+        var a1 = m.Estado.Buscar("a1")!;
+        a1.EnKo = true;
+        m.OtroCiclo();
+        m.CerrarTurnoDeBando();
+        Assert.True(a1.Rematable);
 
-        caido.EnKo = true;
-        caido.Flags["atendido"] = 1;
+        m.Estado.Rng = new AzarFijo(0.99);             // nunca acierta: el techo es 95%
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "a1" });
+
+        Assert.True(r.Permitida);
+        Assert.All(r.Impactos, i => Assert.False(i.Acerto));
+        Assert.False(a1.Muerto);
+    }
+
+    [Fact]
+    public void A_un_KO_atendido_no_se_le_remata()
+    {
+        var m = Mesa.Montar();
+        var a1 = m.Estado.Buscar("a1")!;
+        a1.EnKo = true;
+        m.OtroCiclo();
+        m.CerrarTurnoDeBando();
+
+        a1.Flags["atendido"] = 2;                      // primeros auxilios en curso
+        Assert.False(a1.Rematable);
+        Assert.False(m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "a1" }).Permitida);
+    }
+
+    [Fact]
+    public void Un_muerto_deja_de_aportar_a_la_barra()
+    {
+        // manual-tecnico.md  6.1: activo x1, K.O. x0.5, muerto x0.
+        var m = Mesa.Montar();                         // 5 aliados con storage 3
+        var a1 = m.Estado.Buscar("a1")!;
+        a1.EnKo = true;
+        m.OtroCiclo();
+        Assert.Equal(13.5, m.Estado.CmMax, 3);         // 4 x 3 + 0.5 x 3
 
         m.CerrarTurnoDeBando();
-        var cambios = m.CerrarTurnoDeBando();
+        m.Estado.Rng = new AzarFijo(0.0);
+        m.Ejecutar(new AtaqueBasico { ActorId = "rival", ObjetivoId = "a1" });
 
-        Assert.DoesNotContain(cambios, c => c.Tipo == "muerte");
+        Assert.True(a1.Muerto);
+        Assert.Equal(12.0, m.Estado.CmMax, 3);
+        Assert.False(a1.Rematable);                    // no se muere dos veces
     }
 
     [Fact]

@@ -106,24 +106,25 @@ public sealed record SumarDesgaste(Expr Cantidad, Selector? A = null) : Efecto
     }
 }
 
-/// <summary>Fija el CM del equipo a una fraccion del maximo.</summary>
+/// <summary>Fija el CM del equipo del portador a una fraccion del maximo.</summary>
 public sealed record FijarCm(Expr Fraccion) : Efecto
 {
     public override void Aplicar(EstadoCombate e, Contexto ctx, List<Cambio> log)
     {
-        e.CmActual = Math.Clamp(Fraccion.Evaluar(e, ctx), 0, 1) * e.CmMax;
-        log.Add(new Cambio("cm", "equipo", "fijado", e.CmActual));
+        var barra = ctx.BarraDelPortador(e);
+        barra.Actual = Math.Clamp(Fraccion.Evaluar(e, ctx), 0, 1) * barra.Max;
+        log.Add(new Cambio("cm", ctx.NombreDelEquipo(), "fijado", barra.Actual));
     }
 }
 
-/// <summary>Suma o resta CM al pool del equipo, recortando al maximo.</summary>
+/// <summary>Suma o resta CM al pool del equipo del portador, recortando al maximo.</summary>
 public sealed record AjustarCm(Expr Cantidad) : Efecto
 {
     public override void Aplicar(EstadoCombate e, Contexto ctx, List<Cambio> log)
     {
         double v = Cantidad.Evaluar(e, ctx);
-        e.CmActual = Math.Clamp(e.CmActual + v, 0, e.CmMax);
-        log.Add(new Cambio("cm", "equipo", "ajuste", v));
+        ctx.BarraDelPortador(e).Sumar(v);
+        log.Add(new Cambio("cm", ctx.NombreDelEquipo(), "ajuste", v));
     }
 }
 
