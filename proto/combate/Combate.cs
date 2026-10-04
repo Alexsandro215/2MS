@@ -68,6 +68,10 @@ public partial class Combate : Control
     private SpinBox _desgaste = null!;
     private Label _desgasteEfecto = null!;
     private VBoxContainer _statsCuerpo = null!;
+    private ScrollContainer _statsScroll = null!;
+
+    /// <summary>Para las capturas: bajar el panel de stats hasta el fondo antes de sacarla.</summary>
+    private bool _bajarAlCapturar;
 
     /// <summary>true: el panel enseña el MAX aspirable, editable. false: lo que vale ahora.</summary>
     private bool _verAspirable;
@@ -110,6 +114,7 @@ public partial class Combate : Control
         _cicloEmpezado = false;
         _elegido = null;
         _inspeccionado = null;
+        _secciones = [.. SeccionesDelDiseno];
 
         _bitacora.Clear();
         Escribir($"[b]Combate de prueba contra el muñeco[/b] · semilla {semilla}");
@@ -176,8 +181,15 @@ public partial class Combate : Control
         return rival is null ? null : new AtaqueBasico { ActorId = quien.Id, ObjetivoId = rival.Id };
     }
 
-    private static readonly (string Nombre, double Mult)[] Secciones =
-        [("Calma ×0.5", 0.5), ("Base ×1", 1.0), ("Estribillo ×1.8", 1.8)];
+    private static readonly string[] NombresSeccion = ["Calma", "Base", "Estribillo"];
+
+    /// <summary>
+    /// Lo que multiplica la Carga Musical en cada seccion de la cancion. Sin la
+    /// cancion conectada, los elige el boton; aqui se pueden cambiar.
+    /// </summary>
+    private static readonly double[] SeccionesDelDiseno = [0.5, 1.0, 1.8];
+
+    private double[] _secciones = [.. SeccionesDelDiseno];
 
     // ------------------------------------------------------------ pantalla
 
@@ -313,6 +325,7 @@ public partial class Combate : Control
         };
         desplazable.AddChild(_statsCuerpo);
         _stats.AddChild(desplazable);
+        _statsScroll = desplazable;
 
         var panelStats = Panel(_stats);
         panelStats.SizeFlagsHorizontal = SizeFlags.ExpandFill;
@@ -480,8 +493,8 @@ public partial class Combate : Control
                 })).ToArray();
         _acciones.AddChild(Fila(Etiqueta("Moverse", 15, Gris), Fila(casillas)));
 
-        var cargas = Secciones.Select(s =>
-            (Control)Boton(s.Nombre, () => Hacer(new CargarMusica { ActorId = id, MultiplicadorSeccion = s.Mult }),
+        var cargas = Enumerable.Range(0, NombresSeccion.Length).Select(k =>
+            (Control)Boton($"{NombresSeccion[k]} ×{Num(_secciones[k])}", () => Hacer(new CargarMusica { ActorId = id, MultiplicadorSeccion = _secciones[k] }),
                 ayuda: "Aporta 3 CM × la sección de la canción. Si llena la barra, enciende CLASICAL. Cierra el turno.")).ToArray();
         _acciones.AddChild(Fila(
             Etiqueta("Carga Musical", 15, Gris), Fila(cargas), Separador(),
@@ -672,6 +685,17 @@ public partial class Combate : Control
 
             if (orden == "abrir") { Abrir(arg); continue; }
             if (orden == "inspeccionar") { _inspeccionado = arg; Refrescar(); continue; }
+            if (orden == "bajar") { _bajarAlCapturar = true; continue; }
+            if (orden == "cm" && partes.Length > 2
+                && typeof(AjustesCm).GetProperty(arg, System.Reflection.BindingFlags.IgnoreCase
+                    | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance) is { } propiedad
+                && double.TryParse(partes[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double valorCm))
+            {
+                propiedad.SetValue(_e.AjustesCm, valorCm);
+                Escribir($"✎ CM · {propiedad.Name} → {Num3(valorCm)}", Cian);
+                Refrescar();
+                continue;
+            }
             if (orden == "vista") { _verAspirable = arg == "aspirable"; Refrescar(); continue; }
             if (orden is "nivel" or "desgaste" && partes.Length > 2 && double.TryParse(partes[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double dato))
             {
@@ -697,7 +721,7 @@ public partial class Combate : Control
                 "basicos" => Basicos(quien),
                 "mover" when n is >= 1 and <= 3 => new Moverse { ActorId = quien.Id, Destino = (Casilla)(n - 1) },
                 "tecla" when arg.Length == 1 => new UsarHabilidad { ActorId = quien.Id, Tecla = char.ToUpperInvariant(arg[0]) },
-                "carga" when n is >= 1 and <= 3 => new CargarMusica { ActorId = quien.Id, MultiplicadorSeccion = Secciones[n - 1].Mult },
+                "carga" when n is >= 1 and <= 3 => new CargarMusica { ActorId = quien.Id, MultiplicadorSeccion = _secciones[n - 1] },
                 "objeto" when n is >= 1 and <= 3 => new UsarObjeto
                 {
                     ActorId = quien.Id, ObjetoId = n == 1 ? "pan" : n == 2 ? "vendaje" : "artilugio",
@@ -721,6 +745,12 @@ public partial class Combate : Control
     {
         for (int i = 0; i < 6; i++)
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        if (_bajarAlCapturar)
+        {
+            _statsScroll.ScrollVertical = 100_000;
+            for (int i = 0; i < 4; i++)
+                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        }
         var error = GetViewport().GetTexture().GetImage().SavePng(ruta);
         GD.Print(error == Error.Ok ? $"captura: {ruta}" : $"captura fallida: {error}");
         GetTree().Quit();
@@ -900,11 +930,94 @@ public partial class Combate : Control
         }
         _statsCuerpo.AddChild(secundarias);
 
-        if (!_verAspirable)
+        if (_verAspirable)
+        {
+            var cabeceraCm = new HBoxContainer();
+            var grupoCm = Grupo("CARGA MUSICAL · ESTE COMBATE, PARA TODOS");
+            grupoCm.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            cabeceraCm.AddChild(grupoCm);
+            cabeceraCm.AddChild(Boton("Volver al diseño", VolverAlDiseno,
+                ayuda: "Deja todos los números de la Carga Musical como dice el diseño."));
+            _statsCuerpo.AddChild(cabeceraCm);
+            _statsCuerpo.AddChild(AjustesDeCm());
+        }
+        else
         {
             _statsCuerpo.AddChild(Grupo($"CARGA MUSICAL · {NombreArma(c.Arma).ToUpperInvariant()}"));
             _statsCuerpo.AddChild(BonusDeCm(c, ev));
         }
+    }
+
+    /// <summary>
+    /// Los numeros de la economia de CM de este combate, editables. Valen para
+    /// todos: el motor los lee de AjustesCm en cada golpe, carga y tecla.
+    /// </summary>
+    private GridContainer AjustesDeCm()
+    {
+        var g = Rejilla(2);
+        var a = new Func<AjustesCm>(() => _e.AjustesCm);
+
+        g.AddChild(Ajuste("🎼", "Por golpe · ligera", "CM por golpe de la ligera que conecta. Diseño: 1/8, la corchea.",
+            () => a().PorGolpeLigera, v => a().PorGolpeLigera = v, 0.005));
+        g.AddChild(Ajuste("🎯", "En tempo · ligera ×", "Lo que se multiplica en tempo. Diseño: ×1.2, el suelo común.",
+            () => a().TempoLigera, v => a().TempoLigera = v, 0.05));
+        g.AddChild(Ajuste("🎼", "Por golpe · media", "CM por golpe de la media que conecta. Diseño: 1/4, la negra.",
+            () => a().PorGolpeMedia, v => a().PorGolpeMedia = v, 0.005));
+        g.AddChild(Ajuste("🎯", "En tempo · media ×", "Diseño: ×2, el premio de la generadora del equipo.",
+            () => a().TempoMedia, v => a().TempoMedia = v, 0.05));
+        g.AddChild(Ajuste("🎼", "Por golpe · pesada", "CM por golpe de la pesada que conecta. Diseño: 1/2, la blanca.",
+            () => a().PorGolpePesada, v => a().PorGolpePesada = v, 0.005));
+        g.AddChild(Ajuste("🎯", "En tempo · pesada ×", "Diseño: ×1.2, el suelo común. Los documentos aún dicen ×2 para todas.",
+            () => a().TempoPesada, v => a().TempoPesada = v, 0.05));
+        g.AddChild(Ajuste("🛡️", "Al recibir · fracción", "Al recibir un golpe se gana esta fracción de la figura de quien pega. Diseño: la mitad.",
+            () => a().AlRecibir, v => a().AlRecibir = v, 0.05));
+        g.AddChild(Ajuste("🔰", "En guardia ×", "Defendiendo, lo que se gana al recibir se multiplica por esto. Diseño: ×2.",
+            () => a().EnGuardia, v => a().EnGuardia = v, 0.1));
+        g.AddChild(Ajuste("✦", "CLASICAL ×", "Lo que multiplica CLASICAL toda la CM de su bando. Diseño: ×1.5.",
+            () => a().Clasical, v => a().Clasical = v, 0.05));
+        for (int k = 0; k < NombresSeccion.Length; k++)
+        {
+            int i = k;
+            g.AddChild(Ajuste("🎵", $"Sección {NombresSeccion[i].ToLowerInvariant()} ×",
+                "Lo que multiplica la Carga Musical en esa sección de la canción. Diseño: calma ×0.5, base ×1, estribillo ×1.8.",
+                () => _secciones[i], v => _secciones[i] = v, 0.1));
+        }
+        g.AddChild(Ajuste("🔑", "Precio de Q", "Precio base de la tecla, antes del descuento de la fase. Diseño: 1.",
+            () => a().PrecioQ, v => a().PrecioQ = v, 0.5));
+        g.AddChild(Ajuste("📅", "Fase early ×", "Descuento del precio en la fase early (niveles 1 a 5). Diseño: ×1.",
+            () => a().FaseEarly, v => a().FaseEarly = v, 0.05));
+        g.AddChild(Ajuste("🔑", "Precio de W", "Diseño: 2.",
+            () => a().PrecioW, v => a().PrecioW = v, 0.5));
+        g.AddChild(Ajuste("📅", "Fase mid ×", "Descuento en la fase mid (niveles 6 a 12). Diseño: ×0.6.",
+            () => a().FaseMid, v => a().FaseMid = v, 0.05));
+        g.AddChild(Ajuste("🔑", "Precio de E", "Diseño: 3.",
+            () => a().PrecioE, v => a().PrecioE = v, 0.5));
+        g.AddChild(Ajuste("📅", "Fase late ×", "Descuento en la fase late (niveles 13 a 18). Diseño: ×0.4. El suelo duro es ×0.33.",
+            () => a().FaseLate, v => a().FaseLate = v, 0.05));
+        g.AddChild(Ajuste("🔑", "Precio de R", "Diseño: 4.",
+            () => a().PrecioR, v => a().PrecioR = v, 0.5));
+        return g;
+    }
+
+    private Control Ajuste(string icono, string nombre, string ayuda, Func<double> leer, Action<double> escribir, double paso)
+    {
+        var campo = Spin(leer(), 100, paso, "", v =>
+        {
+            double antes = leer();
+            if (Math.Abs(antes - v) < 1e-9) return;
+            escribir(v);
+            Escribir($"✎ CM · {nombre.TrimEnd('×', ' ')}: {Num3(antes)} → {Num3(v)}", Cian);
+            RefrescarMenosStats();
+        });
+        return Fila(icono, nombre, ayuda, Uso.EnCombate, campo);
+    }
+
+    private void VolverAlDiseno()
+    {
+        _e.AjustesCm = new AjustesCm();
+        _secciones = [.. SeccionesDelDiseno];
+        Escribir("✎ CM · vuelven todos los números del diseño", Cian);
+        Refrescar();
     }
 
     /// <summary>Una stat en la vista aspirable: su MAX, en un campo que se puede editar.</summary>
@@ -1002,12 +1115,13 @@ public partial class Combate : Control
     /// </summary>
     private GridContainer BonusDeCm(Combatiente c, Enma.Core.Reglas.Evaluador ev)
     {
+        var a = _e.AjustesCm;
         bool clasical = _e.Barra(c.Bando).ClasicalActivo;
-        double x = clasical ? Constantes.ClasicalMultiplicador : 1.0;
-        string marca = clasical ? "✦ ×1.5" : "";
+        double x = clasical ? a.Clasical : 1.0;
+        string marca = clasical ? $"✦ ×{Num(a.Clasical)}" : "";
 
-        double golpe = CargaMusical.BasePorImpacto(c.Arma);
-        double enTempo = CargaMusical.GananciaPorImpacto(c.Arma, enTempo: true);
+        double golpe = CargaMusical.BasePorImpacto(c.Arma, a);
+        double enTempo = CargaMusical.GananciaPorImpacto(c.Arma, enTempo: true, ajustes: a);
         int golpes = CargaMusical.Golpes(CargaMusical.GolpesBase(c.Arma),
             ev.ResolverStat(_e, c, Stat.VelocidadAtaque) / 100.0);
         string figura = c.Arma switch
@@ -1017,11 +1131,9 @@ public partial class Combate : Control
             ClaseArma.Pesada => "blanca",
             _ => "figura",
         };
-        string bonoTempo = c.Arma == ClaseArma.Media
-            ? $"×{Num(Enma.Core.Musica.BonusRitmico.CmPorPulsoDeLaMedia)}"
-            : $"+{Num(Constantes.BonusTempo * 100)}%";
-        double recibirMin = CargaMusical.GananciaAlRecibir(ClaseArma.Ligera, defendActivo: false);
-        double recibirMax = CargaMusical.GananciaAlRecibir(ClaseArma.Pesada, defendActivo: false);
+        string bonoTempo = $"×{Num(a.Tempo(c.Arma))}";
+        double recibirMin = CargaMusical.GananciaAlRecibir(ClaseArma.Ligera, defendActivo: false, ajustes: a);
+        double recibirMax = CargaMusical.GananciaAlRecibir(ClaseArma.Pesada, defendActivo: false, ajustes: a);
         double aporte = c.Storage;
 
         var g = Rejilla(2);
@@ -1042,14 +1154,14 @@ public partial class Combate : Control
             "La mitad de la figura de quien te pega: de una ligera 0.0625, de una media 0.125, de una pesada 0.25. "
             + "En guardia, el doble. El muñeco no pega, así que aquí no se ve.",
             Uso.EnCombate));
-        g.AddChild(EntradaLibre("🎵", "Carga Musical", $"{Cm(aporte * 0.5 * x)} · {Cm(aporte * x)} · {Cm(aporte * 1.8 * x)}", marca, Cian,
+        g.AddChild(EntradaLibre("🎵", "Carga Musical", string.Join(" · ", _secciones.Select(m => Cm(aporte * m * x))), marca, Cian,
             "Tu aporte × la sección de la canción: calma, base y estribillo. Si llena la barra, enciende CLASICAL. Cierra el turno.",
             Uso.EnCombate));
-        g.AddChild(EntradaLibre("✦", "CLASICAL", clasical ? "encendido" : "apagado", clasical ? "×1.5" : "", Cian,
+        g.AddChild(EntradaLibre("✦", "CLASICAL", clasical ? "encendido" : "apagado", clasical ? $"×{Num(a.Clasical)}" : "", Cian,
             "×1.5 a toda la CM que gana el bando, hasta su siguiente turno. Se enciende cuando una Carga Musical llena la barra.",
             Uso.EnCombate));
         g.AddChild(EntradaLibre("🔑", "Coste QWER", string.Join(" · ", "QWER".Select(t => Cm(_m.CosteDeTecla(t)))), "", Texto,
-            "Lo que cuesta cada tecla en esta fase de la run (late, ×0.4). A nivel 1 serían 1 · 2 · 3 · 4.",
+            "Lo que cuesta cada tecla en esta fase de la run: precio base × descuento de la fase.",
             Uso.EnCombate));
         return g;
     }
@@ -1262,6 +1374,8 @@ public partial class Combate : Control
     }
 
     private static string Num(double x) => x.ToString("0.#", CultureInfo.InvariantCulture);
+
+    private static string Num3(double x) => x.ToString("0.###", CultureInfo.InvariantCulture);
 
     private static string Dano(double x) => x.ToString("0.0", CultureInfo.InvariantCulture);
 

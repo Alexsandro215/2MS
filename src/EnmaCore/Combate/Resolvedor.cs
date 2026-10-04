@@ -143,14 +143,15 @@ public sealed class Resolvedor(Evaluador evaluador)
         // CLASICAL no regala el tempo: solo multiplica x1.5 lo que se gana.
         // Antes contaba todo golpe como en tempo y la media cobraba x3.
         bool enTempo = atacante.TieneFlag("en_tempo");
+        var ajustes = e.AjustesCm;
         double cmAtacante = golpe.EsBasico
-            ? CargaMusical.GananciaPorImpacto(atacante.Arma, enTempo)
+            ? CargaMusical.GananciaPorImpacto(atacante.Arma, enTempo, ajustes: ajustes)
             : 0.0;
         double cmDefensor = CargaMusical.GananciaAlRecibir(
-            atacante.Arma, defendActivo, defensor.TieneFlag("invulnerable"));
+            atacante.Arma, defendActivo, defensor.TieneFlag("invulnerable"), ajustes);
 
-        if (barraAtacante.ClasicalActivo) cmAtacante *= Constantes.ClasicalMultiplicador;
-        if (barraDefensor.ClasicalActivo) cmDefensor *= Constantes.ClasicalMultiplicador;
+        if (barraAtacante.ClasicalActivo) cmAtacante *= ajustes.Clasical;
+        if (barraDefensor.ClasicalActivo) cmDefensor *= ajustes.Clasical;
 
         barraAtacante.Sumar(cmAtacante);
         barraDefensor.Sumar(cmDefensor);

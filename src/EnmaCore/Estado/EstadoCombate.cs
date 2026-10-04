@@ -94,6 +94,12 @@ public sealed class EstadoCombate
 
     public BarraCm Barra(Bando b) => b == Bando.Aliado ? BarraAliada : BarraEnemiga;
 
+    /// <summary>
+    /// Los numeros de la economia de CM de este combate. Empiezan con los del
+    /// diseño; cambiarlos sirve para probar otro balance sin tocar el codigo.
+    /// </summary>
+    public Musica.AjustesCm AjustesCm { get; set; } = new();
+
     // La barra aliada es la del jugador, y la que lee casi todo: estos
     // atajos la dejan a mano sin tener que nombrar el bando.
 

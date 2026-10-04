@@ -594,3 +594,85 @@ public class CasillasTests
         Assert.Equal(2, m.Estado.ReglasActivas.Count(r => r.Fuente == Fuente.Casilla));
     }
 }
+
+/// <summary>
+/// Los numeros de la economia de CM son ajustes de cada combate: empiezan con
+/// los del diseño y se pueden cambiar para probar otro balance.
+/// </summary>
+public class AjustesCmTests
+{
+    [Fact]
+    public void Sin_tocar_nada_los_ajustes_son_los_del_diseno()
+    {
+        var a = new AjustesCm();
+        foreach (var arma in new[] { ClaseArma.Ligera, ClaseArma.Media, ClaseArma.Pesada })
+        {
+            Assert.Equal(CargaMusical.BasePorImpacto(arma), a.PorGolpe(arma), 9);
+            Assert.Equal(CargaMusical.GananciaPorImpacto(arma, enTempo: true), a.PorGolpe(arma) * a.Tempo(arma), 9);
+        }
+        Assert.Equal(2.0, a.TempoMedia, 9);                       // la media, x2
+        Assert.Equal(1.2, a.TempoLigera, 9);                      // el resto, +20%
+        Assert.Equal(1.5, a.Clasical, 9);
+        Assert.Equal(10.0, "QWER".Sum(t => a.Precio(t)), 9);      // el combo completo
+        Assert.Equal(0.4, a.Fase(FaseCm.Late), 9);
+    }
+
+    [Fact]
+    public void Lo_que_gana_cada_golpe_sale_de_los_ajustes_del_combate()
+    {
+        var m = Duelo.Montar(ClaseArma.Media);
+        m.Estado.AjustesCm.PorGolpeMedia = 1.0;
+        m.Estado.CmActual = 0;
+        m.Estado.Rng = new AzarFijo(0.0);
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "yo", ObjetivoId = "rival" });
+        Assert.All(r.Impactos, i => Assert.Equal(1.0, i.CmAtacante, 9));
+    }
+
+    [Fact]
+    public void Con_los_ajustes_se_prueba_el_x2_para_todas_las_armas()
+    {
+        // Lo que dicen los documentos, frente al +20% del codigo.
+        var m = Duelo.Montar(ClaseArma.Ligera);
+        m.Estado.AjustesCm.TempoLigera = 2.0;
+        m.Estado.Rng = new AzarFijo(0.0);
+        m.Estado.Buscar("yo")!.Flags["en_tempo"] = 1;
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "yo", ObjetivoId = "rival" });
+        Assert.All(r.Impactos, i => Assert.Equal(0.25, i.CmAtacante, 9));
+    }
+
+    [Fact]
+    public void Los_ajustes_cambian_el_coste_de_las_teclas()
+    {
+        var m = Duelo.Montar();
+        m.Estado.AjustesCm.PrecioQ = 0;
+        m.Estado.CmActual = 0;
+
+        Assert.Equal(0.0, m.CosteDeTecla('Q'), 9);
+        Assert.True(m.Ejecutar(new UsarHabilidad { ActorId = "yo", Tecla = 'Q' }).Permitida);   // gratis
+    }
+
+    [Fact]
+    public void Los_ajustes_cambian_lo_que_multiplica_CLASICAL()
+    {
+        var m = Duelo.Montar();
+        m.Estado.AjustesCm.Clasical = 2.0;
+        m.Estado.CmActual = 0;
+        m.Estado.ClasicalActivo = true;
+
+        m.Ejecutar(new CargarMusica { ActorId = "yo", MultiplicadorSeccion = 1.0 });
+        Assert.Equal(3.0 * 2.0, m.Estado.CmActual, 9);
+    }
+
+    [Fact]
+    public void Cada_combate_lleva_sus_ajustes()
+    {
+        var uno = Duelo.Montar();
+        var otro = Duelo.Montar();
+        uno.Estado.AjustesCm.PorGolpeMedia = 5;
+
+        Assert.Equal(0.25, otro.Estado.AjustesCm.PorGolpeMedia, 9);
+        Assert.Equal(0.25, CargaMusical.BasePorImpacto(ClaseArma.Media), 9);   // el diseño, intacto
+    }
+}

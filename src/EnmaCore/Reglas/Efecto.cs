@@ -128,7 +128,7 @@ public sealed record AjustarCm(Expr Cantidad) : Efecto
     {
         var barra = ctx.BarraDelPortador(e);
         double v = Cantidad.Evaluar(e, ctx);
-        if (v > 0 && barra.ClasicalActivo) v *= Constantes.ClasicalMultiplicador;
+        if (v > 0 && barra.ClasicalActivo) v *= e.AjustesCm.Clasical;
         barra.Sumar(v);
         log.Add(new Cambio("cm", ctx.NombreDelEquipo(), "ajuste", v));
     }

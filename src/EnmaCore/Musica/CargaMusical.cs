@@ -27,14 +27,15 @@ public enum FaseCm { Early, Mid, Late }
 /// </summary>
 public static class CargaMusical
 {
+    /// <summary>
+    /// Los ajustes del diseño, para quien no pase los de su combate. Nadie
+    /// mas tiene esta instancia, asi que nadie la cambia.
+    /// </summary>
+    private static readonly AjustesCm Diseno = new();
+
     /// <summary>CM base generada por impacto, segun la figura ritmica del arma.</summary>
-    public static double BasePorImpacto(ClaseArma arma) => arma switch
-    {
-        ClaseArma.Ligera => 1.0 / 8.0,
-        ClaseArma.Media => 1.0 / 4.0,
-        ClaseArma.Pesada => 1.0 / 2.0,
-        _ => 0.0
-    };
+    public static double BasePorImpacto(ClaseArma arma, AjustesCm? ajustes = null)
+        => (ajustes ?? Diseno).PorGolpe(arma);
 
     /// <summary>
     /// Golpes base por arma antes de Velocidad de Ataque. Son valores de PARTIDA,
@@ -68,35 +69,34 @@ public static class CargaMusical
     }
 
     /// <summary>
-    /// CM ganada por un impacto de basico.
-    /// En tempo el basico vale el DOBLE. Si el impacto falla, CM = 0.
+    /// CM ganada por un impacto de basico: la figura del arma, multiplicada si
+    /// va en tempo. Si el impacto falla, CM = 0.
     /// </summary>
-    public static double GananciaPorImpacto(ClaseArma arma, bool enTempo, bool impacto = true)
+    public static double GananciaPorImpacto(ClaseArma arma, bool enTempo, bool impacto = true, AjustesCm? ajustes = null)
     {
         // Sin conectar no hay CM, y por tanto no hay nada que multiplicar.
         // Es lo que obliga a abrir con la ligera antes de que la media pueda
         // sostener: ver musica.md  1.
         if (!impacto) return 0.0;
 
-        double cm = BasePorImpacto(arma);
-        if (!enTempo) return cm;
-
-        // La MEDIA se lleva el premio grande; el resto, el suelo comun.
-        // No se acumulan: o uno o el otro.
-        return arma == ClaseArma.Media
-            ? cm * BonusRitmico.CmPorPulsoDeLaMedia
-            : cm * (1.0 + Constantes.BonusTempo);
+        // La MEDIA se lleva el premio grande; el resto, el suelo comun. No se
+        // acumulan: cada arma tiene su multiplicador. Ver AjustesCm.
+        var a = ajustes ?? Diseno;
+        double cm = a.PorGolpe(arma);
+        return enTempo ? cm * a.Tempo(arma) : cm;
     }
 
     /// <summary>
     /// CM ganada al RECIBIR dano: la mitad de lo que genera el arma del atacante.
     /// El tempo NO aplica al recibir. DEFEND duplica. Si es invulnerable, no gana.
     /// </summary>
-    public static double GananciaAlRecibir(ClaseArma armaAtacante, bool defendActivo, bool invulnerable = false)
+    public static double GananciaAlRecibir(ClaseArma armaAtacante, bool defendActivo, bool invulnerable = false,
+        AjustesCm? ajustes = null)
     {
         if (invulnerable) return 0.0;
-        double g = Constantes.CmDefensorFactor * BasePorImpacto(armaAtacante);
-        return defendActivo ? g * Constantes.DefendMultiplicadorCm : g;
+        var a = ajustes ?? Diseno;
+        double g = a.AlRecibir * a.PorGolpe(armaAtacante);
+        return defendActivo ? g * a.EnGuardia : g;
     }
 
     /// <summary>
@@ -115,15 +115,8 @@ public static class CargaMusical
     public static double AplicarModificadores(double cmBase, IEnumerable<double> modificadores)
         => cmBase + cmBase * modificadores.Sum();
 
-    /// <summary>Precio base de cada tecla. No cambia nunca. Combo completo = 10.</summary>
-    public static int PrecioBase(char tecla) => char.ToUpperInvariant(tecla) switch
-    {
-        'Q' => 1,
-        'W' => 2,
-        'E' => 3,
-        'R' => 4,
-        _ => 0
-    };
+    /// <summary>Precio base de cada tecla en el diseño. Combo completo = 10.</summary>
+    public static int PrecioBase(char tecla) => (int)Diseno.Precio(tecla);
 
     /// <summary>
     /// Factor de descuento por fase. BASELINE, no ley: cada kit se desvia de esta
@@ -131,17 +124,14 @@ public static class CargaMusical
     ///
     /// El suelo duro es 0.33: por debajo, el recurso deja de decidir nada.
     /// </summary>
-    public static double FactorFase(FaseCm fase) => fase switch
-    {
-        FaseCm.Early => 1.00,
-        FaseCm.Mid => 0.60,
-        FaseCm.Late => 0.40,
-        _ => 1.00
-    };
+    public static double FactorFase(FaseCm fase) => Diseno.Fase(fase);
 
     /// <summary>Coste real de una tecla: precio base por el factor de la fase.</summary>
-    public static double Coste(char tecla, FaseCm fase, double? factorPropioDelKit = null)
-        => PrecioBase(tecla) * (factorPropioDelKit ?? FactorFase(fase));
+    public static double Coste(char tecla, FaseCm fase, double? factorPropioDelKit = null, AjustesCm? ajustes = null)
+    {
+        var a = ajustes ?? Diseno;
+        return a.Precio(tecla) * (factorPropioDelKit ?? a.Fase(fase));
+    }
 
     /// <summary>
     /// Aporte de la ACCION de Clasical: el storage propio por el multiplicador de

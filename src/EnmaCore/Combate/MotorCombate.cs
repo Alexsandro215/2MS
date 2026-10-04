@@ -100,7 +100,8 @@ public sealed class MotorCombate
     }
 
     /// <summary>Lo que cuesta ahora una tecla QWER, segun la fase de la run.</summary>
-    public double CosteDeTecla(char tecla) => CargaMusical.Coste(char.ToUpperInvariant(tecla), FaseDeLaRun());
+    public double CosteDeTecla(char tecla)
+        => CargaMusical.Coste(char.ToUpperInvariant(tecla), FaseDeLaRun(), ajustes: Estado.AjustesCm);
 
     public MotorCombate(EstadoCombate estado, Evaluador? evaluador = null)
     {
@@ -329,7 +330,7 @@ public sealed class MotorCombate
         if (usadas.Contains(tecla))
             return new(false, $"la tecla {tecla} ya se uso este turno", impactos, cambios, false);
 
-        double coste = CargaMusical.Coste(tecla, FaseDeLaRun());
+        double coste = CargaMusical.Coste(tecla, FaseDeLaRun(), ajustes: Estado.AjustesCm);
         var barra = Estado.Barra(actor.Bando);
         // Con tolerancia: con la barra en 1.2 la E de 1.2 se paga, aunque la
         // cuenta en coma flotante diga 1.2000000000000002.
@@ -371,7 +372,7 @@ public sealed class MotorCombate
         // y se multiplica con la seccion. Ver musica.md  3.
         bool yaEncendido = barra.ClasicalActivo;
         double multiplicador = cm.MultiplicadorSeccion
-            * (yaEncendido ? Constantes.ClasicalMultiplicador : 1.0);
+            * (yaEncendido ? Estado.AjustesCm.Clasical : 1.0);
 
         var (llena, resultante) = CargaMusical.IntentarClasical(
             barra.Actual, barra.Max, actor.Storage, multiplicador);
