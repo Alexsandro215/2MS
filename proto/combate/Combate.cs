@@ -58,6 +58,10 @@ public partial class Combate : Control
     private VBoxContainer _rival = null!;
     private VBoxContainer _acciones = null!;
     private RichTextLabel _bitacora = null!;
+    private VBoxContainer _stats = null!;
+
+    /// <summary>De quien se ven las stats. null = de quien tiene el turno.</summary>
+    private string? _inspeccionado;
 
     public override void _Ready()
     {
@@ -67,7 +71,7 @@ public partial class Combate : Control
             : (int)(Time.GetTicksUsec() & 0xFFFF);
 
         GetWindow().Title = "E.N.M.A. · combate de prueba contra el muñeco";
-        Theme = new Theme { DefaultFontSize = 17 };
+        Theme = new Theme { DefaultFontSize = 16 };
         Construir();
         Empezar(_semilla);
 
@@ -93,6 +97,7 @@ public partial class Combate : Control
         _cmPerdida = 0;
         _cicloEmpezado = false;
         _elegido = null;
+        _inspeccionado = null;
 
         _bitacora.Clear();
         Escribir($"[b]Combate de prueba contra el muñeco[/b] · semilla {semilla}");
@@ -173,83 +178,90 @@ public partial class Combate : Control
         var margen = new MarginContainer();
         margen.SetAnchorsPreset(LayoutPreset.FullRect);
         foreach (var lado in new[] { "left", "right", "top", "bottom" })
-            margen.AddThemeConstantOverride($"margin_{lado}", 18);
+            margen.AddThemeConstantOverride($"margin_{lado}", 16);
         AddChild(margen);
 
-        var columnas = new HBoxContainer();
-        columnas.AddThemeConstantOverride("separation", 18);
-        margen.AddChild(columnas);
+        var todo = new VBoxContainer();
+        todo.AddThemeConstantOverride("separation", 8);
+        margen.AddChild(todo);
+
+        var arriba = new HBoxContainer { SizeFlagsVertical = SizeFlags.ExpandFill };
+        arriba.AddThemeConstantOverride("separation", 16);
+        todo.AddChild(arriba);
 
         // ---- izquierda: estado, tablero y acciones ----
-        var izquierda = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill, SizeFlagsStretchRatio = 1.75f };
-        izquierda.AddThemeConstantOverride("separation", 12);
-        columnas.AddChild(izquierda);
+        var izquierda = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill, SizeFlagsStretchRatio = 1.45f };
+        izquierda.AddThemeConstantOverride("separation", 10);
+        arriba.AddChild(izquierda);
 
         var cabecera = new VBoxContainer();
-        cabecera.AddThemeConstantOverride("separation", 6);
-        _cabecera = Etiqueta("", 24, Dorado);
+        cabecera.AddThemeConstantOverride("separation", 4);
+        _cabecera = Etiqueta("", 22, Dorado);
         cabecera.AddChild(_cabecera);
 
         var filaCm = new HBoxContainer();
         filaCm.AddThemeConstantOverride("separation", 10);
-        filaCm.AddChild(Etiqueta("Carga Musical", 17, Gris));
+        filaCm.AddChild(Etiqueta("Carga Musical", 16, Gris));
         _barraCm = new ProgressBar
         {
             ShowPercentage = false,
-            CustomMinimumSize = new Vector2(360, 22),
+            CustomMinimumSize = new Vector2(340, 20),
             SizeFlagsVertical = SizeFlags.ShrinkCenter,
         };
         _barraCm.AddThemeStyleboxOverride("fill", Caja(Cian, 4, 0));
         _barraCm.AddThemeStyleboxOverride("background", Caja(new Color(0.2f, 0.22f, 0.27f), 4, 0));
         filaCm.AddChild(_barraCm);
-        _cm = Etiqueta("", 17);
+        _cm = Etiqueta("", 16);
         filaCm.AddChild(_cm);
         cabecera.AddChild(filaCm);
 
-        _objetos = Etiqueta("", 15, Gris);
+        _objetos = Etiqueta("", 14, Gris);
         cabecera.AddChild(_objetos);
-        _orden = Etiqueta("", 15, Gris);
+        _orden = Etiqueta("", 14, Gris);
         _orden.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         cabecera.AddChild(_orden);
         izquierda.AddChild(Panel(cabecera));
 
         var tablero = new HBoxContainer();
-        tablero.AddThemeConstantOverride("separation", 12);
+        tablero.AddThemeConstantOverride("separation", 10);
         _equipo = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill, SizeFlagsStretchRatio = 1.6f };
-        _equipo.AddThemeConstantOverride("separation", 8);
+        _equipo.AddThemeConstantOverride("separation", 4);
         _rival = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill };
-        _rival.AddThemeConstantOverride("separation", 8);
+        _rival.AddThemeConstantOverride("separation", 6);
         tablero.AddChild(_equipo);
         tablero.AddChild(_rival);
         izquierda.AddChild(tablero);
 
-        _acciones = new VBoxContainer { SizeFlagsVertical = SizeFlags.ExpandFill };
-        _acciones.AddThemeConstantOverride("separation", 10);
-        izquierda.AddChild(Panel(_acciones));
+        _acciones = new VBoxContainer();
+        _acciones.AddThemeConstantOverride("separation", 6);
+        var panelAcciones = Panel(_acciones);
+        panelAcciones.SizeFlagsVertical = SizeFlags.ExpandFill;
+        izquierda.AddChild(panelAcciones);
 
-        // ---- derecha: lo que va pasando ----
-        var derecha = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill };
-        derecha.AddThemeConstantOverride("separation", 8);
-        columnas.AddChild(derecha);
+        // ---- derecha: las stats de quien inspecciones ----
+        _stats = new VBoxContainer();
+        _stats.AddThemeConstantOverride("separation", 4);
+        var panelStats = Panel(_stats);
+        panelStats.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        arriba.AddChild(panelStats);
 
-        var arriba = new HBoxContainer();
-        arriba.AddChild(new Label { Text = "Registro", SizeFlagsHorizontal = SizeFlags.ExpandFill });
-        arriba.AddChild(Boton("Resumen", Resumen));
-        arriba.AddChild(Boton("Otra partida", () => Empezar((int)(Time.GetTicksUsec() & 0xFFFF))));
-        derecha.AddChild(arriba);
+        // ---- abajo, a lo ancho: lo que va pasando ----
+        var tituloRegistro = new HBoxContainer();
+        tituloRegistro.AddChild(new Label { Text = "Registro", SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        tituloRegistro.AddChild(Boton("Resumen", Resumen));
+        tituloRegistro.AddChild(Boton("Otra partida", () => Empezar((int)(Time.GetTicksUsec() & 0xFFFF))));
+        todo.AddChild(tituloRegistro);
 
         _bitacora = new RichTextLabel
         {
             BbcodeEnabled = true,
             ScrollFollowing = true,
             SelectionEnabled = true,
-            SizeFlagsVertical = SizeFlags.ExpandFill,
+            CustomMinimumSize = new Vector2(0, 130),
         };
         _bitacora.AddThemeFontSizeOverride("normal_font_size", 15);
         _bitacora.AddThemeFontSizeOverride("bold_font_size", 15);
-        var panelRegistro = Panel(_bitacora);
-        panelRegistro.SizeFlagsVertical = SizeFlags.ExpandFill;
-        derecha.AddChild(panelRegistro);
+        todo.AddChild(Panel(_bitacora));
     }
 
     private void Refrescar()
@@ -278,6 +290,7 @@ public partial class Combate : Control
         PintarEquipo(enTurno, pendientes.Select(c => c.Id).ToHashSet());
         PintarRival();
         PintarAcciones(enTurno, pendientes);
+        PintarStats(enTurno);
     }
 
     private void PintarEquipo(Combatiente? enTurno, HashSet<string> pendientes)
@@ -315,8 +328,8 @@ public partial class Combate : Control
             v.AddChild(BarraDeVida(r, Rojo));
             v.AddChild(Etiqueta($"{Dano(r.HpMax - r.Hp)} de daño recibido", 17, Dorado));
             v.AddChild(Etiqueta($"le quedan {Dano(r.Hp)}", 15, Gris));
-            v.AddChild(Etiqueta("No ataca nunca. EVA 40.", 14, Gris));
-            _rival.AddChild(Panel(v));
+            v.AddChild(Etiqueta("No ataca nunca.", 14, Gris));
+            _rival.AddChild(Inspeccionable(Panel(v), r.Id));
         }
     }
 
@@ -666,7 +679,243 @@ public partial class Combate : Control
         abajo.AddChild(Etiqueta(Vida(c), 15, Gris));
         v.AddChild(abajo);
 
-        return Panel(v, enTurno ? TarjetaActiva : Tarjeta);
+        return Inspeccionable(Panel(v, enTurno ? TarjetaActiva : Tarjeta), c.Id);
+    }
+
+    // ------------------------------------------------------------ stats
+
+    /// <summary>Si el motor ya la usa en un combate. Las que no, salen tenues.</summary>
+    private enum Uso { EnCombate, SinGolpesMagicos, AunNo }
+
+    private sealed record InfoStat(Stat Stat, string Icono, string Nombre, bool Porcentaje, Uso Uso, string Ayuda);
+
+    // ⚠️ Lo que el motor usa hoy, segun el inventario del combate. Si se
+    // conecta una stat nueva, hay que pasarla aqui de AunNo a EnCombate.
+    private static readonly InfoStat[] Primarias =
+    [
+        new(Stat.Hp, "❤️", "Vida", false, Uso.EnCombate, "Salud. A 0, cae en K.O."),
+        new(Stat.Ad, "⚔️", "Daño físico (AD)", false, Uso.EnCombate, "La referencia del daño físico: la de los básicos."),
+        new(Stat.Ap, "🔮", "Daño mágico (AP)", false, Uso.SinGolpesMagicos, "La referencia del daño mágico."),
+        new(Stat.Arm, "🛡️", "Armadura", false, Uso.EnCombate, "Reduce el daño físico con la fórmula de ratio, ARM / (ARM + 100), hasta un 90%."),
+        new(Stat.Rm, "🧿", "Resistencia mágica", false, Uso.SinGolpesMagicos, "Reduce el daño mágico con la misma fórmula de ratio."),
+        new(Stat.Press, "🎯", "Precisión", false, Uso.EnCombate, "Entra en el acierto, contra la evasión del rival. La casilla ofensiva la sube un 30%."),
+        new(Stat.Eva, "💨", "Evasión", false, Uso.EnCombate, "Entra en el acierto del rival. Cada golpe que esquiva la erosiona el resto de esa ronda."),
+        new(Stat.Crit, "💥", "Crítico", true, Uso.EnCombate, "Probabilidad de crítico: ×1.8 después de la armadura. Tope 100%."),
+    ];
+
+    private static readonly InfoStat[] Ofensivas =
+    [
+        new(Stat.Preparacion, "⏳", "Preparación", true, Uso.AunNo, "Resta un turno a las preparaciones al llegar al umbral. Tope 75%."),
+        new(Stat.VelocidadAtaque, "⚡", "Velocidad de ataque", true, Uso.EnCombate, "Golpes por tanda = base × (1 + VA). Tope 60%."),
+        new(Stat.Tempo, "🎶", "Tempo", true, Uso.AunNo, "CM por golpe × (1 + Tempo). Tope 50%."),
+        new(Stat.PenArmadura, "🗡️", "Penetración de armadura", false, Uso.EnCombate, "Resta armadura al objetivo, hasta un 80% de la suya."),
+        new(Stat.PenMagica, "🪄", "Penetración mágica", false, Uso.SinGolpesMagicos, "Resta resistencia mágica al objetivo, hasta un 80% de la suya."),
+        new(Stat.RoboVida, "🩸", "Robo de vida", true, Uso.AunNo, "Cura un % del daño que haces. Tope 25%."),
+        new(Stat.DominioArmas, "🤺", "Dominio de armas", true, Uso.AunNo, "Potencia del arma × (1 + WM). Tope 50%."),
+        new(Stat.DominioObjetos, "🧰", "Dominio de objetos", true, Uso.AunNo, "Daño de los objetos × (1 + IM). Tope 60%."),
+        new(Stat.DanoArea, "🌀", "Daño en área", true, Uso.AunNo, "Daño de área × (1 + AOE). Tope 80%."),
+        new(Stat.DanoExplosivo, "💣", "Daño explosivo", true, Uso.AunNo, "Daño explosivo × (1 + EXPL). Tope 100%."),
+        new(Stat.UltimaBala, "💀", "Última bala", true, Uso.EnCombate, "Si tras tu golpe al rival le queda menos vida que este %, cae en K.O. Tope 10–15%."),
+        new(Stat.Rebote, "🔁", "Rebote", true, Uso.AunNo, "Probabilidad de que el daño rebote a otro enemigo. Tope 30%."),
+    ];
+
+    private static readonly InfoStat[] Defensivas =
+    [
+        new(Stat.RegeneracionVida, "🌿", "Regeneración", true, Uso.AunNo, "Recupera un % de la vida base cada turno, sin desgaste. Tope 10%."),
+        new(Stat.DominioMedico, "🩺", "Dominio médico", true, Uso.AunNo, "Curación × (1 + MM). Tope 50%."),
+        new(Stat.ResistenciaDesgaste, "🔋", "Resistencia al desgaste", true, Uso.AunNo, "Reduce el desgaste que te afecta. Tope 50%."),
+        new(Stat.Inquebrantable, "♻️", "Inquebrantable", true, Uso.AunNo, "Probabilidad de levantarse solo tras caer en K.O. Tope 25%."),
+        new(Stat.EficienciaEscudo, "💠", "Eficiencia de escudo", true, Uso.AunNo, "Escudos × (1 + SHD). Tope 50%."),
+        new(Stat.ExtensionEscudo, "🔷", "Extensión de escudo", true, Uso.AunNo, "Probabilidad de que un escudo dure un turno más. Tope 30%."),
+        new(Stat.ExtensionInvulnerable, "🌟", "Ext. de invulnerabilidad", true, Uso.AunNo, "Probabilidad de que la invulnerabilidad dure un turno más. Tope 25%."),
+        new(Stat.Tenacidad, "🦾", "Tenacidad", true, Uso.AunNo, "Limpia los debuffs al empezar el turno, no las emociones. Tope 30%."),
+        new(Stat.AmplificadorBuff, "📈", "Amplificador de buffs", true, Uso.AunNo, "Potencia de los buffs que recibes. Tope 50%."),
+        new(Stat.ExtensionBuff, "⏫", "Extensión de buffs", true, Uso.AunNo, "Duración de los buffs que recibes. Tope 25%."),
+        new(Stat.AmplificadorDebuff, "📉", "Amplificador de debuffs", true, Uso.AunNo, "Potencia de los debuffs que aplicas. Tope 50%."),
+        new(Stat.ExtensionDebuff, "⏬", "Extensión de debuffs", true, Uso.AunNo, "Duración de los debuffs que aplicas. Tope 25%."),
+        new(Stat.DominioComida, "🍲", "Dominio de comida", true, Uso.AunNo, "Potencia de la comida. Tope 50%."),
+        new(Stat.ExtensionComida, "🍱", "Extensión de comida", true, Uso.AunNo, "Duración de la comida. Tope 30%."),
+        new(Stat.Reflejos, "🤸", "Reflejos", true, Uso.AunNo, "Intercepta el daño letal dirigido a un aliado. Tope 20%."),
+    ];
+
+    private static readonly InfoStat[] DeKit =
+    [
+        new(Stat.AntiArm, "🔨", "Anti-armadura (Willham)", false, Uso.AunNo, "Propia del kit de Willham."),
+        new(Stat.AntiRm, "🧪", "Anti-RM (Willham)", false, Uso.AunNo, "Propia del kit de Willham."),
+    ];
+
+    private void PintarStats(Combatiente? enTurno)
+    {
+        Vaciar(_stats);
+        var c = (_inspeccionado is null ? null : _e.Buscar(_inspeccionado))
+                ?? enTurno
+                ?? _e.Combatientes.First(x => x.Bando == Bando.Aliado);
+
+        var titulo = new HBoxContainer();
+        titulo.AddChild(Etiqueta($"Stats de {c.Nombre.ToUpperInvariant()}", 20, Dorado));
+        titulo.AddChild(Etiqueta($"   nivel {c.Nivel} · {NombreArma(c.Arma)} · {Donde(c)}", 15, Gris));
+        _stats.AddChild(titulo);
+
+        var nota = Etiqueta("Lo que resuelve el motor ahora. Las tenues aún no hacen nada en combate. "
+            + "Pasa el ratón por una para ver qué es, y pulsa una ficha para ver las de otro.", 13, Gris);
+        nota.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        _stats.AddChild(nota);
+
+        var ev = new Enma.Core.Reglas.Evaluador();
+
+        _stats.AddChild(Grupo("PRIMARIAS"));
+        var primarias = Rejilla(2);
+        foreach (var info in Primarias) primarias.AddChild(Entrada(info, c, ev));
+        primarias.AddChild(EntradaLibre("🎵", "Aporte a la barra de CM", Cm(c.Storage), "", Texto,
+            "Lo que aporta a la barra del equipo: entero en pie, la mitad en K.O., nada muerto.", Uso.EnCombate));
+        primarias.AddChild(EntradaLibre("🥀", "Desgaste", $"{(c.Desgaste.Acumulado * 100).ToString("0.#", CultureInfo.InvariantCulture)}%", "", Texto,
+            "Deterioro acumulado: resta a todas las stats. Lo genera curarse, y dentro de la run no baja.", Uso.EnCombate));
+        primarias.AddChild(EntradaLibre("🩻", "Daño verdadero", "—", "", Texto,
+            "Porción del daño que ignora la armadura y la RM. El manual la cuenta como primaria, pero aún no existe como stat en el motor.", Uso.AunNo));
+        _stats.AddChild(primarias);
+
+        var secundarias = new HBoxContainer();
+        secundarias.AddThemeConstantOverride("separation", 14);
+        foreach (var (nombre, grupo) in new[] { ("OFENSIVAS", Ofensivas), ("DEFENSIVAS", Defensivas) })
+        {
+            var columna = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill };
+            columna.AddThemeConstantOverride("separation", 0);
+            columna.AddChild(Grupo(nombre));
+            foreach (var info in grupo) columna.AddChild(Entrada(info, c, ev));
+            secundarias.AddChild(columna);
+        }
+        _stats.AddChild(secundarias);
+
+        _stats.AddChild(Grupo("PROPIAS DE KIT"));
+        var kit = Rejilla(2);
+        foreach (var info in DeKit) kit.AddChild(Entrada(info, c, ev));
+        _stats.AddChild(kit);
+    }
+
+    /// <summary>Una stat del motor: su valor ahora y, si alguna regla la mueve, cuanto y por que.</summary>
+    private Control Entrada(InfoStat info, Combatiente c, Enma.Core.Reglas.Evaluador ev)
+    {
+        double operativa = Enma.Core.Stats.Agregacion.StatOperativa(c.BaseRef(info.Stat), c.Desgaste.Acumulado);
+        double final = ev.ResolverStat(_e, c, info.Stat);
+
+        string valor = info.Stat == Stat.Hp
+            ? Vida(c)
+            : info.Porcentaje ? $"{final.ToString("0.#", CultureInfo.InvariantCulture)}%"
+            : final.ToString("0", CultureInfo.InvariantCulture);
+
+        string cambio = "";
+        Color color = Texto;
+        double delta = final - operativa;
+        if (Math.Abs(delta) > 1e-6 && info.Stat != Stat.Hp)
+        {
+            string magnitud = operativa > 1e-9
+                ? $"{(Math.Abs(delta / operativa) * 100).ToString("0.#", CultureInfo.InvariantCulture)}%"
+                : Math.Abs(delta).ToString("0.#", CultureInfo.InvariantCulture);
+            cambio = (delta > 0 ? "▲ +" : "▼ −") + magnitud;
+            color = delta > 0 ? Verde : Rojo;
+        }
+
+        var ayuda = new List<string>
+        {
+            info.Ayuda,
+            $"Base a nivel {c.Nivel}: {operativa.ToString("0.#", CultureInfo.InvariantCulture)}{(info.Porcentaje ? "%" : "")}",
+        };
+        foreach (var m in ev.ModificadoresDe(_e, c, info.Stat))
+        {
+            string cuanto = m.Capa == Enma.Core.Stats.Capa.Flat
+                ? m.Valor.ToString("+0.#;−0.#", CultureInfo.InvariantCulture)
+                : (m.Valor * 100).ToString("+0.#;−0.#", CultureInfo.InvariantCulture) + "%";
+            ayuda.Add($"{cuanto} por {m.Origen}");
+        }
+
+        return EntradaLibre(info.Icono, info.Nombre, valor, cambio, color, string.Join("\n", ayuda), info.Uso);
+    }
+
+    private static Control EntradaLibre(string icono, string nombre, string valor, string cambio, Color colorCambio,
+        string ayuda, Uso uso)
+    {
+        bool apagada = uso == Uso.AunNo;
+        var fila = new HBoxContainer { MouseFilter = MouseFilterEnum.Stop, SizeFlagsHorizontal = SizeFlags.ExpandFill };
+        fila.AddThemeConstantOverride("separation", 5);
+        fila.TooltipText = $"{nombre}\n{ayuda}" + uso switch
+        {
+            Uso.AunNo => "\nEl motor aún no la usa.",
+            Uso.SinGolpesMagicos => "\nConectada, pero aún no hay golpes mágicos.",
+            _ => "",
+        };
+
+        var ico = Etiqueta(icono, 15);
+        ico.CustomMinimumSize = new Vector2(24, 0);
+        ico.HorizontalAlignment = HorizontalAlignment.Center;
+        if (apagada) ico.Modulate = new Color(1, 1, 1, 0.4f);
+        fila.AddChild(ico);
+
+        var n = Etiqueta(nombre, 13, apagada ? new Color(Gris, 0.6f) : Texto);
+        n.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        n.ClipText = true;
+        fila.AddChild(n);
+
+        if (cambio.Length > 0) fila.AddChild(Etiqueta(cambio, 12, colorCambio));
+
+        var v = Etiqueta(valor, 14, apagada ? new Color(Gris, 0.6f) : Texto);
+        v.HorizontalAlignment = HorizontalAlignment.Right;
+        v.CustomMinimumSize = new Vector2(52, 0);
+        fila.AddChild(v);
+
+        foreach (var hijo in fila.GetChildren())
+            if (hijo is Control ctl) ctl.MouseFilter = MouseFilterEnum.Ignore;
+        return fila;
+    }
+
+    private static Label Grupo(string nombre)
+    {
+        var l = Etiqueta(nombre, 12, Dorado);
+        l.CustomMinimumSize = new Vector2(0, 20);
+        l.VerticalAlignment = VerticalAlignment.Bottom;
+        return l;
+    }
+
+    private static GridContainer Rejilla(int columnas)
+    {
+        var g = new GridContainer { Columns = columnas };
+        g.AddThemeConstantOverride("h_separation", 14);
+        g.AddThemeConstantOverride("v_separation", 0);
+        return g;
+    }
+
+    /// <summary>Pulsar la ficha enseña sus stats a la derecha.</summary>
+    private PanelContainer Inspeccionable(PanelContainer panel, string id)
+    {
+        panel.MouseFilter = MouseFilterEnum.Stop;
+        panel.MouseDefaultCursorShape = CursorShape.PointingHand;
+        IgnorarRaton(panel);
+        panel.GuiInput += evento =>
+        {
+            if (evento is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
+            {
+                _inspeccionado = id;
+                Callable.From(Refrescar).CallDeferred();
+            }
+        };
+
+        bool mirado = id == (_inspeccionado ?? Actual()?.Id);
+        if (mirado && panel.GetThemeStylebox("panel") is StyleBoxFlat caja)
+        {
+            var marcada = (StyleBoxFlat)caja.Duplicate();
+            marcada.SetBorderWidthAll(2);
+            marcada.BorderColor = Cian;
+            panel.AddThemeStyleboxOverride("panel", marcada);
+        }
+        return panel;
+    }
+
+    private static void IgnorarRaton(Node nodo)
+    {
+        foreach (var hijo in nodo.GetChildren())
+        {
+            if (hijo is Control c) c.MouseFilter = MouseFilterEnum.Ignore;
+            IgnorarRaton(hijo);
+        }
     }
 
     private static ProgressBar BarraDeVida(Combatiente c, Color color)
@@ -687,7 +936,7 @@ public partial class Combate : Control
     private static PanelContainer Panel(Control contenido, Color? fondo = null)
     {
         var p = new PanelContainer();
-        p.AddThemeStyleboxOverride("panel", Caja(fondo ?? Tarjeta, 8, 12));
+        p.AddThemeStyleboxOverride("panel", Caja(fondo ?? Tarjeta, 8, 10));
         p.AddChild(contenido);
         return p;
     }
@@ -713,7 +962,7 @@ public partial class Combate : Control
     private static Button Boton(string texto, Action alPulsar, bool desactivado = false, string ayuda = "")
     {
         var b = new Button { Text = texto, Disabled = desactivado, TooltipText = ayuda, FocusMode = FocusModeEnum.None };
-        b.Pressed += alPulsar;
+        b.Pressed += () => Callable.From(alPulsar).CallDeferred();
         return b;
     }
 
