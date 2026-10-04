@@ -88,11 +88,29 @@ public sealed class MotorCombate
         [Bando.Enemigo] = new(),
     };
 
+    /// <summary>
+    /// Como esta la comida o el consumible gratis de un bando: si ya se uso
+    /// en esta ventana, y cuantos turnos del bando faltan para que vuelva.
+    /// Es para mostrarlo: las reglas las aplica el motor.
+    /// </summary>
+    public (bool UsadoEnEstaVentana, int Espera) ObjetoGratis(Bando bando, bool esComida)
+    {
+        var v = _objetos[bando];
+        return esComida ? (v.ComidaUsada, v.EsperaComida) : (v.ConsumibleUsado, v.EsperaConsumible);
+    }
+
+    /// <summary>Lo que cuesta ahora una tecla QWER, segun la fase de la run.</summary>
+    public double CosteDeTecla(char tecla) => CargaMusical.Coste(char.ToUpperInvariant(tecla), FaseDeLaRun());
+
     public MotorCombate(EstadoCombate estado, Evaluador? evaluador = null)
     {
         Estado = estado;
         _ev = evaluador ?? new Evaluador();
         _res = new Resolvedor(_ev);
+
+        // Lo que hace cada casilla vale en todo combate. Antes solo existia
+        // dentro de un test, y la posicion no cambiaba el acierto.
+        Tablero.Instalar(estado);
     }
 
     public Desenlace Desenlace
@@ -197,7 +215,7 @@ public sealed class MotorCombate
                 return No($"es el turno de {turno.Id}");
 
             if (_enOfensiva.Contains(actor.Id) && accion is not (AtaqueBasico or UsarHabilidad or Pasar))
-                return No("ya empezo la ofensiva: solo quedan basicos, QWER o pasar");
+                return No("ya empezo la ofensiva: solo quedan basicos, QWER o terminar el turno");
         }
 
         var r = accion switch
@@ -313,10 +331,12 @@ public sealed class MotorCombate
 
         double coste = CargaMusical.Coste(tecla, FaseDeLaRun());
         var barra = Estado.Barra(actor.Bando);
-        if (barra.Actual < coste)
+        // Con tolerancia: con la barra en 1.2 la E de 1.2 se paga, aunque la
+        // cuenta en coma flotante diga 1.2000000000000002.
+        if (barra.Actual + Constantes.ToleranciaCm < coste)
             return new(false, "CM insuficiente", impactos, cambios, false);
 
-        barra.Actual -= coste;
+        barra.Actual = Math.Max(0.0, barra.Actual - coste);
         Estado.Historial.CmGastado += coste;
         Estado.Historial.HabilidadesUsadas++;
         usadas.Add(tecla);
@@ -347,11 +367,17 @@ public sealed class MotorCombate
         var barra = Estado.Barra(actor.Bando);
         string equipo = actor.Bando == Bando.Aliado ? "equipo" : "enemigos";
 
-        var (encendido, resultante) = CargaMusical.IntentarClasical(
-            barra.Actual, barra.Max, actor.Storage, cm.MultiplicadorSeccion);
+        // CLASICAL multiplica TODA obtencion de CM, tambien la de esta accion,
+        // y se multiplica con la seccion. Ver musica.md  3.
+        bool yaEncendido = barra.ClasicalActivo;
+        double multiplicador = cm.MultiplicadorSeccion
+            * (yaEncendido ? Constantes.ClasicalMultiplicador : 1.0);
+
+        var (llena, resultante) = CargaMusical.IntentarClasical(
+            barra.Actual, barra.Max, actor.Storage, multiplicador);
 
         barra.Actual = resultante;
-        if (encendido)
+        if (llena && !yaEncendido)
         {
             barra.ClasicalActivo = true;
             cambios.Add(new Cambio("clasical", equipo, "encendido", resultante));

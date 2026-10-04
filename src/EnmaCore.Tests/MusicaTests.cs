@@ -144,4 +144,18 @@ public class CargaMusicalTests
         Assert.True(encendido);
         Assert.Equal(12.0, resultante, 4); // 11 + 5.4 = 16.4, recortado a 12
     }
+
+    [Fact]
+    public void Llenar_la_barra_justa_enciende_Clasical_aunque_arrastre_error()
+    {
+        // 11.4 menos tres W de late deberia ser 9 exacto, pero en coma
+        // flotante queda en 8.999999999999998. Sumar 3 tiene que llenar.
+        double barra = 11.4;
+        for (int i = 0; i < 3; i++) barra -= CargaMusical.Coste('W', FaseCm.Late);
+        Assert.NotEqual(9.0, barra);                // el error esta ahi
+
+        var (encendido, resultante) = CargaMusical.IntentarClasical(barra, 12.0, 3.0, 1.0);
+        Assert.True(encendido);
+        Assert.Equal(12.0, resultante);             // exacto, sin arrastrar el error
+    }
 }

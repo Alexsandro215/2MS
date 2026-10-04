@@ -107,6 +107,20 @@ public static class Constantes
     /// <summary>CLASICAL multiplica x1.5 toda obtencion de CM.</summary>
     public const double ClasicalMultiplicador = 1.5;
 
+    /// <summary>
+    /// La barra arrastra error de coma flotante: 0.4, 0.6, 1.2 y 1.8 no son
+    /// exactos en binario. Por debajo de esto, dos cantidades de CM son la
+    /// misma. La CM mas pequeña con sentido ronda las centesimas.
+    /// </summary>
+    public const double ToleranciaCm = 1e-9;
+
+    // ---- Tablero ----
+    /// <summary>
+    /// ⚠️ Provisional (30/30). OFENSIVA: +30% PRESS y -30% EVA. DEFENSIVA, al
+    /// reves. El tablero solo mueve PRESS y EVA. Ver manual-tecnico.md  1.2.
+    /// </summary>
+    public const double BonoCasilla = 0.30;
+
     // ---- Objetos gratis (ventana pre-ofensiva) ----
     /// <summary>
     /// Turnos del bando que tarda en volver la comida o el consumible gratis.

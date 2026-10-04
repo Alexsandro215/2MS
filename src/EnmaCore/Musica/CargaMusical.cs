@@ -163,7 +163,10 @@ public static class CargaMusical
     {
         double aporte = AporteAccionClasical(storagePropio, multiplicadorSeccion);
         double bruto = cmActual + aporte;
-        bool encendido = bruto >= cmMax;
-        return (encendido, Math.Min(bruto, cmMax));
+
+        // Con tolerancia: 9 + 3 tiene que llegar a 12 aunque la barra arrastre
+        // un error de coma flotante y valga 11.999999999999998.
+        bool encendido = bruto >= cmMax - Constantes.ToleranciaCm;
+        return (encendido, encendido ? cmMax : bruto);
     }
 }

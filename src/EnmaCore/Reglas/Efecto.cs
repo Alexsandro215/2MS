@@ -117,13 +117,19 @@ public sealed record FijarCm(Expr Fraccion) : Efecto
     }
 }
 
-/// <summary>Suma o resta CM al pool del equipo del portador, recortando al maximo.</summary>
+/// <summary>
+/// Suma o resta CM al pool del equipo del portador, recortando al maximo.
+/// Ganar con CLASICAL encendido vale x1.5, como toda obtencion de CM;
+/// perder o gastar, no.
+/// </summary>
 public sealed record AjustarCm(Expr Cantidad) : Efecto
 {
     public override void Aplicar(EstadoCombate e, Contexto ctx, List<Cambio> log)
     {
+        var barra = ctx.BarraDelPortador(e);
         double v = Cantidad.Evaluar(e, ctx);
-        ctx.BarraDelPortador(e).Sumar(v);
+        if (v > 0 && barra.ClasicalActivo) v *= Constantes.ClasicalMultiplicador;
+        barra.Sumar(v);
         log.Add(new Cambio("cm", ctx.NombreDelEquipo(), "ajuste", v));
     }
 }

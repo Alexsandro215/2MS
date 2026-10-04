@@ -154,7 +154,8 @@ public static class Simulador
             PorCombatiente: medias);
     }
 
-    private static void Anotar(Dictionary<string, Rendimiento> registro, ResultadoAccion r)
+    /// <summary>Suma a cada atacante lo que hizo en una accion: golpes, aciertos, dano, CM.</summary>
+    public static void Anotar(IDictionary<string, Rendimiento> registro, ResultadoAccion r)
     {
         foreach (var i in r.Impactos)
         {

@@ -1,5 +1,6 @@
 using Enma.Core.Combate;
 using Enma.Core.Estado;
+using Enma.Core.Musica;
 using Enma.Core.Reglas;
 using Xunit;
 
@@ -185,6 +186,22 @@ public class FasesDelTurnoTests
         var m = Duelo.Montar(posAliada: Casilla.Neutral);
         m.Comida("yo");
         Assert.True(m.Ejecutar(new Moverse { ActorId = "yo", Destino = Casilla.Ofensiva }).Permitida);
+    }
+
+    [Fact]
+    public void El_motor_dice_como_esta_cada_objeto_gratis()
+    {
+        // Es lo que muestra la pantalla: las reglas siguen siendo del motor.
+        var m = Duelo.Montar(posAliada: Casilla.Neutral);
+        Assert.Equal((false, 0), m.ObjetoGratis(Bando.Aliado, esComida: true));
+
+        m.Comida("yo");
+        Assert.Equal((true, Constantes.CooldownObjetoGratis), m.ObjetoGratis(Bando.Aliado, esComida: true));
+        Assert.Equal((false, 0), m.ObjetoGratis(Bando.Aliado, esComida: false));   // va aparte
+
+        m.Pasa("yo");
+        m.OtroCiclo();
+        Assert.Equal((false, Constantes.CooldownObjetoGratis - 1), m.ObjetoGratis(Bando.Aliado, esComida: true));
     }
 
     [Fact]
@@ -473,5 +490,107 @@ public class BarrasDeCmTests
 
         Assert.Equal(0.25, r.Impactos[0].CmAtacante, 6);          // el rival, sin x1.5
         Assert.Equal(0.125 * 1.5, r.Impactos[0].CmDefensor, 6);   // lo tuyo al recibir, si
+    }
+}
+
+/// <summary>Lo que salio de jugar contra el muñeco: CLASICAL, coma flotante y daño.</summary>
+public class ClasicalYCuentasTests
+{
+    [Fact]
+    public void Con_Clasical_el_basico_no_cuenta_como_en_tempo()
+    {
+        // CLASICAL solo multiplica x1.5 lo que se gana. Antes regalaba el
+        // tempo, y la media cobraba 0.25 x 2 x 1.5 = 0.75 en vez de 0.375.
+        var m = Duelo.Montar(ClaseArma.Media);
+        m.Estado.CmActual = 0;
+        m.Estado.ClasicalActivo = true;
+        m.Estado.Rng = new AzarFijo(0.0);
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "yo", ObjetivoId = "rival" });
+        Assert.All(r.Impactos, i => Assert.Equal(0.25 * 1.5, i.CmAtacante, 6));
+    }
+
+    [Fact]
+    public void Con_Clasical_y_en_tempo_se_multiplican_los_dos()
+    {
+        var m = Duelo.Montar(ClaseArma.Media);
+        m.Estado.CmActual = 0;
+        m.Estado.ClasicalActivo = true;
+        m.Estado.Rng = new AzarFijo(0.0);
+        m.Estado.Buscar("yo")!.Flags["en_tempo"] = 1;
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "yo", ObjetivoId = "rival" });
+        Assert.All(r.Impactos, i => Assert.Equal(0.25 * 2.0 * 1.5, i.CmAtacante, 6));
+    }
+
+    [Fact]
+    public void Con_Clasical_encendido_la_Carga_Musical_tambien_vale_x1_5()
+    {
+        // musica.md  3: x1.5 a TODA obtencion de CM, tambien esta.
+        var m = Duelo.Montar();
+        m.Estado.CmActual = 2.0;
+        m.Estado.ClasicalActivo = true;
+
+        var r = m.Ejecutar(new CargarMusica { ActorId = "yo", MultiplicadorSeccion = 1.0 });
+
+        Assert.Equal(2.0 + 3.0 * 1.5, m.Estado.CmActual, 6);
+        Assert.DoesNotContain(r.Cambios, c => c.Tipo == "clasical");   // ya estaba encendido
+    }
+
+    [Fact]
+    public void Con_la_CM_justa_se_paga_la_habilidad()
+    {
+        // 1.5 - 0.8 + 0.5 = 1.2, y la E de late cuesta 3 x 0.4 = 1.2000000000000002.
+        var m = Duelo.Montar();
+        m.Estado.CmActual = 1.5 - 0.8 + 0.5;
+
+        Assert.True(m.Ejecutar(new UsarHabilidad { ActorId = "yo", Tecla = 'E' }).Permitida);
+        Assert.Equal(0.0, m.Estado.CmActual, 9);
+        Assert.True(m.Estado.CmActual >= 0);
+    }
+
+    [Fact]
+    public void El_dano_no_cuenta_el_exceso_del_golpe_que_tumba()
+    {
+        var m = Duelo.Montar(ClaseArma.Pesada);
+        var rival = m.Estado.Buscar("rival")!;
+        rival.Hp = 10;
+        m.Estado.Rng = new AzarFijo(0.0);
+
+        var r = m.Ejecutar(new AtaqueBasico { ActorId = "yo", ObjetivoId = "rival" });
+
+        Assert.True(r.Impactos[0].ProvocoKo);
+        Assert.Equal(10.0, r.Impactos[0].DanoAplicado, 6);
+    }
+}
+
+/// <summary>
+/// Lo que hace cada casilla, en un combate de verdad. Antes la regla solo
+/// existia dentro de un test: la posicion no cambiaba el acierto.
+/// </summary>
+public class CasillasTests
+{
+    [Theory]
+    [InlineData(Casilla.Ofensiva, 130.0, 70.0)]
+    [InlineData(Casilla.Neutral, 100.0, 100.0)]
+    [InlineData(Casilla.Defensiva, 70.0, 130.0)]
+    public void Cada_casilla_mueve_press_y_eva(Casilla casilla, double press, double eva)
+    {
+        var m = Duelo.Montar(posAliada: casilla);
+        var yo = m.Estado.Buscar("yo")!;
+        yo.MaxAspirable[Stat.Eva] = 100;
+
+        var ev = new Evaluador();
+        Assert.Equal(press, ev.ResolverStat(m.Estado, yo, Stat.Press), 6);
+        Assert.Equal(eva, ev.ResolverStat(m.Estado, yo, Stat.Eva), 6);
+    }
+
+    [Fact]
+    public void Las_reglas_del_tablero_se_ponen_una_sola_vez()
+    {
+        var m = Duelo.Montar();
+        _ = new MotorCombate(m.Estado);
+
+        Assert.Equal(2, m.Estado.ReglasActivas.Count(r => r.Fuente == Fuente.Casilla));
     }
 }

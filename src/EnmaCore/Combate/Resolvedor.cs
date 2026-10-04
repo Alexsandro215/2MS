@@ -124,6 +124,10 @@ public sealed class Resolvedor(Evaluador evaluador)
 
         var r = Dano.Calcular(perfil, def, critDecidido);
 
+        // La vida solo encaja lo que le quedaba: el exceso del golpe que
+        // tumba no es dano hecho, y no debe inflar ninguna cuenta.
+        double aVida = Math.Min(r.AplicadoAVida, Math.Max(0.0, defensor.Hp));
+
         defensor.Escudo -= r.AbsorbidoPorEscudo;
         defensor.Hp -= r.AplicadoAVida;
 
@@ -136,7 +140,9 @@ public sealed class Resolvedor(Evaluador evaluador)
         var barraAtacante = e.Barra(atacante.Bando);
         var barraDefensor = e.Barra(defensor.Bando);
 
-        bool enTempo = barraAtacante.ClasicalActivo || atacante.TieneFlag("en_tempo");
+        // CLASICAL no regala el tempo: solo multiplica x1.5 lo que se gana.
+        // Antes contaba todo golpe como en tempo y la media cobraba x3.
+        bool enTempo = atacante.TieneFlag("en_tempo");
         double cmAtacante = golpe.EsBasico
             ? CargaMusical.GananciaPorImpacto(atacante.Arma, enTempo)
             : 0.0;
@@ -206,7 +212,7 @@ public sealed class Resolvedor(Evaluador evaluador)
 
         return new EventoImpacto(
             atacante.Id, defensor.Id, true,
-            r.AplicadoAVida, r.AbsorbidoPorEscudo, r.CriticoAplicado,
+            aVida, r.AbsorbidoPorEscudo, r.CriticoAplicado,
             cmAtacante, cmDefensor, ko, porUltimaBala, elementoAplicado);
     }
 }
