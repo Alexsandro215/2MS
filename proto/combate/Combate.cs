@@ -60,6 +60,17 @@ public partial class Combate : Control
     private VBoxContainer _acciones = null!;
     private RichTextLabel _bitacora = null!;
     private VBoxContainer _stats = null!;
+    private Label _statsTitulo = null!;
+    private Label _statsSub = null!;
+    private Label _statsNota = null!;
+    private CheckButton _vistaAspirable = null!;
+    private SpinBox _nivel = null!;
+    private SpinBox _desgaste = null!;
+    private Label _desgasteEfecto = null!;
+    private VBoxContainer _statsCuerpo = null!;
+
+    /// <summary>true: el panel enseña el MAX aspirable, editable. false: lo que vale ahora.</summary>
+    private bool _verAspirable;
 
     /// <summary>De quien se ven las stats. null = de quien tiene el turno.</summary>
     private string? _inspeccionado;
@@ -240,8 +251,69 @@ public partial class Combate : Control
         izquierda.AddChild(panelAcciones);
 
         // ---- derecha: las stats de quien inspecciones ----
+        // La cabecera es fija, asi sus controles no se rehacen mientras los
+        // usas. El cuerpo si se rehace, y se desplaza si no cabe.
         _stats = new VBoxContainer();
         _stats.AddThemeConstantOverride("separation", 4);
+
+        var filaTitulo = new HBoxContainer();
+        filaTitulo.AddThemeConstantOverride("separation", 8);
+        _statsTitulo = Etiqueta("", 20, Dorado);
+        filaTitulo.AddChild(_statsTitulo);
+        _statsSub = Etiqueta("", 14, Gris);
+        _statsSub.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        filaTitulo.AddChild(_statsSub);
+        filaTitulo.AddChild(Etiqueta("Actual", 14, Gris));
+        _vistaAspirable = new CheckButton
+        {
+            FocusMode = FocusModeEnum.None,
+            TooltipText = "Apagado: lo que vale cada stat a su nivel, con desgaste y reglas.\n"
+                + "Encendido: el MAX aspirable, lo que valdría a nivel 18. Ahí se puede editar.",
+        };
+        _vistaAspirable.Toggled += on =>
+        {
+            _verAspirable = on;
+            Callable.From(Refrescar).CallDeferred();
+        };
+        filaTitulo.AddChild(_vistaAspirable);
+        filaTitulo.AddChild(Etiqueta("Aspirable", 14, Gris));
+        _stats.AddChild(filaTitulo);
+
+        var filaNivel = new HBoxContainer();
+        filaNivel.AddThemeConstantOverride("separation", 6);
+        filaNivel.AddChild(Etiqueta("⭐", 15));
+        filaNivel.AddChild(Etiqueta("Nivel", 14));
+        _nivel = Spin(1, Constantes.NivelMax, 1, "", v => CambiarNivel((int)v));
+        _nivel.MinValue = 1;
+        _nivel.AllowGreater = false;
+        _nivel.CustomMinimumSize = new Vector2(80, 0);
+        _nivel.TooltipText = "Cada stat vale su MAX × nivel / 18. El nivel del equipo fija también la fase de la run, y con ella el coste de las teclas.";
+        filaNivel.AddChild(_nivel);
+        filaNivel.AddChild(new Control { CustomMinimumSize = new Vector2(10, 0) });
+        filaNivel.AddChild(Etiqueta("🥀", 15));
+        filaNivel.AddChild(Etiqueta("Desgaste", 14));
+        _desgaste = Spin(0, 100, 1, "%", CambiarDesgaste);
+        _desgaste.AllowGreater = false;
+        _desgaste.TooltipText = "Deterioro acumulado: multiplica todas las stats por (1 − desgaste). Lo genera curarse, y dentro de la run no baja.";
+        filaNivel.AddChild(_desgaste);
+        _desgasteEfecto = Etiqueta("", 13, Gris);
+        filaNivel.AddChild(_desgasteEfecto);
+        _stats.AddChild(filaNivel);
+
+        _statsNota = Etiqueta("", 12, Gris);
+        _statsNota.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        _stats.AddChild(_statsNota);
+
+        _statsCuerpo = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill };
+        _statsCuerpo.AddThemeConstantOverride("separation", 4);
+        var desplazable = new ScrollContainer
+        {
+            SizeFlagsVertical = SizeFlags.ExpandFill,
+            HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled,
+        };
+        desplazable.AddChild(_statsCuerpo);
+        _stats.AddChild(desplazable);
+
         var panelStats = Panel(_stats);
         panelStats.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         arriba.AddChild(panelStats);
@@ -250,7 +322,8 @@ public partial class Combate : Control
         var tituloRegistro = new HBoxContainer();
         tituloRegistro.AddChild(new Label { Text = "Registro", SizeFlagsHorizontal = SizeFlags.ExpandFill });
         tituloRegistro.AddChild(Boton("Resumen", Resumen));
-        tituloRegistro.AddChild(Boton("Otra partida", () => Empezar((int)(Time.GetTicksUsec() & 0xFFFF))));
+        tituloRegistro.AddChild(Boton("Otra partida", () => Empezar((int)(Time.GetTicksUsec() & 0xFFFF)),
+            ayuda: "Empieza de nuevo con otra semilla. También deshace los cambios de stats."));
         todo.AddChild(tituloRegistro);
 
         _bitacora = new RichTextLabel
@@ -266,6 +339,16 @@ public partial class Combate : Control
     }
 
     private void Refrescar()
+    {
+        RefrescarMenosStats();
+        PintarStats(Actual());
+    }
+
+    /// <summary>
+    /// Todo menos el cuerpo de las stats. Es lo que se rehace mientras editas
+    /// una, para no quitarte el campo de debajo del cursor.
+    /// </summary>
+    private void RefrescarMenosStats()
     {
         var enTurno = Actual();
 
@@ -291,7 +374,6 @@ public partial class Combate : Control
         PintarEquipo(enTurno, pendientes.Select(c => c.Id).ToHashSet());
         PintarRival();
         PintarAcciones(enTurno, pendientes);
-        PintarStats(enTurno);
     }
 
     private void PintarEquipo(Combatiente? enTurno, HashSet<string> pendientes)
@@ -589,6 +671,24 @@ public partial class Combate : Control
             string arg = partes.Length > 1 ? partes[1] : "";
 
             if (orden == "abrir") { Abrir(arg); continue; }
+            if (orden == "inspeccionar") { _inspeccionado = arg; Refrescar(); continue; }
+            if (orden == "vista") { _verAspirable = arg == "aspirable"; Refrescar(); continue; }
+            if (orden is "nivel" or "desgaste" && partes.Length > 2 && double.TryParse(partes[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double dato))
+            {
+                _inspeccionado = arg;
+                if (orden == "nivel") CambiarNivel((int)dato);
+                else CambiarDesgaste(dato);
+                continue;
+            }
+            if (orden == "max" && partes.Length > 3 && double.TryParse(partes[3], NumberStyles.Float, CultureInfo.InvariantCulture, out double maximo)
+                && _e.Buscar(arg) is { } quienMax
+                && Primarias.Concat(Ofensivas).Concat(Defensivas).Concat(DeKit)
+                    .FirstOrDefault(x => x.Stat.ToString().Equals(partes[2], StringComparison.OrdinalIgnoreCase)) is { } infoMax)
+            {
+                CambiarMax(quienMax, infoMax, maximo);
+                Refrescar();          // desde el guion no hay un campo que ya enseñe el valor nuevo
+                continue;
+            }
 
             var quien = Actual();
             int n = int.TryParse(arg, out int v) ? v : 0;
@@ -745,34 +845,42 @@ public partial class Combate : Control
         new(Stat.AntiRm, "🧪", "Anti-RM (Willham)", false, Uso.AunNo, "Propia del kit de Willham."),
     ];
 
+    private Combatiente Inspeccionado()
+        => (_inspeccionado is null ? null : _e.Buscar(_inspeccionado))
+           ?? Actual()
+           ?? _e.Combatientes.First(x => x.Bando == Bando.Aliado);
+
+    private const string AyudaAporte = "Lo que aporta a la barra del equipo: entero en pie, la mitad en K.O., nada muerto.";
+
     private void PintarStats(Combatiente? enTurno)
     {
-        Vaciar(_stats);
         var c = (_inspeccionado is null ? null : _e.Buscar(_inspeccionado))
                 ?? enTurno
                 ?? _e.Combatientes.First(x => x.Bando == Bando.Aliado);
 
-        var titulo = new HBoxContainer();
-        titulo.AddChild(Etiqueta($"Stats de {c.Nombre.ToUpperInvariant()}", 20, Dorado));
-        titulo.AddChild(Etiqueta($"   nivel {c.Nivel} · {NombreArma(c.Arma)} · {Donde(c)}", 15, Gris));
-        _stats.AddChild(titulo);
+        _statsTitulo.Text = $"Stats de {c.Nombre.ToUpperInvariant()}";
+        _statsSub.Text = $"{NombreArma(c.Arma)} · {Donde(c)}";
+        _vistaAspirable.SetPressedNoSignal(_verAspirable);
+        _nivel.SetValueNoSignal(c.Nivel);
+        _desgaste.SetValueNoSignal(Math.Round(c.Desgaste.Acumulado * 100, 1));
+        _desgasteEfecto.Text = $"todas las stats ×{Enma.Core.Stats.Desgaste.Multiplicador(c.Desgaste.Acumulado).ToString("0.##", CultureInfo.InvariantCulture)}";
+        _statsNota.Text = _verAspirable
+            ? "El MAX aspirable: lo que valdría a nivel 18. Edítalo aquí; la vista actual enseña lo que resuelve el motor a su nivel."
+            : "Lo que resuelve el motor a su nivel · tenue: aún sin efecto · ratón encima: qué es · pulsa una ficha: ver otra";
 
-        var nota = Etiqueta("Valores del motor ahora · tenue: aún sin efecto · ratón encima: qué es · pulsa una ficha: ver otra", 12, Gris);
-        nota.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-        _stats.AddChild(nota);
-
+        Vaciar(_statsCuerpo);
         var ev = new Enma.Core.Reglas.Evaluador();
+        Control Celda(InfoStat info) => _verAspirable ? Editable(info, c) : Entrada(info, c, ev);
 
-        _stats.AddChild(Grupo("PRIMARIAS"));
+        _statsCuerpo.AddChild(Grupo("PRIMARIAS"));
         var primarias = Rejilla(2);
-        foreach (var info in Primarias) primarias.AddChild(Entrada(info, c, ev));
-        primarias.AddChild(EntradaLibre("🎵", "Aporte a la barra de CM", Cm(c.Storage), "", Texto,
-            "Lo que aporta a la barra del equipo: entero en pie, la mitad en K.O., nada muerto.", Uso.EnCombate));
-        primarias.AddChild(EntradaLibre("🥀", "Desgaste", $"{(c.Desgaste.Acumulado * 100).ToString("0.#", CultureInfo.InvariantCulture)}%", "", Texto,
-            "Deterioro acumulado: resta a todas las stats. Lo genera curarse, y dentro de la run no baja.", Uso.EnCombate));
+        foreach (var info in Primarias) primarias.AddChild(Celda(info));
+        primarias.AddChild(_verAspirable
+            ? Fila("🎵", "Aporte a la barra de CM", AyudaAporte, Uso.EnCombate, Spin(c.Storage, 50, 0.5, "", v => CambiarAporte(c, v)))
+            : EntradaLibre("🎵", "Aporte a la barra de CM", Cm(c.Storage), "", Texto, AyudaAporte, Uso.EnCombate));
         primarias.AddChild(EntradaLibre("🩻", "Daño verdadero", "—", "", Texto,
             "Porción del daño que ignora la armadura y la RM. El manual la cuenta como primaria, pero aún no existe como stat en el motor.", Uso.AunNo));
-        _stats.AddChild(primarias);
+        _statsCuerpo.AddChild(primarias);
 
         var secundarias = new HBoxContainer();
         secundarias.AddThemeConstantOverride("separation", 14);
@@ -781,19 +889,111 @@ public partial class Combate : Control
             var columna = new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill };
             columna.AddThemeConstantOverride("separation", 0);
             columna.AddChild(Grupo(nombre));
-            foreach (var info in grupo) columna.AddChild(Entrada(info, c, ev));
+            foreach (var info in grupo) columna.AddChild(Celda(info));
             if (grupo == Ofensivas)
             {
                 // Caben debajo: las ofensivas son tres menos que las defensivas.
                 columna.AddChild(Grupo("PROPIAS DE KIT"));
-                foreach (var info in DeKit) columna.AddChild(Entrada(info, c, ev));
+                foreach (var info in DeKit) columna.AddChild(Celda(info));
             }
             secundarias.AddChild(columna);
         }
-        _stats.AddChild(secundarias);
+        _statsCuerpo.AddChild(secundarias);
 
-        _stats.AddChild(Grupo($"CARGA MUSICAL · {NombreArma(c.Arma).ToUpperInvariant()}"));
-        _stats.AddChild(BonusDeCm(c, ev));
+        if (!_verAspirable)
+        {
+            _statsCuerpo.AddChild(Grupo($"CARGA MUSICAL · {NombreArma(c.Arma).ToUpperInvariant()}"));
+            _statsCuerpo.AddChild(BonusDeCm(c, ev));
+        }
+    }
+
+    /// <summary>Una stat en la vista aspirable: su MAX, en un campo que se puede editar.</summary>
+    private Control Editable(InfoStat info, Combatiente c)
+    {
+        double max = info.Stat == Stat.Hp ? 10_000_000 : 100_000;
+        var campo = Spin(c.MaxAspirable.GetValueOrDefault(info.Stat), max, 1, info.Porcentaje ? "%" : "",
+            v => CambiarMax(c, info, v));
+        return Fila(info.Icono, info.Nombre, info.Ayuda, info.Uso, campo);
+    }
+
+    // ---- editar: cada cambio va al estado del combate y queda en el registro ----
+
+    private void CambiarMax(Combatiente c, InfoStat info, double valor)
+    {
+        double antes = c.MaxAspirable.GetValueOrDefault(info.Stat);
+        if (Math.Abs(antes - valor) < 1e-9) return;
+
+        double vida = c.HpPct;
+        c.MaxAspirable[info.Stat] = valor;
+        if (info.Stat == Stat.Hp) ConservarVida(c, vida);
+
+        Escribir($"✎ {c.Nombre} · {info.Nombre}: aspirable {Num(antes)} → {Num(valor)}{(info.Porcentaje ? "%" : "")}", Cian);
+        RefrescarMenosStats();
+    }
+
+    private void CambiarNivel(int nivel)
+    {
+        var c = Inspeccionado();
+        if (c.Nivel == nivel) return;
+
+        double vida = c.HpPct;
+        int antes = c.Nivel;
+        c.Nivel = nivel;
+        ConservarVida(c, vida);
+
+        Escribir($"✎ {c.Nombre} · nivel {antes} → {nivel}", Cian);
+        Refrescar();
+    }
+
+    private void CambiarDesgaste(double porcentaje)
+    {
+        var c = Inspeccionado();
+        double antes = c.Desgaste.Acumulado;
+        if (Math.Abs(antes * 100 - porcentaje) < 1e-9) return;
+
+        double vida = c.HpPct;
+        c.Desgaste.Fijar(porcentaje / 100.0);
+        ConservarVida(c, vida);
+
+        Escribir($"✎ {c.Nombre} · desgaste {Num(antes * 100)}% → {Num(porcentaje)}%", Cian);
+        Refrescar();
+    }
+
+    private void CambiarAporte(Combatiente c, double valor)
+    {
+        double antes = c.Storage;
+        if (Math.Abs(antes - valor) < 1e-9) return;
+
+        c.Storage = valor;
+        _e.RecalcularCm();
+
+        Escribir($"✎ {c.Nombre} · aporte a la barra {Cm(antes)} → {Cm(valor)}", Cian);
+        RefrescarMenosStats();
+    }
+
+    /// <summary>Si cambia la vida maxima, la actual conserva su porcentaje: quien estaba lleno sigue lleno.</summary>
+    private static void ConservarVida(Combatiente c, double porcentaje)
+    {
+        if (!c.EnKo) c.Hp = porcentaje * c.HpMax;
+    }
+
+    private static SpinBox Spin(double valor, double maximo, double paso, string sufijo, Action<double> alCambiar)
+    {
+        var campo = new SpinBox
+        {
+            MinValue = 0,
+            MaxValue = maximo,
+            Step = paso,
+            AllowGreater = true,
+            Suffix = sufijo,
+            SelectAllOnFocus = true,
+            Alignment = HorizontalAlignment.Right,
+            CustomMinimumSize = new Vector2(96, 0),
+        };
+        campo.SetValueNoSignal(valor);
+        campo.GetLineEdit().AddThemeFontSizeOverride("font_size", 13);
+        campo.ValueChanged += v => alCambiar(v);
+        return campo;
     }
 
     /// <summary>
@@ -897,6 +1097,20 @@ public partial class Combate : Control
         string ayuda, Uso uso)
     {
         bool apagada = uso is Uso.AunNo or Uso.SinRitmo;
+        var v = Etiqueta(valor, 14, apagada ? new Color(Gris, 0.6f) : Texto);
+        v.HorizontalAlignment = HorizontalAlignment.Right;
+        v.CustomMinimumSize = new Vector2(52, 0);
+        return Fila(icono, nombre, ayuda, uso, v, cambio, colorCambio);
+    }
+
+    /// <summary>
+    /// Una fila del panel: icono, nombre y lo que vaya a la derecha —un valor
+    /// o un campo para editarlo—. La ayuda sale al pasar el raton.
+    /// </summary>
+    private static Control Fila(string icono, string nombre, string ayuda, Uso uso, Control valor,
+        string cambio = "", Color? colorCambio = null)
+    {
+        bool apagada = uso is Uso.AunNo or Uso.SinRitmo;
         var fila = new HBoxContainer { MouseFilter = MouseFilterEnum.Stop, SizeFlagsHorizontal = SizeFlags.ExpandFill };
         fila.AddThemeConstantOverride("separation", 5);
         fila.TooltipText = $"{nombre}\n{ayuda}" + uso switch
@@ -918,15 +1132,8 @@ public partial class Combate : Control
         n.ClipText = true;
         fila.AddChild(n);
 
-        if (cambio.Length > 0) fila.AddChild(Etiqueta(cambio, 12, colorCambio));
-
-        var v = Etiqueta(valor, 14, apagada ? new Color(Gris, 0.6f) : Texto);
-        v.HorizontalAlignment = HorizontalAlignment.Right;
-        v.CustomMinimumSize = new Vector2(52, 0);
-        fila.AddChild(v);
-
-        foreach (var hijo in fila.GetChildren())
-            if (hijo is Control ctl) ctl.MouseFilter = MouseFilterEnum.Ignore;
+        if (cambio.Length > 0) fila.AddChild(Etiqueta(cambio, 12, colorCambio ?? Texto));
+        fila.AddChild(valor);
         return fila;
     }
 
@@ -1031,7 +1238,7 @@ public partial class Combate : Control
 
     private static Label Etiqueta(string texto, int tamano = 17, Color? color = null)
     {
-        var l = new Label { Text = texto, VerticalAlignment = VerticalAlignment.Center };
+        var l = new Label { Text = texto, VerticalAlignment = VerticalAlignment.Center, MouseFilter = MouseFilterEnum.Ignore };
         l.AddThemeFontSizeOverride("font_size", tamano);
         l.AddThemeColorOverride("font_color", color ?? Texto);
         return l;
