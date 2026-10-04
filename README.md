@@ -33,6 +33,7 @@ RPG táctico por turnos con capa musical. Combate posicional en línea, habilida
 | `src/EnmaCore` | El núcleo determinista: stats, reglas, combate, música |
 | `src/EnmaCore.Tests` | Los tests (`dotnet test src/Enma.slnx`) |
 | `src/EnmaSim` | Simulador: juega combates enteros (`dotnet run --project src/EnmaSim`) |
+| `proto/combate` | Ventana de combate en Godot: el equipo de prueba contra un muñeco (`LANZAR.bat`) |
 | `proto/grabador-temas` | Editor de temas musicales en Godot |
 
 ## Fuentes originales

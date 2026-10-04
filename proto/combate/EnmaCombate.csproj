@@ -1,0 +1,26 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+
+  <!--
+    VENTANA DE COMBATE: la capa de presentacion sobre el nucleo.
+
+    No sabe ninguna regla. Pinta el estado, convierte cada boton en una Accion
+    y se la pasa a EnmaCore; si el motor la rechaza, enseña por que.
+
+    El SDK de Godot no esta en nuget.org: viene con el propio Godot, y
+    nuget.config apunta a donde lo instala winget.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Enma.Ventana</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\EnmaCore\EnmaCore.csproj" />
+  </ItemGroup>
+
+</Project>

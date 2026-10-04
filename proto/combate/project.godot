@@ -1,0 +1,27 @@
+; Ventana de combate de E.N.M.A.
+;
+; El nucleo (src/EnmaCore) con una cara: la misma partida que el modo
+; "jugar" de EnmaSim, contra el mismo muñeco, pero con raton.
+
+config_version=5
+
+[application]
+
+config/name="Combate - E.N.M.A."
+config/description="Combate de prueba contra un muñeco, sobre el nucleo de E.N.M.A."
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1440
+window/size/viewport_height=880
+
+[dotnet]
+
+project/assembly_name="EnmaCombate"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
