@@ -1,4 +1,5 @@
 using System.Globalization;
+using Enma.Core;
 using Enma.Core.Combate;
 using Enma.Core.Estado;
 using Enma.Core.Musica;
@@ -685,7 +686,7 @@ public partial class Combate : Control
     // ------------------------------------------------------------ stats
 
     /// <summary>Si el motor ya la usa en un combate. Las que no, salen tenues.</summary>
-    private enum Uso { EnCombate, SinGolpesMagicos, AunNo }
+    private enum Uso { EnCombate, SinGolpesMagicos, SinRitmo, AunNo }
 
     private sealed record InfoStat(Stat Stat, string Icono, string Nombre, bool Porcentaje, Uso Uso, string Ayuda);
 
@@ -756,8 +757,7 @@ public partial class Combate : Control
         titulo.AddChild(Etiqueta($"   nivel {c.Nivel} · {NombreArma(c.Arma)} · {Donde(c)}", 15, Gris));
         _stats.AddChild(titulo);
 
-        var nota = Etiqueta("Lo que resuelve el motor ahora. Las tenues aún no hacen nada en combate. "
-            + "Pasa el ratón por una para ver qué es, y pulsa una ficha para ver las de otro.", 13, Gris);
+        var nota = Etiqueta("Valores del motor ahora · tenue: aún sin efecto · ratón encima: qué es · pulsa una ficha: ver otra", 12, Gris);
         nota.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         _stats.AddChild(nota);
 
@@ -782,14 +782,76 @@ public partial class Combate : Control
             columna.AddThemeConstantOverride("separation", 0);
             columna.AddChild(Grupo(nombre));
             foreach (var info in grupo) columna.AddChild(Entrada(info, c, ev));
+            if (grupo == Ofensivas)
+            {
+                // Caben debajo: las ofensivas son tres menos que las defensivas.
+                columna.AddChild(Grupo("PROPIAS DE KIT"));
+                foreach (var info in DeKit) columna.AddChild(Entrada(info, c, ev));
+            }
             secundarias.AddChild(columna);
         }
         _stats.AddChild(secundarias);
 
-        _stats.AddChild(Grupo("PROPIAS DE KIT"));
-        var kit = Rejilla(2);
-        foreach (var info in DeKit) kit.AddChild(Entrada(info, c, ev));
-        _stats.AddChild(kit);
+        _stats.AddChild(Grupo($"CARGA MUSICAL · {NombreArma(c.Arma).ToUpperInvariant()}"));
+        _stats.AddChild(BonusDeCm(c, ev));
+    }
+
+    /// <summary>
+    /// La economia de CM de un combatiente, con las mismas funciones que usa
+    /// el motor. Con CLASICAL encendido en su bando, todo sale ya x1.5.
+    /// </summary>
+    private GridContainer BonusDeCm(Combatiente c, Enma.Core.Reglas.Evaluador ev)
+    {
+        bool clasical = _e.Barra(c.Bando).ClasicalActivo;
+        double x = clasical ? Constantes.ClasicalMultiplicador : 1.0;
+        string marca = clasical ? "✦ ×1.5" : "";
+
+        double golpe = CargaMusical.BasePorImpacto(c.Arma);
+        double enTempo = CargaMusical.GananciaPorImpacto(c.Arma, enTempo: true);
+        int golpes = CargaMusical.Golpes(CargaMusical.GolpesBase(c.Arma),
+            ev.ResolverStat(_e, c, Stat.VelocidadAtaque) / 100.0);
+        string figura = c.Arma switch
+        {
+            ClaseArma.Ligera => "corchea",
+            ClaseArma.Media => "negra",
+            ClaseArma.Pesada => "blanca",
+            _ => "figura",
+        };
+        string bonoTempo = c.Arma == ClaseArma.Media
+            ? $"×{Num(Enma.Core.Musica.BonusRitmico.CmPorPulsoDeLaMedia)}"
+            : $"+{Num(Constantes.BonusTempo * 100)}%";
+        double recibirMin = CargaMusical.GananciaAlRecibir(ClaseArma.Ligera, defendActivo: false);
+        double recibirMax = CargaMusical.GananciaAlRecibir(ClaseArma.Pesada, defendActivo: false);
+        double aporte = c.Storage;
+
+        var g = Rejilla(2);
+        g.AddChild(EntradaLibre("🎼", $"Por golpe ({figura})", Cm(golpe * x), marca, Cian,
+            "La figura del arma: ligera 1/8, media 1/4, pesada 1/2. Solo si el golpe conecta: fallar da 0.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("🎯", "En tempo, por golpe", Cm(enTempo * x), (bonoTempo + " " + marca).Trim(), Verde,
+            "En el pulso, la media cobra ×2: es la generadora del equipo. Ligera y pesada, +20%. "
+            + "Los documentos aún dicen ×2 para todas: está pendiente de decidir.",
+            Uso.SinRitmo));
+        g.AddChild(EntradaLibre("⚔️", $"Por tanda ({golpes} golpe{(golpes == 1 ? "" : "s")})", $"{Cm(golpes * golpe * x)} → {Cm(golpes * enTempo * x)}", marca, Cian,
+            "Si conectan todos los golpes de la tanda: fuera de tempo → en tempo.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("🔢", "Golpes para 1 CM", $"{Num(1 / (golpe * x))} → {Num(1 / (enTempo * x))}", marca, Cian,
+            "Golpes conectados para ganar 1 CM: fuera de tempo → en tempo. El diseño da 8, 4 y 2 fuera de tempo.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("🛡️", "Al recibir un golpe", $"{Cm(recibirMin * x)}–{Cm(recibirMax * x)}", marca, Cian,
+            "La mitad de la figura de quien te pega: de una ligera 0.0625, de una media 0.125, de una pesada 0.25. "
+            + "En guardia, el doble. El muñeco no pega, así que aquí no se ve.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("🎵", "Carga Musical", $"{Cm(aporte * 0.5 * x)} · {Cm(aporte * x)} · {Cm(aporte * 1.8 * x)}", marca, Cian,
+            "Tu aporte × la sección de la canción: calma, base y estribillo. Si llena la barra, enciende CLASICAL. Cierra el turno.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("✦", "CLASICAL", clasical ? "encendido" : "apagado", clasical ? "×1.5" : "", Cian,
+            "×1.5 a toda la CM que gana el bando, hasta su siguiente turno. Se enciende cuando una Carga Musical llena la barra.",
+            Uso.EnCombate));
+        g.AddChild(EntradaLibre("🔑", "Coste QWER", string.Join(" · ", "QWER".Select(t => Cm(_m.CosteDeTecla(t)))), "", Texto,
+            "Lo que cuesta cada tecla en esta fase de la run (late, ×0.4). A nivel 1 serían 1 · 2 · 3 · 4.",
+            Uso.EnCombate));
+        return g;
     }
 
     /// <summary>Una stat del motor: su valor ahora y, si alguna regla la mueve, cuanto y por que.</summary>
@@ -834,13 +896,14 @@ public partial class Combate : Control
     private static Control EntradaLibre(string icono, string nombre, string valor, string cambio, Color colorCambio,
         string ayuda, Uso uso)
     {
-        bool apagada = uso == Uso.AunNo;
+        bool apagada = uso is Uso.AunNo or Uso.SinRitmo;
         var fila = new HBoxContainer { MouseFilter = MouseFilterEnum.Stop, SizeFlagsHorizontal = SizeFlags.ExpandFill };
         fila.AddThemeConstantOverride("separation", 5);
         fila.TooltipText = $"{nombre}\n{ayuda}" + uso switch
         {
             Uso.AunNo => "\nEl motor aún no la usa.",
             Uso.SinGolpesMagicos => "\nConectada, pero aún no hay golpes mágicos.",
+            Uso.SinRitmo => "\nEl motor lo aplica, pero hoy ningún golpe va en tempo: el ritmo aún no está conectado.",
             _ => "",
         };
 
@@ -990,6 +1053,8 @@ public partial class Combate : Control
             : espera > 0 ? $"vuelve en {espera} turno{(espera == 1 ? "" : "s")}"
             : "listo";
     }
+
+    private static string Num(double x) => x.ToString("0.#", CultureInfo.InvariantCulture);
 
     private static string Dano(double x) => x.ToString("0.0", CultureInfo.InvariantCulture);
 
