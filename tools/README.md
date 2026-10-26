@@ -2,6 +2,8 @@
 
 Scripts que insertan la documentación de diseño dentro del `.docx`.
 
+> **Desde el 24/10/2026, el documento en el que se trabaja es `BIOGRAFIAS 8de10 - EDITABLE.docx`.** Es una copia del TRABAJO que se edita a mano en Word, y ningún script la toca. `build_docx.py` sigue regenerando el TRABAJO, pero esos cambios ya no llegan al EDITABLE: si cambias un `.md` de `docs/` y lo quieres en el Word, hay que pasarlo a mano.
+
 ## `build_docx.py` — el que se usa
 
 Reconstruye `BIOGRAFIAS 8de10 - TRABAJO.docx` **desde cero** a partir del original en cada ejecución, así que es **idempotente**: se puede correr las veces que haga falta y nunca duplica contenido.
