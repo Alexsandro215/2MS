@@ -7,7 +7,7 @@
 
 ## 1. Estructura del día
 
-El día corre con reloj real, de **7:00 a 21:00**.
+El día va de **7:00 a 21:00**. **No es tiempo real:** el reloj solo avanza al hacer una actividad. Caminar por el mapa no gasta tiempo.
 
 ```
 7:00 – 9:00    MAÑANA      charlas, tranvía, eventos prioritarios      ← sin coste
@@ -51,6 +51,17 @@ De las 14 horas del día, 5 van sobre raíles. Si el jugador solo espera a que l
 **Por qué gratis:** hay **81 personajes secundarios**. Sin una vía barata de progreso, la mayoría no se tocan nunca. La clase es esa vía.
 
 Los **debates** siguen dando y quitando reputación: responder bien sube, hacerlo mal baja.
+
+### Días sin clase
+
+En fines de semana y días sin clase, **la mañana y la clase quedan libres** para cualquier cosa:
+- mazmorra;
+- liberar una zona de corrupción;
+- misiones de secundarios;
+- entrenar;
+- los eventos de ese día.
+
+❓ ¿Ese tramo de 7:00 a 12:00 cuenta como uno o como dos bloques?
 
 ## 4. El día cobra por lo que NO haces
 
@@ -105,6 +116,8 @@ Así la emoción no solo afecta al combate: también **te quita una herramienta 
 El bloque 3 (18:00–21:00) no es un tercer hueco igual a los otros: es donde se elige **una actividad más o acostarse temprano**.
 
 Si la última franja fuera siempre gratis, nadie dormiría temprano nunca.
+
+**Después de las 21:00 se puede seguir.** Lo que se entrene a partir de esa hora da **menos stats** ese día. Además cuentan los hábitos de la tabla de abajo.
 
 ### Consecuencias de dormir tarde
 
@@ -196,6 +209,10 @@ Cada personaje tiene su propia agenda de 3 bloques.
 >
 > Y como un personaje en mal estado emocional o herido **se niega a ir**, la emoción te recorta directamente la plantilla disponible.
 
+**Itzela** también tiene su propia agenda, pero suele estar más libre que los demás.
+
+**Los secundarios** tienen un **horario de rotación por lugares**: según el día y la hora, están en un sitio u otro.
+
 ### Si no completas una misión principal
 
 **Se desplaza** a la siguiente semana o al siguiente día habilitado, según cómo estén organizados los días de los personajes secundarios implicados.
@@ -264,6 +281,16 @@ Cuatro campañas seguidas y estás a cero de estadísticas. **No hace falta ning
 
 Ir al hospital **gasta los tres bloques del protagonista**. Es un día perdido para lazos, entrenamiento y todo lo demás.
 
+Es el **Hospital de Félix**, el mismo donde se entrena Armadura en 1 bloque ([lore-contexto.md](lore-contexto.md) §3).
+
+El documento original (*BIOGRAFIAS 8de10.docx*, apartado del desgaste) da más formas de curarlo:
+- **reposo total**: un día completo sin misiones ni entrenamiento;
+- **tratamiento** en el Hospital de Félix;
+- **eventos especiales** con Graves, con Meiko o de vínculos narrativos;
+- **artefactos únicos** o **melodías legendarias**.
+
+❓ El reposo total choca con la regla del amanecer de esta sección, que baja el desgaste siempre, hagas lo que hagas. ¿Se quedan las dos (amanecer siempre, más un extra si reposas), o solo una?
+
 ### ⚠️ La tasa de generación hay que corregirla
 
 La tasa vigente es *cada 20% de HP base restaurada = +1% de desgaste*, calibrada en [formulas.md](formulas.md) §3 para que un jugador normal llegue a **late con ~35% acumulado**. Pero eso es el total de la run, no de una campaña: **una campaña de 5 oleadas genera unos 6%**, no 35%.
@@ -298,3 +325,6 @@ Sigue premiando lo mismo: **prevenir es más barato que reparar**. Escudos, evas
 ## Pendiente
 
 ❓ Cuántos **días** dura la campaña completa (la partida entera), para calibrar el ritmo de los 81 lazos.
+- **Herramienta acordada:** un Excel con **cada día y cada bloque**, para ver cuáles ocupa la HP (HP-P, HP-S…) y cuáles quedan libres.
+
+❓ **El dinero.** Tiene que ser un recurso valioso, para que no se sobre-farmee. Todavía no se decide de dónde sale.

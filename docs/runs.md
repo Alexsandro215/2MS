@@ -21,6 +21,8 @@
 
 La corrupción ataca el overworld. Cada zona se libera **por secciones**, y cada sección es **un camino fijo de nodos**.
 
+**Dónde y cuándo aparecen:** las zonas se generan **en días concretos**, siempre **en zonas abiertas o públicas** como calles, plazas o parques. **Nunca dentro de edificios**: sería modelar dos veces el mismo interior.
+
 ```
 ENTRAS  →  ●──●──●──●  sección 1 completada  →  ¿sigues?
                           │                        │

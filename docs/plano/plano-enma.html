@@ -1,0 +1,1599 @@
+<title>Plano de la E.N.M.A.</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Plano de trabajo de cartógrafo: el mapa manda a la izquierda, la ficha de cada distrito a la derecha; abajo, entrenamiento y pendientes. */
+:root {
+  --bg: #edf1f3;
+  --surface: #f8fafb;
+  --ink: #1b2631;
+  --muted: #586572;
+  --line: #c6d0d8;
+  --road: #dde4e9;
+  --tile: #fbfcfc;
+  --central: #e4e9ec;
+  --wall: #6e5f49;
+  --club: #3c4ea6;
+  --open: #2d7651;
+  --bldg: #36434f;
+  --pick: #c4870f;
+  --on-mark: #ffffff;
+  --sketch-opacity: .55;
+  --sketch-filter: none;
+  --calle: #fbfbf8;
+  --avenida: #dfe4e8;
+  --manzana: #e9edf0;
+  --lote: #cdd5dc;
+  --lote-borde: #7b8995;
+  --abierto: #cde3cd;
+  --abierto-borde: #5b9668;
+  --agua: #b9d5e9;
+  --agua-borde: #6b9bbd;
+  --plaza: #ece6d8;
+  --blanco-fondo: #f1f2ef;
+  --raya: #d0d6da;
+  --r-cian: #17a2c6;
+  --r-azul: #2f4dbf;
+  --r-amarillo: #d6a000;
+  --r-rojo: #d33c5c;
+  --r-morado: #6b3db4;
+  --r-verde: #34964a;
+  --r-marino: #253447;
+  --r-rosa: #c04bbd;
+  --r-naranja: #dd6f12;
+  --r-negra: #1e2730;
+  --r-cafe: #8a5a2b;
+  --r-turquesa: #13a39a;
+  --af: #8b3fae;
+  --af-p: #8b3fae;
+  --af-o: #c0392b;
+  --af-d: #12808f;
+  --f-display: "IM Fell English SC", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --f-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f151b; --surface: #16202a; --ink: #e2e8ed; --muted: #94a2af; --line: #2b3845;
+    --road: #1b2530; --tile: #121a22; --central: #1d2833; --wall: #bba98d;
+    --club: #8e9cf2; --open: #6cc394; --bldg: #b3bec8; --pick: #f2b63e; --on-mark: #0f151b;
+    --sketch-opacity: .5; --sketch-filter: invert(1) hue-rotate(180deg) brightness(.9);
+    --calle: #18212a; --avenida: #222d38; --manzana: #222b35; --lote: #33414f; --lote-borde: #66798a; --abierto: #1f3b2b; --abierto-borde: #4f9163;
+    --agua: #1c3a50; --agua-borde: #4f84a8; --plaza: #2d2b27; --blanco-fondo: #141b22; --raya: #26313c;
+    --r-cian: #3cc6e6; --r-azul: #7f96ff; --r-amarillo: #f0c23a; --r-rojo: #ff7590; --r-morado: #b58cff; --r-verde: #5fcf78; --r-marino: #a9bdd4; --r-rosa: #ee86e9; --r-naranja: #ff9d4d; --r-negra: #d3dbe2; --r-cafe: #d39a62; --r-turquesa: #46d6cc; --af: #d79bf2; --af-p: #d79bf2; --af-o: #ff8170; --af-d: #5fd3e3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f151b; --surface: #16202a; --ink: #e2e8ed; --muted: #94a2af; --line: #2b3845;
+  --road: #1b2530; --tile: #121a22; --central: #1d2833; --wall: #bba98d;
+  --club: #8e9cf2; --open: #6cc394; --bldg: #b3bec8; --pick: #f2b63e; --on-mark: #0f151b;
+  --sketch-opacity: .5; --sketch-filter: invert(1) hue-rotate(180deg) brightness(.9);
+  --calle: #18212a; --avenida: #222d38; --manzana: #222b35; --lote: #33414f; --lote-borde: #66798a; --abierto: #1f3b2b; --abierto-borde: #4f9163;
+  --agua: #1c3a50; --agua-borde: #4f84a8; --plaza: #2d2b27; --blanco-fondo: #141b22; --raya: #26313c;
+  --r-cian: #3cc6e6; --r-azul: #7f96ff; --r-amarillo: #f0c23a; --r-rojo: #ff7590; --r-morado: #b58cff; --r-verde: #5fcf78; --r-marino: #a9bdd4; --r-rosa: #ee86e9; --r-naranja: #ff9d4d; --r-negra: #d3dbe2; --r-cafe: #d39a62; --r-turquesa: #46d6cc; --af: #d79bf2; --af-p: #d79bf2; --af-o: #ff8170; --af-d: #5fd3e3;
+  color-scheme: dark;
+}
+
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+  display: grid; gap: 28px;
+}
+header { display: grid; gap: 6px; max-width: 68ch; }
+.eyebrow { margin: 0; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.05; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); }
+code { font-family: var(--f-mono); font-size: .86em; }
+h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 1.55rem; line-height: 1.15; text-wrap: balance; }
+h3 { margin: 0; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+.atlas { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 940px) { .atlas { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); align-items: start; } }
+
+.mapcol { display: grid; gap: 10px; min-width: 0; }
+.mapbar { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: .9rem; }
+.toggle { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; font-weight: 500; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--pick); }
+.keys { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--muted); }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 13px; height: 13px; border-radius: 50%; flex: none; }
+.dot.club { background: var(--club); }
+.dot.abierto { background: var(--open); }
+.dot.edif { background: var(--bldg); }
+.dot.nd { border: 2px solid var(--bldg); background: transparent; }
+.dot.duda { border: 2px dashed var(--bldg); background: transparent; }
+
+.mapbox { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); padding: 8px; }
+#plano { display: block; width: 100%; min-width: 640px; height: auto; }
+#plano .sketch { opacity: 0; filter: var(--sketch-filter); transition: opacity .2s; pointer-events: none; }
+#plano.con-boceto .sketch { opacity: var(--sketch-opacity); }
+#plano.sin-rutas .rutas { display: none; }
+#plano.sin-numeros .numeros { display: none; }
+#plano:not(.con-aficiones) .aficiones { display: none; }
+#plano.sin-estaciones .estaciones { display: none; }
+.est { cursor: pointer; outline: none; }
+.est-aro { fill: var(--surface); stroke: var(--ink); stroke-width: 2.6; }
+.est-simple { fill: var(--surface); stroke-width: 2.4; }
+.est:hover .est-simple, .est:focus-visible .est-simple { stroke: var(--pick) !important; }
+.est.on .est-simple { stroke: var(--pick) !important; stroke-width: 3.4; }
+.est-punto { fill: var(--ink); }
+.est:hover .est-aro, .est:focus-visible .est-aro { stroke: var(--pick); }
+.est.on .est-aro { stroke: var(--pick); stroke-width: 3.6; }
+.num.est-chip { display: grid; place-items: center; }
+.af { cursor: pointer; outline: none; }
+.af { --c: var(--af); }
+.t-p { --c: var(--af-p); }
+.t-o { --c: var(--af-o); }
+.t-d { --c: var(--af-d); }
+.af .ico { fill: var(--c); stroke: var(--surface); stroke-width: 1.4; stroke-linejoin: round; }
+.af.no-oficial .ico { fill: var(--surface); stroke: var(--c); stroke-width: 1.8; stroke-dasharray: 2.2 1.6; }
+.af:hover .ico, .af:focus-visible .ico { stroke: var(--pick); stroke-width: 2.2; }
+.af.on .ico { stroke: var(--pick); stroke-width: 2.8; }
+.num.af-chip { display: grid; place-items: center; }
+.af-ico { display: inline-block; vertical-align: -3px; }
+.af-ico path { fill: var(--c, var(--af)); stroke: none; }
+.af-ico.no-oficial path { fill: none; stroke: var(--c, var(--af)); stroke-width: 1.6; stroke-dasharray: 2 1.5; }
+.key-af { gap: 4px; }
+.avenida { fill: var(--calle); }
+.manzana { fill: var(--manzana); }
+.edificio { fill: var(--lote); stroke: var(--lote-borde); stroke-width: 1.8; stroke-linejoin: miter; }
+.via-borde { fill: none; stroke: var(--lote-borde); stroke-linejoin: miter; stroke-miterlimit: 3; stroke-linecap: butt; }
+.via { fill: none; stroke: var(--calle); stroke-linejoin: miter; stroke-miterlimit: 3; stroke-linecap: butt; }
+.canal-agua { fill: none; stroke: var(--agua); stroke-linejoin: round; stroke-linecap: round; }
+.rio { fill: none; stroke: var(--agua); stroke-linejoin: round; stroke-linecap: round; }
+.rio-borde { fill: none; stroke: var(--agua-borde); stroke-linejoin: round; stroke-linecap: round; }
+.colina { fill: none; stroke: var(--abierto-borde); stroke-width: 2; stroke-dasharray: 3 5; opacity: .6; }
+.blanco { fill: url(#rayado); }
+.blanco-fondo { fill: var(--blanco-fondo); }
+.raya { stroke: var(--raya); stroke-width: 3; }
+.lote { fill: var(--lote); stroke: var(--lote-borde); stroke-width: 2.4; stroke-linejoin: round; }
+.abierto { fill: var(--abierto); stroke: var(--abierto-borde); stroke-width: 2.4; stroke-linejoin: round; }
+.plaza { fill: var(--plaza); stroke: none; }
+.monumento { fill: var(--lote); stroke: var(--wall); stroke-width: 3; }
+.linea-int { fill: var(--plaza); stroke: var(--lote-borde); stroke-width: 1.6; stroke-dasharray: 6 5; }
+.lago { fill: var(--agua); stroke: var(--agua-borde); stroke-width: 2.4; }
+.canal { fill: none; stroke: var(--agua); stroke-width: 18; stroke-linejoin: round; stroke-linecap: round; }
+.arroyo { fill: none; stroke: var(--agua-borde); stroke-width: 7; stroke-linejoin: round; stroke-linecap: round; }
+.entrada { fill: none; stroke: var(--wall); stroke-width: 5; }
+.borde { fill: none; stroke: var(--lote-borde); stroke-width: 2; }
+.ruta { fill: none; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.ruta.ramal { stroke-width: 2.3; }
+.r-cian { stroke: var(--r-cian); }
+.r-azul { stroke: var(--r-azul); }
+.r-amarillo { stroke: var(--r-amarillo); }
+.r-rojo { stroke: var(--r-rojo); }
+.r-morado { stroke: var(--r-morado); }
+.r-verde { stroke: var(--r-verde); }
+.r-marino { stroke: var(--r-marino); }
+.r-rosa { stroke: var(--r-rosa); }
+.r-naranja { stroke: var(--r-naranja); }
+.r-negra { stroke: var(--r-negra); }
+.r-cafe { stroke: var(--r-cafe); }
+.r-turquesa { stroke: var(--r-turquesa); }
+.ruta.ocio { stroke-dasharray: 13 8; }
+.ronda { fill: none; stroke: var(--calle); }
+.ronda-borde { fill: none; stroke: var(--lote-borde); }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.central { fill: var(--central); stroke: var(--wall); stroke-width: 7; }
+.central-in { fill: none; stroke: var(--wall); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.arco-gap { fill: var(--calle); }
+.arco { fill: none; stroke: var(--wall); stroke-width: 3; }
+.dlabel { fill: var(--ink); font-family: var(--f-display); font-size: 26px; }
+.dsub { fill: var(--muted); font-family: var(--f-body); font-size: 14px; }
+.clabel { fill: var(--ink); font-family: var(--f-display); font-size: 24px; text-anchor: middle; }
+.csub { fill: var(--muted); font-family: var(--f-body); font-size: 13.5px; text-anchor: middle; }
+.norte { fill: var(--muted); font-family: var(--f-body); font-size: 15px; font-weight: 700; text-anchor: middle; }
+.norte-flecha { fill: var(--muted); }
+
+.mk { cursor: pointer; outline: none; }
+.mk circle { stroke-width: 2; transition: r .15s; }
+.mk text { font-family: var(--f-mono); font-size: 12.5px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.mk.club circle { fill: var(--club); stroke: var(--club); }
+.mk.abierto circle { fill: var(--open); stroke: var(--open); }
+.mk.edif circle { fill: var(--bldg); stroke: var(--bldg); }
+.mk.club text, .mk.abierto text, .mk.edif text { fill: var(--on-mark); }
+.mk.nd circle { fill: var(--tile); stroke: var(--bldg); }
+.mk.nd text { fill: var(--ink); }
+.mk.duda circle { stroke: var(--tile); stroke-dasharray: 3 2.5; }
+.mk.prop circle:not(.halo) { stroke: var(--pick); stroke-width: 2.6; }
+.dot.prop { border: 2px solid var(--pick); background: transparent; }
+.mk .halo { fill: none; stroke: var(--pick); stroke-width: 4; opacity: 0; }
+.mk:hover .halo, .mk:focus-visible .halo { opacity: .55; }
+.mk.on .halo { opacity: 1; }
+.mk.on circle:not(.halo) { r: 15; }
+
+.ficha { margin: 0; min-height: 3.2em; padding: 10px 14px; background: var(--surface); border-left: 4px solid var(--pick); font-size: .98rem; }
+.ficha b { font-weight: 700; }
+.ficha .tag { margin-left: 6px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); display: grid; min-width: 0; }
+.tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.tabs button {
+  flex: 1 1 auto; font: inherit; font-size: .92rem; font-weight: 500; color: var(--muted);
+  background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 8px; cursor: pointer;
+}
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--pick); }
+.tabs button:focus-visible { outline: 2px solid var(--pick); outline-offset: -2px; }
+#panel-body { padding: 16px 16px 20px; display: grid; gap: 16px; align-content: start; }
+@media (min-width: 940px) { #panel-body { max-height: 780px; overflow-y: auto; } }
+.dhead { display: grid; gap: 4px; }
+.dhead p { margin: 0; color: var(--muted); }
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.fila {
+  display: grid; grid-template-columns: 2.1em minmax(0, 1fr) auto; gap: 10px; align-items: center;
+  padding: 5px 6px; cursor: pointer; border-radius: 4px;
+}
+.fila:hover, .fila:focus-visible { background: var(--road); outline: none; }
+.fila.on { background: var(--road); box-shadow: inset 3px 0 0 var(--pick); }
+.num {
+  font-family: var(--f-mono); font-size: .8rem; width: 2.1em; height: 2.1em; border-radius: 50%;
+  display: grid; place-items: center; font-variant-numeric: tabular-nums;
+}
+.num.club { background: var(--club); color: var(--on-mark); }
+.num.abierto { background: var(--open); color: var(--on-mark); }
+.num.edif { background: var(--bldg); color: var(--on-mark); }
+.num.nd { border: 2px solid var(--bldg); color: var(--ink); }
+.nombre { min-width: 0; }
+.tag { font-size: .74rem; letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.sitios { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.sitios li::marker { color: var(--muted); }
+.ref { color: var(--muted); font-size: .88em; font-variant-numeric: tabular-nums; }
+.nota { margin: 0; font-size: .95rem; color: var(--muted); }
+
+.bajo { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 940px) { .bajo { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+.bloque { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.tabla-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+td.estado { white-space: nowrap; }
+.ok { color: var(--open); font-weight: 700; }
+.falta { color: var(--pick); font-weight: 700; }
+ol.pend { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
+ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">E.N.M.A. · borrador de trabajo · 1 de noviembre de 2026</p>
+    <h1>Plano de la E.N.M.A.</h1>
+    <p class="lede">Tus cuatro hojas de <code>G:\MAPAS</code> pasadas a limpio y unidas alrededor del Distrito Central. Los edificios son los de tus hojas, sin partir, y todas las calles tienen el mismo ancho. Cada distrito tiene dos líneas de tranvía, cada una de su propio color: la académica (continua) y la de ocio y exploración (punteada); la azul atraviesa toda la E.N.M.A. y la negra la rodea. Los círculos pequeños son paradas de una línea y los blancos con borde oscuro, de correspondencia. La numeración es igual en los cuatro distritos: 1 centro con su plaza, 2 parque, 3 hospital, 4 comedor, 5 auditorio, 6–9 carreras, 10 dormitorios, 11 aulas, 12 lo que maneja para toda la E.N.M.A., 13 seguridad, R residencias (provisional) y letras para sus lugares propios. No está a escala.</p>
+  </header>
+
+  <section class="atlas" aria-label="Plano">
+    <div class="mapcol">
+      <div class="mapbar">
+        <div class="toggles">
+          <label class="toggle" for="ver-rutas"><input type="checkbox" id="ver-rutas" checked> Rutas del tranvía</label>
+          <label class="toggle" for="ver-numeros"><input type="checkbox" id="ver-numeros" checked> Números</label>
+          <label class="toggle" for="ver-estaciones"><input type="checkbox" id="ver-estaciones" checked> Estaciones</label>
+          <label class="toggle" for="ver-aficiones"><input type="checkbox" id="ver-aficiones"> Aficiones</label>
+          <label class="toggle" for="ver-bocetos"><input type="checkbox" id="ver-bocetos"> Comparar con tus bocetos</label>
+        </div>
+        <div class="keys" aria-label="Qué significa cada color">
+          <span class="key"><span class="dot club"></span>Carrera</span>
+          <span class="key"><span class="dot abierto"></span>Espacio abierto</span>
+          <span class="key"><span class="dot edif"></span>Edificio</span>
+          <span class="key"><span class="dot prop"></span>Propuesta mía</span>
+          <span class="key key-af" id="leyenda-af"></span>
+        </div>
+      </div>
+      <div class="mapbox"><svg id="plano" viewBox="-24 -92 1048 1184" role="group" aria-label="Plano de los cuatro distritos alrededor del Distrito Central"></svg></div>
+      <p id="ficha" class="ficha" aria-live="polite">Toca un número para ver qué es.</p>
+    </div>
+
+    <aside class="panel" aria-label="Ficha por distrito">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div id="panel-body" role="tabpanel"></div>
+    </aside>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  // Cada distrito mide T; entre ellos, una avenida de 14 (un poco más ancha que una calle)
+  const T = 493;
+  const TILE = { d3: [0, 0], d4: [507, 0], d1: [0, 507], d2: [507, 507] };
+  // Caja del dibujo en cada hoja (en coordenadas de la foto): con ella se ubican los números.
+  const HOJA = {
+    d1: [180, 20, 1530, 1340],
+    d2: [600, 10, 1960, 1330],
+    d3: [180, 25, 1530, 1370],
+    d4: [20, 20, 1830, 1865],
+  };
+  const CAT = { club: "club", abierto: "espacio abierto", edif: "edificio", nd: "sin identificar" };
+
+  const D = {
+    central: {
+      tab: "Central", nombre: "Distrito Central",
+      lema: "Todo el rectángulo amurallado del centro. Se entra por los arcos donde terminan las cuatro avenidas. El tranvía cian entra por cada avenida, pasa por el centro y vuelve por la misma vía hacia el distrito siguiente.",
+      leyenda: [],
+      guion: [
+        ["Parque del Distrito Central", "2.2"],
+        ["Muro Mercantil, tienda de Mike", "2.3"],
+        ["Distrito Central", "3.1"],
+        ["Muro Mercantil, entrada noroeste", "4.8"],
+      ],
+      notas: [
+        "Primera guerra de la E.N.M.A. (1615–1650): asedio del Distrito Central y del Distrito 1.",
+        "En el capítulo final, el objetivo del enemigo es eliminar el Distrito Central.",
+        "No tiene hoja propia todavía.",
+      ],
+    },
+    d1: {
+      tab: "Distrito 1", nombre: "Distrito 1", sub: "Diplomacia · medieval",
+      lema: "Diplomacia y administración; decide en secreto el rumbo de la academia. Medieval y sintoísta, con torres y muros de piedra.",
+      leyenda: [
+        [1, "Comedor", "edif", "prop"], [2, "¿Aulas?", "edif", "duda"],
+        [3, "Centro del distrito, con la administración", "edif", "prop"],
+        [4, "Museo de la E.N.M.A.", "edif"], [5, "No lo pude leer", "nd"],
+        [6, "Derecho y Ley (carrera 15)", "club", "prop"],
+        [7, "Club de H… · la Historia pasó al Distrito 4", "club", "duda"], [8, "Economía (carrera 16)", "club"],
+        [9, "Tecnología (carrera 18) · en tu hoja «Club de Co…», ¿Computación?", "club", "prop"],
+        [10, "Agronomía (carrera 17) · en tu hoja «Agricultura y Ganadería»", "club"],
+        [11, "Auditorio", "edif", "prop"], [12, "Parque principal", "abierto"], [13, "Centro de Información", "edif"],
+        [14, "Hospital · en tu hoja «Enfermería»", "edif", "prop"], [15, "Almacén", "edif"],
+        [16, "Sin asignar · leí «¿Auditorio Principal?»", "nd"],
+        [17, "No lo pude leer", "nd"], [18, "Campanario", "edif"], [19, "Granjas de Agronomía (ganadería, frutos, verduras)", "abierto"],
+        [20, "Arco del Triunfo · plaza central del distrito", "abierto", "prop"], [21, "Torre Guardián", "edif"], [22, "Fragua", "edif"],
+        [23, "Recinto de los Fundadores", "edif"], [24, "Molino", "edif"], [25, "Librería de los Siglos", "edif"],
+        [26, "Registros", "edif"], [28, "Antigu… (no lo pude leer completo)", "nd"], [29, "¿Iglesia?", "edif", "duda"],
+      ],
+      base: [["Centro del distrito", 3], ["Plaza central", 20], ["Parque principal", 12], ["Hospital", 14], ["Comedor", 1], ["Auditorio", 11]],
+      carreras: [["Derecho y Ley", 6], ["Economía", 8], ["Agronomía", 10], ["Tecnología", 9]],
+      marcas: [[21,235,75],[21,1035,85],[6,645,235],[6,835,235],[10,215,285],[3,985,370],[20,735,460],[19,232,515],[11,510,565],[23,840,640],[8,635,680],[17,1060,710],[24,285,720],[13,940,735],[2,1265,720],[2,1430,720],[2,1110,815],[2,1185,910],[2,1355,940],[2,1455,920],[2,1270,1050],[16,585,820],[12,890,905],[1,585,950],[5,720,945],[22,305,970],[28,1040,1050],[18,570,1105],[7,1460,1135],[14,1310,1215],[9,600,1225],[26,870,1230],[25,1060,1240],[15,245,1235]],
+      guion: [
+        ["Presentación de clubes del Distrito 1: Economía, Derecho y Ley, Agronomía y Tecnología", "1.19"],
+        ["El consejo de la E.N.M.A., junto a la vía del tranvía", "1.7"],
+        ["Plaza principal del Distrito 1 (discurso de Artur)", "1.25–1.26"],
+      ],
+      notas: ["El boceto dice «Agricultura y Ganadería» y el guion «Agronomía». Manda el Excel."],
+    },
+    d2: {
+      tab: "Distrito 2", nombre: "Distrito 2", sub: "Arte · neoclásico",
+      lema: "Arte y artesanía; decide el sistema educativo. Construido en torno a un lago. Neoclásico y rococó.",
+      leyenda: [
+        [1, "Centro del distrito, con la administración y su plaza interior", "edif", "prop"], [2, "Quedó fuera de la foto", "nd"],
+        [3, "Comedor · leí «¿Edificio principal?»", "edif", "prop"],
+        [4, "Residencias", "edif"], [5, "Hospital · en tu hoja «Enfermería»", "edif", "prop"], [6, "Pintura y Arte (carrera 11)", "club"],
+        [7, "Electricidad (carrera 12)", "club"], [8, "Textiles (carrera 13) · leí «¿Costura?»", "club"], [9, "Teatro (carrera 14)", "club"],
+        [10, "Centro de Información", "edif"], [11, "Auditorio", "edif"], [12, "Almacén", "edif"],
+        [13, "Parque principal", "abierto"], [14, "Parque de Lux", "abierto", "duda"], [15, "Central de Energía", "edif"],
+        [16, "Lago", "abierto"], [18, "Central de Artes", "edif"], [19, "Jardines de Cristal", "abierto"],
+        [20, "Sala de Arte", "edif"], [21, "Museo de Bellas Artes", "edif"], [22, "Centro de Estatuas", "edif"],
+        [23, "¿Recinto Teatral?", "edif", "duda"], [24, "¿Mural Central?", "edif", "duda"],
+      ],
+      base: [["Centro del distrito", 1], ["Plaza central (patio del centro)", 1], ["Parque principal", 13], ["Hospital", 5], ["Comedor", 3], ["Auditorio", 11]],
+      carreras: [["Pintura y Arte", 6], ["Electricidad", 7], ["Textiles", 8], ["Teatro", 9]],
+      servicio: [["Suministro de electricidad", 12]],
+      lugares: [["Museo de Cristal", "A"], ["Parque auditorio al aire libre de Rudentlein", "B"], ["Mesetas de Janna", "C"]],
+      marcas: [[8,1405,85],[9,1615,85],[2,1190,140],[2,1175,490],[2,1830,145],[2,1825,480],[19,1160,335],[19,1825,340],[16,1500,325],[20,1395,575],[21,1585,580],[20,1010,690],[24,910,760],[13,1490,695],[10,1905,695],[14,765,905],[4,960,860],[4,765,1060],[4,745,1275],[15,1195,855],[1,1465,965],[3,1775,915],[12,1910,930],[22,1015,1040],[7,1195,1020],[23,885,1200],[5,1190,1230],[11,1465,1275],[6,1835,1235]],
+      guion: [
+        ["Evento del Distrito 2, en la plaza principal del Distrito 1", "1.35"],
+        ["Rivalidad con el Distrito 3: Electricidad contra Mecatrónica", "1.35"],
+      ],
+      notas: ["Los salones de defensa mágica de Charles (Resistencia Mágica) son de este distrito, pero no salen en la leyenda."],
+    },
+    d3: {
+      tab: "Distrito 3", nombre: "Distrito 3", sub: "Industria · s. XVIII",
+      lema: "Revolución industrial: energía, investigación y transporte (tranvía, cablebús). Metal, puentes y arcos del siglo XVIII.",
+      leyenda: [
+        [1, "Central de Innovación · centro del distrito, con la administración y su plaza interior", "edif", "prop"],
+        [2, "Aulas", "edif"], [3, "Comedor (Comedor Principal)", "edif"],
+        [4, "¿Residencias?", "edif", "duda"], [5, "Hospital · en tu hoja «Enfermería»", "edif", "prop"], [6, "Química (carrera 10)", "club"],
+        [7, "Mecatrónica (carrera 9)", "club"], [8, "Matemáticas (carrera 7)", "club"],
+        [9, "Imprenta (carrera 8) · leí «Club de Pe…»", "club", "prop"],
+        [10, "Centro de Información", "edif"], [11, "Auditorio", "edif"], [12, "Almacén", "edif"],
+        [13, "Parque principal (tu «Parque Central») · el lugar es mío", "abierto", "prop"], [14, "Central de Tranvías", "edif"], [15, "Centro de Reciclaje", "edif"],
+        [16, "Central de Aguas", "edif"], [17, "Central de Energía", "edif"], [18, "No sale en la leyenda", "nd"],
+        [19, "¿Alzadores de Metal?", "edif", "duda"], [20, "Fábrica de Papel", "edif"], [21, "Fragua de Metal", "edif"],
+      ],
+      base: [["Centro del distrito", 1], ["Plaza central (patio del octágono)", 1], ["Parque principal", 13], ["Hospital", 5], ["Comedor", 3], ["Auditorio", 11]],
+      carreras: [["Matemáticas", 8], ["Imprenta", 9], ["Mecatrónica", 7], ["Química", 6]],
+      marcas: [[15,275,125],[6,495,115],[16,705,115],[4,950,115],[4,1145,75],[4,1380,100],[4,950,235],[4,1185,190],[4,1420,300],[20,275,335],[3,705,275],[18,1240,315],[5,950,385],[10,1090,400],[12,1280,445],[12,1430,425],[8,555,505],[11,750,570],[1,1020,570],[21,350,590],[14,1365,650],[2,650,745],[2,525,845],[2,810,925],[2,705,1100],[7,930,815],[19,745,960],[19,1050,945],[17,305,1215],[9,975,1215]],
+      guion: [
+        ["Puentes colgantes, rieles y pasadizos de metal, vistos desde el tranvía", "1.7"],
+        ["Evento del Distrito 3, en la plaza principal del Distrito 4", "1.40"],
+        ["Jardines del Distrito 3", "cap. 3"],
+      ],
+      notas: ["Mi propuesta: las aulas prácticas de Graves, junto a la Central de Innovación."],
+    },
+    d4: {
+      tab: "Distrito 4", nombre: "Distrito 4", sub: "Naturaleza · s. XX",
+      lema: "Naturaleza y deporte: bosque, Jardín de Fa, cúpula y lago. Escenario del Año Rojo y la Noche Oscura. Arquitectura del siglo XX.",
+      leyenda: [
+        [2, "Residencias · el de la esquina noroeste es el Edificio 2", "edif", "prop"],
+        [4, "Comedor, con la cocina principal", "edif", "prop"], [5, "Auditorio", "edif", "prop"],
+        [6, "Botánica (carrera 4) · invernaderos", "club", "prop"], [7, "Sin leyenda todavía", "nd"],
+        [8, "Sin leyenda todavía (¿residencias?)", "nd"], [12, "Sin leyenda todavía", "nd"],
+        [13, "Gastronomía (carrera 5)", "club", "prop"], [14, "Sin leyenda todavía", "nd"],
+        [15, "Centro del distrito (el «edificio principal»), con la administración y su plaza interior", "edif", "prop"],
+        [16, "Sin leyenda todavía", "nd"], [17, "Historia Universal (carrera 6), con la biblioteca", "club", "prop"],
+        [18, "Sin leyenda todavía", "nd"], [19, "Sin leyenda todavía", "nd"],
+        [20, "Medicina (carrera 3)", "club", "prop"], [21, "Hospital", "edif", "prop"],
+        ["P", "Parque principal, a lo largo del arroyo", "abierto", "prop"],
+      ],
+      base: [["Centro del distrito", 15], ["Plaza central (patio del centro)", 15], ["Parque principal", "P"], ["Hospital", 21], ["Comedor", 4], ["Auditorio", 5]],
+      carreras: [["Medicina", 20], ["Botánica", 6], ["Gastronomía", 13], ["Historia Universal", 17]],
+      marcas: [[2,335,180],[5,885,205],[8,1250,200],[8,1470,200],[8,1690,200],[6,205,520],[18,485,510],[17,680,510],[14,1085,490],[13,1410,500],[8,1690,515],[15,1040,865],[4,1395,855],[8,1680,860],[17,625,1050],[17,745,1050],[2,975,1190],[7,1215,1195],[12,1425,1190],[8,1690,1200],[19,1675,1525],[21,1045,1555],[20,1400,1555],[16,1685,1680]],
+      guion: [
+        ["Arco de entrada con las estatuas de Erlik e Ilse, y la plaza principal 1", "1.9"],
+        ["Edificio 2, cuarto 248, en la esquina noroeste: el 2 de arriba a la izquierda", "1.11"],
+        ["Dormitorios de chicas", "1.20"],
+        ["Comedor y cocina principal", "1.14"],
+        ["Administración del distrito", "1.18 · 2.20"],
+        ["Aulas y salones", "1.33 · 2.7"],
+        ["Centro deportivo (circuito de ejercicio), invernadero con su huerto, cúpula principal", "1.20"],
+        ["Colina del triunfo", "1.9"],
+        ["Auditorio de la clausura", "1.48–1.50"],
+        ["Hospital del Distrito 4", "1.52 · caps. 3–7"],
+        ["Edificio principal, con apartamentos", "2.8 · 2.12"],
+        ["Plaza y parque central", "2.9 · 2.15"],
+        ["Apartamentos y dormitorios lejanos", "2.13 · 2.14"],
+        ["Jardín de Fa", "3.14 · 3.19"],
+        ["Biblioteca", "4.7"],
+        ["Departamentos y su parada", "4.26 · 5.27"],
+        ["Almacén", "F.19"],
+        ["Bosque de la E.N.M.A., a lo lejos", "1.9 · cap. final"],
+      ],
+      notas: [
+        "Sin leyenda todavía: lo que tiene nombre es propuesta mía, sobre los números de tu hoja.",
+        "El 8 se repite en toda la columna derecha: parece un tipo de edificio, quizá residencias.",
+        "Medicina queda junto al hospital, Gastronomía junto al comedor y Botánica junto al parque del arroyo.",
+        "La esquina de abajo a la izquierda está vacía porque da al Distrito Central.",
+      ],
+    },
+  };
+
+  // Numeración igual en todos los distritos: 1 centro con su plaza · 2 parque principal · 3 hospital
+  // · 4 comedor · 5 auditorio · 6–9 sus carreras, en el orden del listario.
+  const FOCO = {
+    d1: {
+      leyenda: [
+        [1, "Centro del distrito, con su plaza central (el hexágono del Arco del Triunfo)", "edif", "prop"],
+        [2, "Parque principal", "abierto"], [3, "Hospital · en tu hoja «Enfermería»", "edif", "prop"],
+        [4, "Comedor", "edif", "prop"], [5, "Auditorio", "edif", "prop"],
+        [6, "Derecho y Ley", "club", "prop"], [7, "Economía", "club"], [8, "Agronomía, con sus granjas", "club"],
+        [9, "Tecnología · en tu hoja «Club de Co…», ¿Computación?", "club", "prop"],
+        [10, "Dormitorios · en tu hoja leí «¿Aulas?»", "edif", "prop"],
+        [11, "Aulas, junto a las carreras", "edif", "prop"], ["R", "Residencias de maestros, trabajadores y del Muro Mercantil · número provisional", "edif", "prop"],
+        [12, "Suministro de insumos para toda la E.N.M.A.: comida y bienes materiales · en tu hoja «Fragua», junto a granjas y molino", "edif", "prop"],
+        ["A", "Museo de Historia de la E.N.M.A.", "edif", "prop"],
+        ["B", "Campos de recreación antiguos · en tu hoja «Antigu…»", "abierto", "prop"],
+        ["C", "Torres del Último Batallón · en tu hoja «Torre Guardián»", "edif"],
+        [13, "Módulo de seguridad, junto a la salida del tranvía cian hacia la avenida", "edif", "prop"],
+        ["D", "Mercado antiguo, junto a la plaza del hexágono · en tu hoja «Recinto de los Fundadores»", "edif", "prop"],
+      ],
+      carreras: [["Derecho y Ley", 6], ["Economía", 7], ["Agronomía", 8], ["Tecnología", 9]],
+      servicio: [["Suministro de insumos: comida y bienes materiales", 12]],
+      lugares: [["Museo de Historia de la E.N.M.A.", "A"], ["Campos de recreación antiguos", "B"], ["Torres del Último Batallón", "C"], ["Mercado antiguo", "D"]],
+    },
+    d2: {
+      leyenda: [
+        [1, "Centro del distrito, con su plaza interior", "edif", "prop"], [2, "Parque principal", "abierto"],
+        [3, "Hospital · en tu hoja «Enfermería»", "edif", "prop"], [4, "Comedor", "edif", "prop"], [5, "Auditorio", "edif"],
+        [6, "Pintura y Arte", "club"], [7, "Electricidad", "club"], [8, "Textiles", "club"], [9, "Teatro", "club"],
+        [10, "Dormitorios · su número quedó fuera de la foto", "edif", "prop"],
+        [11, "Aulas · las libres más cercanas a las carreras", "edif", "prop"],
+        ["R", "Residencias de maestros, trabajadores y del Muro Mercantil · número provisional", "edif"],
+        [12, "Suministro de electricidad para toda la E.N.M.A. · tu «Central de Energía»", "edif"],
+        [13, "Módulo de seguridad, al oeste del Parque principal", "edif", "prop"],
+        ["A", "Museo de Cristal · en tu hoja «Jardines de Cristal»", "abierto", "prop"],
+        ["B", "Parque auditorio al aire libre de Rudentlein · en tu hoja «Parque de Lux»", "abierto", "prop"],
+        ["C", "Mesetas de Janna · el otro jardín, sobre una subida", "abierto", "prop"],
+      ],
+      carreras: [["Pintura y Arte", 6], ["Electricidad", 7], ["Textiles", 8], ["Teatro", 9]],
+      servicio: [["Suministro de electricidad", 12]],
+      lugares: [["Museo de Cristal", "A"], ["Parque auditorio al aire libre de Rudentlein", "B"], ["Mesetas de Janna", "C"]],
+    },
+    d3: {
+      leyenda: [
+        [1, "Centro del distrito (la Central de Innovación), con su plaza interior", "edif", "prop"],
+        [2, "Parque principal (tu «Parque Central») · el lugar es mío", "abierto", "prop"],
+        [3, "Hospital · en tu hoja «Enfermería»", "edif", "prop"], [4, "Comedor", "edif"], [5, "Auditorio", "edif"],
+        [6, "Matemáticas", "club"], [7, "Imprenta · leí «Club de Pe…»", "club", "prop"], [8, "Mecatrónica", "club"], [9, "Química", "club"],
+        [10, "Dormitorios · en tu hoja «¿Residencias?»", "edif", "prop"],
+        [11, "Aulas", "edif"], ["R", "Residencias de maestros, trabajadores y del Muro Mercantil · número provisional", "edif", "prop"],
+        [12, "Almacén de tranvías · en tu hoja «Central de Tranvías»", "edif"],
+        [13, "Módulo de seguridad, junto a la salida del tranvía cian hacia la avenida norte · en tu hoja era uno de los dos «Almacén»", "edif", "prop"],
+        ["A", "Parque Levantado del Progreso · la plaza en rombo, con tus «¿Alzadores de Metal?»", "abierto", "prop"],
+        ["B", "Parque de Girasoles", "abierto", "prop"],
+        ["C", "Caminos y monumentos del pensamiento, junto al Parque Levantado", "abierto", "prop"],
+      ],
+      carreras: [["Matemáticas", 6], ["Imprenta", 7], ["Mecatrónica", 8], ["Química", 9]],
+      servicio: [["Almacén de tranvías", 12]],
+      lugares: [["Parque Levantado del Progreso", "A"], ["Parque de Girasoles", "B"], ["Caminos y monumentos del pensamiento", "C"]],
+    },
+    d4: {
+      leyenda: [
+        [1, "Centro del distrito (el «edificio principal»), con su plaza interior", "edif", "prop"],
+        [2, "Parque principal, a lo largo del arroyo", "abierto", "prop"], [3, "Hospital", "edif", "prop"],
+        [4, "Comedor, con la cocina principal", "edif", "prop"], [5, "Auditorio", "edif", "prop"],
+        [6, "Medicina", "club", "prop"], [7, "Botánica · invernaderos", "club", "prop"], [8, "Gastronomía", "club", "prop"],
+        [9, "Historia Universal, con la biblioteca", "club", "prop"],
+        [10, "Dormitorios · el de la esquina noroeste es el Edificio 2", "edif", "prop"],
+        [11, "Aulas, junto a las carreras", "edif", "prop"], ["R", "Residencias de maestros, trabajadores y del Muro Mercantil · número provisional", "edif", "prop"],
+        [12, "Logística de toda la E.N.M.A.", "edif", "prop"],
+        [13, "Módulo de seguridad, cerca de la entrada oeste del distrito", "edif", "prop"],
+        ["A", "Jardín de flores · el Jardín de Fa del guion, junto a los invernaderos de Botánica", "abierto", "prop"],
+        ["B", "Deportivo Haser · el centro deportivo del guion", "edif", "prop"],
+        ["C", "Cúpula de Mudrick · la cúpula principal del guion", "edif", "prop"],
+      ],
+      carreras: [["Medicina", 6], ["Botánica", 7], ["Gastronomía", 8], ["Historia Universal", 9]],
+      servicio: [["Logística de la E.N.M.A.", 12]],
+      lugares: [["Jardín de flores (Jardín de Fa)", "A"], ["Deportivo Haser", "B"], ["Cúpula de Mudrick", "C"]],
+    },
+  };
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    Object.assign(D[d], FOCO[d], { base: [["Centro del distrito y su plaza", 1], ["Parque principal", 2], ["Hospital", 3], ["Comedor", 4], ["Auditorio", 5], ["Dormitorios", 10], ["Aulas", 11], ["Módulo de seguridad", 13], ["Residencias (número provisional)", "R"]] });
+  }
+  // De los números de tus hojas a la numeración nueva (los demás edificios quedan sin número por ahora)
+  const NUEVO = {
+    d1: { 3: 1, 12: 2, 14: 3, 1: 4, 11: 5, 6: 6, 8: 7, 10: 8, 19: 8, 9: 9, 2: 10, 16: 11, a1: 11, a2: 11, a3: 11, r1: "R", 22: 12, 17: "A", 28: "B", 21: "C", 23: "D", 7: 13 },
+    d2: { 1: 1, 13: 2, 5: 3, 3: 4, 11: 5, 6: 6, 7: 7, 8: 8, 9: 9, 2: 10, "4b": "R", 15: 12, 4: 11, "4c": 11, a1: 11, 19: "A", 14: "B", "19b": "C", s1: 13 },
+    d3: { 1: 1, 13: 2, 5: 3, 3: 4, 11: 5, 8: 6, 9: 7, 7: 8, 6: 9, 4: 10, 2: 11, 18: "R", 14: 12, r1: "B", 19: "C", r2: 13 },
+    d4: { 15: 1, P: 2, 21: 3, 4: 4, 5: 5, 20: 6, 6: 7, 13: 8, 17: 9, 8: 10, 2: 10, 14: 11, 18: 11, 12: 11, 19: 11, 16: "R", "2b": 12, j1: "A", 7: "B", r8: "C", r6: 13 },
+  };
+
+  // Aficiones: dónde sube cada estadística. Lugares públicos, lejos de carreras y aulas; las «no oficiales» van en cuartos.
+  // [estadística, afición, lugar, quién va, x, y, oficial]
+  const AFICIONES = {
+    d1: [
+      ["Vida Base", "Banda de tambores y tubas", "Torres del Último Batallón", "Los ruidosos y los que necesitan pertenecer a algo", 74, 70, 1],
+      ["Armadura", "Encuadernación", "Librería de los Siglos", "Los meticulosos y callados", 671, 933, 1],
+      ["Resistencia Mágica", "Club de debate", "El antiguo Registro", "Los tercos que discuten todo", 518, 933, 1],
+      ["Dominio de Armas", "Afilar cuchillos", "La Fragua", "Los obsesivos del orden", 112, 770, 1],
+      ["Última Bala", "Billar", "Mercado antiguo", "Los tranquilos y nocturnos", 540, 528, 1],
+      ["Rebote", "Campo de tiro", "Campos de recreación antiguos", "Los serios, los que conocen el peligro", 620, 805, 1],
+      ["Regeneración de Vida", "Huerto comunitario", "Parque principal", "Los tranquilos que cuidan", 592, 682, 1],
+      ["Extensión de Escudo", "Restaurar muebles viejos", "Museo de Historia", "Los ahorradores y nostálgicos", 702, 586, 1],
+      ["Extensión de Comida", "Club de sobremesa", "Una fonda vieja", "Los conversadores", 178, 720, 1],
+    ],
+    d2: [
+      ["Precisión", "Caligrafía", "Sala de Arte, junto al lago", "Los perfeccionistas pacientes", 583, 433, 1],
+      ["Crítico", "Noches de comedia", "Auditorio", "Los payasos y extrovertidos", 702, 968, 1],
+      ["Velocidad de Ataque", "Salón de tejido", "Pabellón del lago", "Los inquietos que no saben tener las manos quietas", 772, 353, 1],
+      ["Penetración Mágica", "Ilusionismo callejero", "Parque principal", "Los escépticos", 700, 522, 1],
+      ["Eficiencia de Escudo", "Castillos de naipes", "Museo de Cristal", "Los nerviosos que así se calman", 932, 282, 1],
+      ["Extensión de Invulnerabilidad", "Estatuas vivientes", "Centro de Estatuas", "Los actores silenciosos", 298, 780, 1],
+      ["Tenacidad", "Salón de té", "Mesetas de Janna", "Los elegantes", 468, 272, 1],
+      ["Extensión de Objetos", "Reparar juguetes rotos", "Un cuarto de la residencia", "Los tiernos y nostálgicos", 308, 690, 0],
+      ["Amplificador de Debuff", "Club del chisme", "Un cuarto de los dormitorios", "Los chismosos", 932, 142, 0],
+    ],
+    d3: [
+      ["Preparación", "Origami", "Centro de Información", "Los metódicos", 675, 278, 1],
+      ["Penetración de Armadura", "Cerrajería", "El almacén", "Los curiosos y traviesos", 809, 339, 1],
+      ["Dominio de Objetos", "Relojería", "Patio de la Central de Innovación", "Los minuciosos y solitarios", 660, 462, 1],
+      ["Daño Explosivo", "Fuegos artificiales", "Fragua de Metal", "Los temerarios que nunca crecieron", 128, 417, 1],
+      ["Daño Verdadero", "Sala de juegos de rol", "Sótano de la Fábrica de Papel", "Los alegres y los que no encajan", 83, 231, 1],
+      ["Dominio Médico", "Refugio de gatos callejeros", "Orilla del río", "Los tiernos solitarios", 447, 45, 1],
+      ["Inquebrantable", "Escalada", "Torre de la Central de Aguas", "Los tercos aventureros", 395, 70, 1],
+      ["Extensión de Debuff", "Pesca", "El río", "Los silenciosos pacientes", 455, 300, 1],
+      ["Dominio de Comida", "Repostería", "Comedor", "Los golosos", 425, 218, 1],
+      ["Reflejos", "Ping-pong", "Almacén de tranvías", "Los hiperactivos; los conductores en su descanso", 910, 505, 1],
+      ["Evasión", "Fotografía callejera", "Pasadizos de metal de la Central de Energía", "Los observadores tímidos", 115, 893, 1],
+      ["Carga Musical", "Escuchar discos antiguos", "Fonoteca de la Central de Innovación", "Los nostálgicos coleccionistas", 600, 400, 1],
+    ],
+    d4: [
+      ["Daño Físico", "Amasar pan al amanecer", "Cocina del comedor", "Los madrugadores tranquilos y cariñosos", 792, 490, 1],
+      ["Daño Mágico", "Mirar las estrellas", "Cúpula de Mudrick", "Los soñadores nocturnos", 302, 422, 1],
+      ["Generación de CM", "Colmenas", "Jardín de Fa", "Los pacientes y dulces", 142, 526, 1],
+      ["Tempo", "Saltar la cuerda", "Patio de juegos", "Los alegres e infantiles", 330, 488, 1],
+      ["Robo de Vida", "Donar sangre", "Hospital", "Los altruistas… y los que van por las galletas", 632, 896, 1],
+      ["Daño de Área", "Boliche", "Deportivo Haser", "Los competitivos ruidosos", 697, 667, 1],
+      ["Resistencia al Desgaste", "Meditación", "Sala de silencio", "Los agotados y espirituales", 417, 876, 1],
+      ["Amplificador de Buff", "Cartas por encargo", "Logística", "Los románticos que escriben mejor de lo que hablan", 562, 666, 1],
+      ["Extensión de Buff", "Conservas y mermeladas", "Despensa comunitaria", "Los previsores", 535, 949, 1],
+    ],
+  };
+
+  // Tipo de cada estadística (formulas.md §10 y equipo.md): p principal · o secundaria ofensiva · d secundaria defensiva
+  const TIPO_STAT = {
+    "Vida Base": "p", "Daño Físico": "p", "Daño Mágico": "p", "Armadura": "p", "Resistencia Mágica": "p",
+    "Precisión": "p", "Evasión": "p", "Crítico": "p", "Carga Musical": "p", "Generación de CM": "p",
+    "Preparación": "o", "Velocidad de Ataque": "o", "Tempo": "o", "Penetración de Armadura": "o", "Penetración Mágica": "o",
+    "Robo de Vida": "o", "Dominio de Armas": "o", "Dominio de Objetos": "o", "Daño de Área": "o", "Daño Explosivo": "o",
+    "Última Bala": "o", "Rebote": "o", "Daño Verdadero": "o",
+    "Regeneración de Vida": "d", "Dominio Médico": "d", "Resistencia al Desgaste": "d", "Inquebrantable": "d",
+    "Eficiencia de Escudo": "d", "Extensión de Escudo": "d", "Extensión de Invulnerabilidad": "d", "Tenacidad": "d",
+    "Amplificador de Buff": "d", "Extensión de Buff": "d", "Amplificador de Debuff": "d", "Extensión de Debuff": "d",
+    "Dominio de Comida": "d", "Extensión de Comida": "d", "Reflejos": "d", "Extensión de Objetos": "d",
+  };
+  const NOMBRE_TIPO = { p: "estadística principal", o: "secundaria ofensiva", d: "secundaria defensiva" };
+  // Forma de cada tipo, centrada en 0,0 (unos 14 de alto)
+  const estrella = (() => {
+    const pts = [];
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 ? 4 : 9, a = -Math.PI / 2 + i * Math.PI / 5;
+      pts.push(`${(r * Math.cos(a)).toFixed(2)} ${(r * Math.sin(a)).toFixed(2)}`);
+    }
+    return "M " + pts.join(" L ") + " Z";
+  })();
+  const FORMA = {
+    p: estrella,
+    o: "M 0 -7.5 L 6.8 5.5 L -6.8 5.5 Z",
+    d: "M 0 -7.5 L 6.2 -4.8 L 6.2 0.8 C 6.2 4.6 3.2 6.8 0 8.2 C -3.2 6.8 -6.2 4.6 -6.2 0.8 L -6.2 -4.8 Z",
+  };
+  const iconoSvg = (tipo, oficial = 1) =>
+    `<svg class="af-ico t-${tipo} ${oficial ? "" : "no-oficial"}" viewBox="-9 -9 18 18" width="16" height="16" aria-hidden="true"><path d="${FORMA[tipo]}"/></svg>`;
+
+  // Estaciones del tranvía = puntos de viaje rápido. [nombre, x, y, líneas, qué hay cerca]
+  // Distritos en coordenadas del distrito; «central» en coordenadas del plano (incluye las paradas de la orilla).
+  const ESTACIONES = {
+    d1: [
+      ["Plaza del Arco del Triunfo", 507, 232, "azul · rosa", "el centro del distrito, la plaza y Derecho"],
+      ["Puerta norte", 230, 110, "azul · roja", "las aulas del norte y Derecho"],
+      ["Auditorio", 211, 583, "azul · roja", "el auditorio, Economía y el comedor"],
+      ["Sur", 378, 862, "azul · roja · rosa", "Tecnología, el comedor y los campos antiguos"],
+      ["Hospital", 737, 862, "azul", "el hospital y el módulo de seguridad"],
+    ],
+    d2: [
+      ["Norte", 806, 104, "azul · morada", "Textiles, Teatro y dormitorios"],
+      ["Comedor", 870, 566, "azul · verde", "el comedor y el parque principal"],
+      ["Centro del Distrito 2", 796, 700, "azul", "el centro del distrito y el comedor"],
+      ["Sur", 372, 860, "azul · morada", "Electricidad, el hospital y las aulas"],
+    ],
+    d3: [
+      ["Norte", 845, 170, "azul · amarilla", "los dormitorios y la residencia"],
+      ["Central de Innovación", 566, 539, "azul", "el centro del distrito y Mecatrónica"],
+      ["Parque Levantado", 413, 622, "azul · naranja", "el Parque Levantado y las aulas"],
+      ["Parque principal", 232, 800, "azul · naranja", "el parque principal y el Parque de Girasoles"],
+    ],
+    d4: [
+      ["Parada al Distrito 4", 102, 118, "azul · turquesa", "el parque del arroyo, la plaza principal 1 y el Edificio 2"],
+      ["Botánica", 195, 118, "azul · café", "Botánica y el parque del arroyo"],
+      ["Centro del Distrito 4", 690, 440, "café", "el centro, el comedor y Gastronomía"],
+      ["Este", 852, 562, "azul · café", "el comedor y los dormitorios del este"],
+      ["Hospital", 606, 718, "turquesa", "el hospital, el Deportivo Haser y la logística"],
+      ["Medicina", 852, 842, "azul", "Medicina y la residencia"],
+    ],
+    central: [
+      ["Muros del Pasado (estación central)", 500, 455, "azul", "el corazón del Distrito Central; aquí bajan los trabajadores en la introducción"],
+      ["Orilla norte", 500, -7, "negra", "la avenida norte"],
+      ["Orilla oeste", -7, 500, "negra", "la avenida oeste"],
+      ["Orilla este", 1007, 500, "negra", "la avenida este"],
+      ["Orilla sur · entrada principal", 500, 1007, "negra", "la entrada de la E.N.M.A. y la avenida central del sur"],
+    ],
+  };
+
+  const svg = document.getElementById("plano");
+  const el = (tag, attrs = {}, parent = svg) => {
+    const n = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    parent.appendChild(n);
+    return n;
+  };
+
+  const num = v => (v !== "" && !isNaN(+v)) ? +v : v;
+  const entrada = (d, n) => {
+    const f = D[d].leyenda.find(r => r[0] === n);
+    return f ? { n, nombre: f[1], cat: f[2], conf: f[3] || (f[2] === "nd" ? "nd" : "ok") } : { n, nombre: "No sale en la leyenda", cat: "nd", conf: "nd" };
+  };
+
+  // ── Plano limpio ── Coordenadas 0–1000 dentro de cada distrito.
+  // Todas las calles tienen el mismo ancho (W). Los edificios son los de tus hojas: no se parten ni se borran.
+  const W = 20;
+  // Edificio o espacio: [número o null, "b" edificio | "o" espacio abierto, puntos]
+  const LOTES = {
+    d1: [
+      [21, "b", [[8,5],[88,5],[88,85],[8,85]]], ["r1", "b", [[97,5],[215,5],[215,85],[97,85]]],
+      ["a1", "b", [[240,5],[398,5],[398,85],[240,85]]], ["a2", "b", [[428,5],[598,5],[598,82],[428,82]]],
+      [21, "b", [[615,5],[690,5],[690,80],[615,80]]],
+      [10, "b", [[5,132],[48,132],[90,252],[5,252]]], [19, "o", [[5,262],[94,262],[120,336],[5,336]]],
+      [19, "o", [[5,348],[125,348],[154,430],[5,430]]], [19, "o", [[5,442],[158,442],[178,497],[5,497]]],
+      [24, "b", [[5,507],[182,507],[204,575],[5,575]]],
+      [6, "b", [[56,135],[398,135],[398,203],[333,213],[272,330],[122,330]]],
+      [6, "b", [[425,135],[598,130],[512,228],[482,200],[425,204]]],
+      [11, "b", [[128,350],[268,350],[352,452],[246,558],[207,566]]],
+      [8, "b", [[358,472],[396,480],[394,560],[252,560]]],
+      [3, "b", [[612,140],[668,175],[668,440],[512,448],[560,315],[528,255]]],
+      [23, "b", [[428,470],[560,462],[598,502],[436,580]]],
+      [13, "b", [[448,592],[600,514],[628,578],[460,598]]],
+      [12, "o", [[432,608],[630,596],[662,655],[592,706],[432,706]]],
+      [5, "b", [[385,682],[422,682],[422,712],[385,712]]],
+      [17, "b", [[608,505],[688,500],[728,585],[690,640]]],
+      [2, "b", [[701,476],[833,468],[862,574],[740,572]]],
+      [2, "b", [[742,592],[866,590],[905,733],[730,733],[700,650]]],
+      [2, "b", [[868,470],[995,470],[995,740],[928,740]]],
+      [2, "b", [[736,750],[841,751],[890,847],[792,848]]],
+      [null, "b", [[861,756],[982,761],[982,791],[881,792]]],
+      [7, "b", [[905,800],[995,800],[995,850],[912,850]]],
+      [28, "o", [[385,730],[598,732],[668,668],[770,845],[385,845]]],
+      [16, "b", [[222,592],[372,592],[372,628],[222,628]]], [1, "b", [[225,636],[372,636],[372,790],[225,790]]],
+      [18, "b", [[225,800],[372,800],[372,845],[225,845]]],
+      [22, "b", [[5,598],[148,598],[148,842],[5,842]]], ["r2", "b", [[160,598],[196,598],[196,842],[160,842]]],
+      [15, "b", [[5,872],[90,872],[90,995],[5,995]]], ["a3", "b", [[100,872],[196,872],[196,995],[100,995]]],
+      [9, "b", [[228,872],[422,872],[422,995],[228,995]]], [26, "b", [[442,872],[595,872],[595,995],[442,995]]],
+      [25, "b", [[615,872],[727,872],[727,995],[615,995]]], [14, "b", [[747,872],[992,872],[992,995],[747,995]]],
+    ],
+    d2: [
+      [2, "b", [[330,12],[500,12],[500,185],[330,185]]], [8, "b", [[529,31],[673,31],[673,86],[529,86]]],
+      [9, "b", [[690,31],[796,31],[796,86],[690,86]]], [2, "b", [[829,31],[982,31],[982,200],[829,200]]],
+      [null, "b", [[532,121],[571,121],[571,158],[532,158]]], [null, "b", [[751,119],[793,119],[793,161],[751,161]]],
+      [null, "b", [[532,335],[571,335],[571,372],[532,372]]], [null, "b", [[751,335],[793,335],[793,372],[751,372]]],
+      [20, "b", [[526,401],[641,401],[639,466],[527,466]]], [21, "b", [[672,401],[796,401],[793,467],[670,467]]],
+      [2, "b", [[827,314],[985,322],[978,468],[826,470]]],
+      [19, "o", [[868,214],[938,214],[938,300],[868,300]]],
+      [null, "b", [[822,214],[860,214],[860,248],[822,248]]], [null, "b", [[942,214],[980,214],[980,248],[942,248]]],
+      [null, "b", [[822,262],[862,262],[862,300],[822,300]]], [null, "b", [[942,262],[989,262],[989,300],[942,300]]],
+      ["19b", "o", [[380,205],[500,205],[500,292],[380,292]]],
+      [null, "b", [[338,250],[372,250],[372,292],[338,292]]],
+      [2, "b", [[330,305],[500,305],[496,465],[330,462]]],
+      [null, "b", [[197,488],[222,488],[222,577],[197,577]]],
+      [20, "b", [[252,488],[292,488],[292,498],[365,499],[365,534],[252,546]]],
+      [24, "b", [[244,556],[359,556],[360,578],[245,578]]],
+      ["s1", "b", [[394,494],[436,491],[435,536],[396,536]]],
+      [13, "o", [[459,503],[849,506],[858,531],[469,539]]],
+      [10, "b", [[882,500],[920,500],[920,540],[882,540]]],
+      ["a1", "b", [[45,488],[175,488],[175,578],[45,578]]], [null, "b", [[49,606],[175,606],[175,629],[52,628]]],
+      [14, "o", [[52,644],[172,656],[171,722],[52,719]]],
+      ["4b", "b", [[205,606],[357,609],[362,722],[205,722]]], [15, "b", [[392,579],[501,581],[500,706],[388,709]]],
+      [1, "b", [[528,579],[762,579],[762,876],[528,876]]],
+      [3, "b", [[806,578],[920,573],[929,835],[806,840]]], [12, "b", [[957,578],[979,578],[979,692],[957,686]]],
+      ["4c", "b", [[46,752],[210,753],[218,846],[46,846]]], [22, "b", [[237,746],[361,753],[360,812],[237,812]]],
+      [7, "b", [[386,744],[497,744],[497,830],[386,831]]],
+      [4, "b", [[46,884],[358,886],[358,983],[46,981]]], [23, "b", [[174,892],[247,892],[247,930],[174,930]]],
+      [5, "b", [[384,872],[495,872],[495,985],[386,986]]], [11, "b", [[525,927],[795,927],[795,989],[531,988]]],
+      [6, "b", [[832,870],[990,870],[990,992],[832,992]]],
+    ],
+    d3: [
+      [15, "b", [[10,25],[155,25],[155,140],[10,140]]], [20, "b", [[10,165],[155,165],[160,283],[10,312]]],
+      [6, "b", [[180,25],[318,25],[322,124],[180,134]]], [16, "b", [[338,25],[452,25],[452,112],[338,120]]],
+      [3, "b", [[340,150],[452,140],[452,224],[348,244]]],
+      [4, "b", [[480,15],[600,15],[625,92],[478,110]]], [4, "b", [[640,12],[800,10],[800,62],[668,92]]],
+      [4, "b", [[820,10],[935,12],[962,118],[862,138]]], [4, "b", [[499,138],[637,120],[660,188],[505,218]]],
+      [4, "b", [[669,112],[812,89],[826,159],[682,181]]], [4, "b", [[864,180],[970,160],[983,231],[876,251]]],
+      [18, "b", [[705,205],[841,182],[852,251],[738,285]]],
+      [12, "b", [[750,318],[856,285],[867,375],[765,378]]], ["r2", "b", [[879,274],[983,256],[983,375],[891,378]]],
+      [5, "b", [[501,248],[655,214],[615,290],[570,288],[522,340]]],
+      [10, "b", [[677,225],[705,305],[645,305]]],
+      [1, "b", [[572,310],[672,312],[722,372],[722,465],[672,525],[572,525],[522,465],[522,372]]],
+      [14, "b", [[784,418],[975,418],[975,540],[784,540]]],
+      [21, "b", [[25,340],[160,312],[229,481],[100,535]]],
+      [8, "b", [[182,160],[318,148],[332,262],[368,420],[255,462]]],
+      [11, "b", [[348,262],[452,242],[458,330],[474,420],[490,488],[440,570],[385,425]]],
+      [2, "b", [[267,505],[366,455],[400,590],[352,575],[328,600]]],
+      [2, "b", [[110,575],[229,515],[300,630],[262,668],[300,713],[236,775]]],
+      [2, "b", [[262,800],[322,740],[352,770],[398,750],[440,780],[515,808],[426,955]]],
+      [2, "b", [[448,672],[582,710],[547,778],[432,710]]],
+      [7, "b", [[532,525],[561,552],[664,546],[597,678],[456,595]]],
+      [19, "o", [[682,558],[678,790],[595,778]]],
+      [9, "b", [[565,815],[680,815],[680,990],[460,990]]],
+      [17, "b", [[10,796],[220,796],[220,990],[10,990]]],
+      ["r1", "o", [[245,825],[400,985],[245,985]]], [13, "o", [[10,612],[95,575],[214,785],[10,785]]],
+    ],
+    d4: [
+      [2, "b", [[15,5],[345,5],[345,106],[15,106]]], [5, "b", [[367,30],[594,30],[594,148],[367,148]]],
+      [8, "b", [[618,30],[718,30],[718,148],[618,148]]], [8, "b", [[740,30],[840,30],[840,148],[740,148]]],
+      [8, "b", [[864,30],[995,30],[995,148],[864,148]]],
+      [6, "b", [[38,212],[90,212],[90,262],[38,262]]], [null, "b", [[114,212],[183,212],[183,262],[114,262]]],
+      [18, "b", [[207,212],[315,212],[315,262],[207,262]]], [17, "b", [[325,212],[426,212],[426,262],[325,262]]],
+      [14, "b", [[450,212],[678,212],[678,262],[450,262]]], [13, "b", [[702,212],[832,212],[830,343],[702,343]]],
+      [8, "b", [[888,195],[995,195],[995,343],[888,343]]],
+      [null, "b", [[30,286],[90,286],[90,343],[30,343]]], [6, "b", [[114,286],[183,286],[183,343],[114,343]]],
+      [null, "b", [[207,286],[345,286],[345,343],[207,343]]], [null, "b", [[369,286],[452,286],[452,343],[369,343]]],
+      ["r9", "b", [[476,286],[678,286],[678,331],[476,331]]],
+      [null, "b", [[34,367],[90,367],[90,428],[34,428]]], [null, "b", [[114,367],[183,367],[183,428],[114,428]]],
+      ["r8", "b", [[207,367],[345,367],[345,428],[207,428]]], [null, "b", [[369,367],[452,367],[452,428],[369,428]]],
+      [15, "b", [[476,372],[678,372],[678,550],[476,550]]], [4, "b", [[702,374],[828,374],[828,550],[702,550]]],
+      [8, "b", [[886,374],[988,374],[988,550],[882,550]]],
+      ["j1", "o", [[40,455],[183,455],[183,550],[40,550]]], [null, "b", [[207,452],[278,452],[278,525],[207,525]]],
+      [null, "b", [[302,451],[358,451],[358,526],[302,526]]], [null, "b", [[382,450],[452,450],[452,512],[382,512]]],
+      ["2b", "b", [[476,574],[594,574],[594,706],[476,706]]], [7, "b", [[618,579],[725,581],[725,706],[618,706]]],
+      [12, "b", [[749,581],[828,589],[828,706],[760,706]]], [8, "b", [[884,582],[977,585],[975,706],[881,706]]],
+      [21, "b", [[504,730],[684,730],[684,960],[618,960],[618,922],[504,922]]],
+      [20, "b", [[708,730],[832,730],[832,960],[708,960]]],
+      [19, "b", [[880,732],[974,731],[982,794],[974,830],[879,830]]],
+      [16, "b", [[878,854],[973,854],[972,942],[960,960],[878,960]]],
+      ["r1", "b", [[382,574],[452,574],[452,706],[382,706]]], ["r2", "b", [[382,730],[452,730],[452,830],[382,830]]],
+      ["r3", "b", [[382,854],[452,854],[452,898],[382,898]]],
+      ["r4", "b", [[382,922],[452,922],[452,966],[382,966]]], [null, "b", [[476,932],[594,932],[594,966],[476,966]]],
+      ["r5", "b", [[302,574],[358,574],[358,706],[302,706]]], ["r6", "b", [[302,730],[358,730],[358,830],[302,830]]],
+      ["r7", "b", [[302,854],[358,854],[358,950],[302,950]]],
+      ["P", "o", [[10,130],[232,130],[334,188],[345,200],[10,200]]],
+    ],
+  };
+  // Calles (líneas centrales). Donde hay una manzana grande la calle se corta y queda en T.
+  const CALLES = {
+    d1: [
+      [[0,110],[92,110],[230,110],[412,110],[610,110],[683,165],[683,455]],
+      [[230,0],[230,110]], [[92,0],[92,110]], [[606,0],[610,110]],
+      [[412,0],[412,110],[412,199]],
+      [[268,340],[330,205],[485,192],[552,312],[495,456],[368,468],[268,340]],
+      [[412,465],[412,585]],
+      [[45,110],[127,340],[211,583]],
+      [[0,340],[127,340],[268,340]],
+      [[0,257],[98,257]], [[0,437],[164,437]], [[0,502],[188,502]],
+      [[610,110],[507,232]], [[339,431],[218,583]],
+      [[495,456],[600,505],[683,455]], [[600,505],[670,653]],
+      [[683,455],[842,460],[1000,460]],
+      [[842,460],[850,500],[918,745],[1000,748]],
+      [[918,745],[720,738],[670,653],[595,720],[380,716],[378,583]],
+      [[380,716],[378,862]],
+      [[728,584],[872,580]],
+      [[0,585],[211,583],[378,583],[412,585]],
+      [[218,583],[218,862],[218,1000]],
+      [[0,860],[218,862],[432,862],[605,862],[737,862],[1000,862]],
+      [[432,862],[432,1000]], [[605,862],[605,1000]], [[737,862],[737,1000]],
+    ],
+    d2: [
+      [[318,0],[318,482]],
+      [[512,0],[512,96],[512,482]],
+      [[512,96],[806,104]],
+      [[806,0],[806,104],[806,482]],
+      [[790,566],[796,855],[800,905],[817,1000]],
+      [[870,482],[870,566]],
+      [[0,476],[185,476],[318,482],[375,484],[512,482],[806,482],[870,482],[940,482],[1000,480]],
+      [[0,592],[185,592],[375,592]],
+      [[375,560],[512,560],[790,566],[870,566],[940,566],[1000,566]],
+      [[185,476],[185,592],[186,736]],
+      [[375,484],[375,560],[375,592],[378,734],[372,860],[372,1000]],
+      [[512,560],[512,860],[512,905],[515,1000]],
+      [[940,482],[940,566],[940,855]],
+      [[0,738],[186,736],[378,734],[512,728]],
+      [[0,860],[200,858],[372,860],[512,860]],
+      [[512,905],[800,905]],
+      [[796,855],[940,855],[1000,855]],
+    ],
+    d3: [
+      [[168,0],[168,150],[172,292]],
+      [[0,325],[172,292]],
+      [[168,150],[328,136],[468,125]],
+      [[326,0],[328,136],[338,258]],
+      [[338,258],[468,236],[680,195]],
+      [[468,0],[468,125],[468,236],[478,330],[490,400],[500,470],[508,471]],
+      [[468,125],[640,103],[820,75]],
+      [[612,0],[640,103],[680,195]],
+      [[810,0],[820,75],[845,170],[880,390]],
+      [[680,195],[845,170],[1000,140]],
+      [[680,195],[728,300],[775,405]],
+      [[728,300],[861,270],[1000,250]],
+      [[736,420],[775,405],[880,392],[1000,392]],
+      [[566,296],[678,298],[736,366],[736,471],[678,539],[566,539],[508,471],[508,366],[566,296]],
+      [[413,622],[537,505]],
+      [[372,578],[455,667],[357,760],[266,670],[372,578]],
+      [[311,715],[232,800]],
+      [[172,292],[245,490],[319,624]],
+      [[406,713],[500,760],[557,800]],
+      [[557,800],[605,697],[707,505]],
+      [[232,800],[232,1000]],
+      [[0,325],[92,562]],
+      [[92,562],[245,490]], [[245,490],[372,428]], [[372,428],[413,622]], [[413,622],[605,697]],
+      [[557,800],[425,980]], [[425,980],[232,800]], [[232,800],[92,562]],
+      [[707,505],[700,545],[690,800],[690,1000]],
+      [[557,800],[690,800]],
+    ],
+    d4: [
+      [[357,0],[357,180]], [[606,0],[606,180]], [[729,0],[729,180]], [[852,0],[852,1000]],
+      [[0,118],[240,118],[357,180]], [[357,180],[1000,180]],
+      [[102,118],[102,440]], [[195,118],[195,562]],
+      [[0,274],[690,274]], [[0,355],[1000,355]], [[0,440],[464,440]], [[0,562],[1000,562]],
+      [[357,274],[357,440]], [[370,440],[370,1000]],
+      [[438,180],[438,274]], [[464,274],[464,1000]],
+      [[690,180],[690,562]], [[696,718],[696,1000]],
+      [[606,562],[606,718]], [[737,562],[737,718]],
+      [[290,440],[290,1000]],
+      [[290,718],[1000,718]],
+      [[290,842],[464,842]], [[852,842],[1000,842]],
+      [[370,910],[606,910]], [[606,910],[606,972]], [[606,972],[1000,972]],
+    ],
+  };
+  // Distrito 2: ondas suaves en las calles horizontales, que rodean las subidas. [hacia dónde, cuánto]
+  const DIR = { N: [0, -1], S: [0, 1], E: [1, 0], W: [-1, 0] };
+  const CURVA = {
+    d2: {
+      "0,476>185,476": ["N", 10], "185,476>318,482": ["N", 6], "512,482>806,482": ["S", 10], "870,482>940,482": ["S", 6],
+      "0,592>185,592": ["S", 6],
+      "512,560>790,566": ["N", 8], "870,566>940,566": ["S", 6],
+      "0,738>186,736": ["N", 8],
+      "0,860>200,858": ["S", 10], "200,858>372,860": ["N", 8],
+      "512,905>800,905": ["S", 8],
+      "796,855>940,855": ["N", 6],
+    },
+  };
+  // Lo que en tu hoja es leyenda o quedó sin dibujar
+  const BLANCOS = {
+    d1: [[694,0],[1000,0],[1000,452],[694,452]],
+    d2: [[0,0],[308,0],[308,466],[0,466]],
+    d3: [[700,552],[1000,552],[1000,1000],[700,1000]],
+    d4: [[0,572],[280,572],[280,1000],[0,1000]],
+  };
+  // La línea azul atraviesa cada distrito y lo une con el centro: [color, carril, puntos, tipo, paradas]
+  const RUTAS = {
+    d1: [["azul", 0, [[230,0],[230,110],[610,110],[507,232],[339,431],[218,583],[218,862],[1000,862]], null,
+      [[230,110],[507,232],[339,431],[218,583],[218,862],[432,862],[737,862]]]],
+    d2: [["azul", 0, [[806,0],[806,104],[806,482],[870,482],[870,566],[790,566],[796,866],[800,905],[512,905],[512,860],[372,860],[200,858],[0,860]], null,
+      [[806,104],[806,300],[806,482],[870,566],[796,700],[800,905],[512,905],[372,860]]]],
+    d3: [["azul", 0, [[1000,140],[845,170],[880,390],[775,405],[736,420],[736,471],[678,539],[566,539],[537,505],[413,622],[311,715],[232,800],[232,1000]], null,
+      [[845,170],[880,390],[736,471],[566,539],[413,622],[232,800],[232,920]]]],
+    d4: [["azul", 0, [[0,118],[240,118],[357,180],[852,180],[852,1000]], null,
+      [[102,118],[195,118],[606,180],[852,180],[852,355],[852,562],[852,718],[852,842]]]],
+  };
+  // Las dos líneas de cada distrito, cada una de un color distinto: la académica, continua, y la de ocio y exploración, punteada.
+  // Trazadas a mano por las calles: pocos giros y pocas paradas, solo junto a lo importante. Empiezan o acaban en la azul.
+  // [color, puntos del recorrido, paradas]
+  const LINEAS_DISTRITO = {
+    d1: {
+      academica: ["rojo", [[230,110],[45,110],[127,340],[211,583],[378,583],[378,862]],
+        [[230,110],[92,110],[127,340],[211,583],[378,716],[378,862]]],           // aulas norte, Agronomía y Derecho, auditorio, comedor, Tecnología
+      ocio: ["rosa", [[507,232],[552,312],[495,456],[600,505],[670,653],[595,720],[380,716],[378,862]],
+        [[507,232],[600,505],[670,653],[595,720],[378,862]]],                     // centro, mercado antiguo, parque y museo, campos antiguos
+    },
+    d2: {
+      academica: ["morado", [[806,104],[512,96],[512,482],[375,484],[375,860]],
+        [[806,104],[650,100],[512,278],[512,482],[375,592],[375,860]]],           // Textiles y Teatro, dormitorios, seguridad, aulas, Electricidad
+      ocio: ["verde", [[870,566],[512,560],[512,728],[185,736]],
+        [[870,566],[700,566],[512,560],[512,728],[378,734],[185,736]]],           // comedor, parque, electricidad, residencia, Rudentlein
+    },
+    d3: {
+      academica: ["amarillo", [[845,170],[680,195],[468,236],[338,258],[328,136],[168,150]],
+        [[845,170],[680,195],[468,236],[338,258],[168,150]]],                     // dormitorios, hospital, comedor, Matemáticas y auditorio, Química
+      ocio: ["naranja", [[413,622],[605,697],[557,800],[425,980],[232,800]],
+        [[413,622],[605,697],[557,800],[425,980],[232,800]]],                     // Parque Levantado, Mecatrónica y los Caminos, aulas, Girasoles, parque
+    },
+    d4: {
+      academica: ["cafe", [[195,118],[195,274],[690,274],[690,562],[852,562]],
+        [[195,118],[195,274],[438,274],[690,274],[690,440],[852,562]]],           // Botánica, Historia, Gastronomía, centro y comedor
+      ocio: ["turquesa", [[102,118],[102,440],[464,440],[464,718],[852,718]],
+        [[102,118],[102,440],[290,440],[464,718],[606,718],[852,718]]],           // parque, Jardín de Fa, cúpula de Mudrick, logística, hospital y Haser
+    },
+  };
+  // La línea cian entre distritos: sale de uno, baja por la avenida al Distrito Central, lo recorre
+  // y vuelve por la misma avenida (vía de ida y vía de vuelta) para entrar al siguiente. Coordenadas del plano.
+  const RAMALES = [
+    [[493,69],[496.4,69],[496.4,455]], [[503.6,455],[503.6,61.1],[507,61.1]],
+    [[114.4,493],[114.4,496.4],[450,496.4]], [[450,503.6],[110.4,503.6],[110.4,507]],
+    [[493,934.9],[496.4,934.9],[496.4,555]], [[503.6,555],[503.6,931],[507,931]],
+    [[924.1,493],[924.1,496.4],[550,496.4]], [[550,503.6],[904.4,503.6],[904.4,507]],
+  ];
+  // Subidas del Distrito 2 (centro, radios), como curvas de nivel
+  const COLINAS = { d2: [[112,684,50,28],[903,257,30,36],[430,250,40,30]] };
+
+  const pts = p => p.map(q => q.join(",")).join(" ");
+  const centro = p => {
+    let a = 0, cx = 0, cy = 0;
+    for (let i = 0; i < p.length; i++) {
+      const [x1, y1] = p[i], [x2, y2] = p[(i + 1) % p.length];
+      const f = x1 * y2 - x2 * y1;
+      a += f; cx += (x1 + x2) * f; cy += (y1 + y2) * f;
+    }
+    a /= 2;
+    return Math.abs(a) < 1e-6 ? p[0] : [cx / (6 * a), cy / (6 * a)];
+  };
+  const igual = (a, b) => Math.abs(a[0] - b[0]) < 0.01 && Math.abs(a[1] - b[1]) < 0.01;
+  // Curva suave cerrada que pasa por los puntos (para el lago)
+  const curva = p => {
+    const q = p.slice(0, -1), n = q.length;
+    const en = i => q[(i + n) % n];
+    let d = `M ${q[0][0]} ${q[0][1]}`;
+    for (let i = 0; i < n; i++) {
+      const p0 = en(i - 1), p1 = en(i), p2 = en(i + 1), p3 = en(i + 2);
+      d += ` C ${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`;
+    }
+    return d + " Z";
+  };
+  const recta = p => "M " + p.map(q => q.map(v => +v.toFixed(1)).join(" ")).join(" L ");
+  // Tramo entre dos cruces: recto, o con una curva suave si el distrito la pide
+  const control = (d, a, b) => {
+    const c = CURVA[d] || {};
+    const v = c[`${a[0]},${a[1]}>${b[0]},${b[1]}`] || c[`${b[0]},${b[1]}>${a[0]},${a[1]}`];
+    if (!v) return null;
+    const [dir, dev] = v;
+    return [(a[0] + b[0]) / 2 + DIR[dir][0] * 2 * dev, (a[1] + b[1]) / 2 + DIR[dir][1] * 2 * dev];
+  };
+  const tramo = (d, a, b) => {
+    const c = control(d, a, b);
+    if (!c) return [a, b];
+    const out = [];
+    for (let i = 0; i <= 16; i++) {
+      const t = i / 16, u = 1 - t;
+      out.push([u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]);
+    }
+    return out;
+  };
+  const plana = (d, p) => {
+    const out = [p[0]];
+    for (let i = 0; i < p.length - 1; i++) out.push(...tramo(d, p[i], p[i + 1]).slice(1));
+    return out;
+  };
+  // Lleva cada ruta a su carril. El lado no depende del sentido de la ruta,
+  // así dos rutas con carril distinto nunca se pisan aunque vayan en sentidos contrarios.
+  const carril = (d, p, k) => {
+    if (!k) return plana(d, p);
+    const lado = (a, b) => {
+      const cx = b[0] - a[0], cy = b[1] - a[1];
+      return (cx < -1e-9 || (Math.abs(cx) < 1e-9 && cy < 0)) ? -1 : 1;
+    };
+    const piezas = [];
+    for (let i = 0; i < p.length - 1; i++) {
+      const s = tramo(d, p[i], p[i + 1]), sg = lado(p[i], p[i + 1]), pieza = [];
+      for (let j = 0; j < s.length; j++) {
+        const r = s[Math.min(j + 1, s.length - 1)], l = s[Math.max(j - 1, 0)];
+        let tx = r[0] - l[0], ty = r[1] - l[1];
+        const L = Math.hypot(tx, ty) || 1;
+        tx /= L; ty /= L;
+        pieza.push({ p: [s[j][0] - ty * sg * k * 6, s[j][1] + tx * sg * k * 6], t: [tx, ty] });
+      }
+      piezas.push(pieza);
+    }
+    // En cada esquina, el punto donde se cruzan los dos tramos desplazados
+    const out = [piezas[0][0].p];
+    for (let i = 0; i < piezas.length; i++) {
+      const pz = piezas[i];
+      for (let j = 1; j < pz.length - 1; j++) out.push(pz[j].p);
+      const fin = pz[pz.length - 1], sig = piezas[i + 1];
+      if (!sig) { out.push(fin.p); break; }
+      const ini = sig[0];
+      const den = fin.t[0] * ini.t[1] - fin.t[1] * ini.t[0];
+      if (Math.abs(den) < 1e-6) { out.push(fin.p, ini.p); continue; }
+      const u = ((ini.p[0] - fin.p[0]) * ini.t[1] - (ini.p[1] - fin.p[1]) * ini.t[0]) / den;
+      const x = [fin.p[0] + fin.t[0] * u, fin.p[1] + fin.t[1] * u];
+      if (Math.hypot(x[0] - p[i + 1][0], x[1] - p[i + 1][1]) > 30) out.push(fin.p, ini.p);
+      else out.push(x);
+    }
+    return out;
+  };
+  // Aparta un número de las calles
+  const apartar = (d, pt) => {
+    let [x, y] = pt;
+    const margen = W / 2 + 9;
+    for (let vuelta = 0; vuelta < 4; vuelta++) {
+      for (const c0 of CALLES[d]) {
+        const c = plana(d, c0);
+        for (let i = 0; i < c.length - 1; i++) {
+          const [ax, ay] = c[i], [bx, by] = c[i + 1];
+          const dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy || 1;
+          const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / L2));
+          const px = ax + dx * t, py = ay + dy * t;
+          let ex = x - px, ey = y - py;
+          const dd = Math.hypot(ex, ey);
+          if (dd >= margen) continue;
+          if (dd < 1e-6) { const L = Math.sqrt(L2); ex = -dy / L; ey = dx / L; } else { ex /= dd; ey /= dd; }
+          x += ex * (margen - dd); y += ey * (margen - dd);
+        }
+      }
+    }
+    return [Math.max(14, Math.min(986, x)), Math.max(14, Math.min(986, y))];
+  };
+  // Separa los números que quedaron encimados
+  const separar = (d, marcas) => {
+    const minimo = 52;
+    for (let vuelta = 0; vuelta < 6; vuelta++) {
+      for (let i = 0; i < marcas.length; i++) {
+        for (let j = i + 1; j < marcas.length; j++) {
+          const a = marcas[i], b = marcas[j];
+          let dx = b[1] - a[1], dy = b[2] - a[2];
+          const dd = Math.hypot(dx, dy);
+          if (dd >= minimo) continue;
+          if (dd < 1e-6) { dx = 1; dy = 0; } else { dx /= dd; dy /= dd; }
+          const m = (minimo - dd) / 2;
+          a[1] -= dx * m; a[2] -= dy * m; b[1] += dx * m; b[2] += dy * m;
+        }
+      }
+      for (const m of marcas) [m[1], m[2]] = apartar(d, [m[1], m[2]]);
+    }
+    return marcas;
+  };
+
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const { academica: [ca, pa, ea], ocio: [co, po, eo] } = LINEAS_DISTRITO[d];
+    RUTAS[d].push([ca, -1, pa, "academica", ea], [co, 1, po, "ocio", eo]);
+  }
+
+  const defs = el("defs");
+  const pat = el("pattern", { id: "rayado", width: 16, height: 16, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+  el("rect", { width: 16, height: 16, class: "blanco-fondo" }, pat);
+  el("line", { x1: 0, y1: 0, x2: 0, y2: 16, class: "raya" }, pat);
+
+  // Avenidas: lo que queda entre los cuatro distritos
+  el("rect", { x: 0, y: 0, width: 1000, height: 1000, class: "avenida" });
+  // La orilla de la E.N.M.A.: una vía que rodea todo por fuera
+  el("rect", { x: -7, y: -7, width: 1014, height: 1014, class: "ronda-borde", "stroke-width": 16 });
+  el("rect", { x: -7, y: -7, width: 1014, height: 1014, class: "ronda", "stroke-width": 14 });
+
+  const S = T / 1000;
+  const plano = {};
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [tx, ty] = TILE[d];
+    const g = el("g", { transform: `translate(${tx} ${ty}) scale(${S})` });
+    plano[d] = g;
+    el("rect", { x: 0, y: 0, width: 1000, height: 1000, class: "manzana" }, g);
+  }
+
+  // Plazas, agua y subidas, debajo de los edificios
+  el("polygon", { points: pts([[268,340],[330,205],[485,192],[552,312],[495,456],[368,468]]), class: "plaza" }, plano.d1);
+  el("polygon", { points: pts([[522,110],[796,110],[796,392],[522,392]]), class: "plaza" }, plano.d2);
+  el("path", { d: curva([[610,175],[650,160],[700,170],[722,205],[715,250],[728,290],[700,322],[655,318],[612,300],[600,262],[615,230],[598,200],[610,175]]), class: "lago" }, plano.d2);
+  el("polygon", { points: pts([[372,578],[455,667],[357,760],[266,670]]), class: "plaza" }, plano.d3);
+  el("polyline", { points: pts([[355,10],[350,80],[362,140],[352,190],[300,228],[220,262]]), class: "arroyo" }, plano.d4);
+
+  // Edificios y espacios abiertos, tal como en tus hojas
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    for (const [, tipo, p] of LOTES[d]) el("polygon", { points: pts(p), class: tipo === "o" ? "abierto" : "edificio" }, plano[d]);
+    for (const [cx, cy, rx, ry] of COLINAS[d] || []) {
+      el("ellipse", { cx, cy, rx, ry, class: "colina" }, plano[d]);
+      el("ellipse", { cx, cy, rx: rx * 0.55, ry: ry * 0.55, class: "colina" }, plano[d]);
+    }
+  }
+
+  // Detalles dentro de plazas y edificios
+  el("polygon", { points: pts([[350,288],[445,280],[482,332],[452,392],[368,402],[338,350]]), class: "monumento" }, plano.d1);
+  el("polygon", { points: pts([[585,605],[712,605],[712,845],[585,845]]), class: "linea-int" }, plano.d2);
+  el("polygon", { points: pts([[520,410],[634,410],[634,512],[520,512]]), class: "linea-int" }, plano.d4);
+  el("polygon", { points: pts([[366,624],[408,668],[359,714],[314,670]]), class: "linea-int" }, plano.d3);
+  el("polygon", { points: pts([[590,334],[655,336],[698,385],[698,452],[655,500],[590,500],[545,452],[545,385]]), class: "linea-int" }, plano.d3);
+
+  // El río del Distrito 3, junto a su calle; las calles que lo cruzan pasan por encima (puentes)
+  const RIO = [[447,0],[447,125],[447,236],[457,330],[469,400],[481,462]];
+  el("path", { d: recta(RIO), class: "rio-borde", "stroke-width": 25 }, plano.d3);
+  el("path", { d: recta(RIO), class: "rio", "stroke-width": 21 }, plano.d3);
+
+  // Tus bocetos, para comparar (apagados al empezar)
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    el("image", { href: `img/${d}.jpg`, x: 0, y: 0, width: 1000, height: 1000, preserveAspectRatio: "none", class: "sketch" }, plano[d]);
+  }
+
+  // Calles: primero todos los bordes y luego todas las calzadas, para que los cruces queden limpios
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    for (const c of CALLES[d]) el("path", { d: recta(plana(d, c)), class: "via-borde", "stroke-width": W + 4 }, plano[d]);
+  }
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    for (const c of CALLES[d]) el("path", { d: recta(plana(d, c)), class: "via", "stroke-width": W }, plano[d]);
+    el("rect", { x: 0, y: 0, width: 1000, height: 1000, class: "borde" }, plano[d]);
+  }
+  for (const [x, y, r] of [[0, 562, 90], [290, 1000, 0]]) {
+    const a = el("g", { transform: `translate(${x} ${y}) rotate(${r})` }, plano.d4);
+    el("path", { d: "M -22 0 A 22 22 0 0 1 22 0", class: "entrada" }, a);
+  }
+
+  // Rutas del tranvía
+  const capaRutas = el("g", { class: "rutas" });
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [tx, ty] = TILE[d];
+    const g = el("g", { transform: `translate(${tx} ${ty}) scale(${S})` }, capaRutas);
+    for (const [color, k, p, tipo] of RUTAS[d]) el("path", { d: recta(carril(d, p, k)), class: `ruta r-${color}${tipo === "ocio" ? " ocio" : ""}` }, g);
+  }
+
+  // Los números: uno por edificio numerado, fuera de la calle y sin encimarse
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    // Solo lo que estamos trabajando, ya con la numeración nueva
+    LOTES[d] = LOTES[d].map(([n, tipo, p]) => [n != null && NUEVO[d][n] != null ? NUEVO[d][n] : null, tipo, p]);
+    const foco = new Set([...(D[d].base || []), ...(D[d].carreras || []), ...(D[d].servicio || []), ...(D[d].lugares || [])].map(x => x[1]));
+    const marcas = LOTES[d].filter(l => l[0] != null && foco.has(l[0])).map(l => [l[0], ...apartar(d, centro(l[2]))]);
+    if (d === "d1") marcas.push([1, 410, 330]);
+    if (d === "d3") marcas.push(["A", 360, 668]);
+    D[d].marcas = separar(d, marcas);
+  }
+
+  // Distrito Central: todo el rectángulo del centro, con sus muros y un arco donde termina cada avenida
+  el("rect", { x: 345, y: 285, width: 300, height: 440, class: "central" });
+  el("rect", { x: 356, y: 296, width: 278, height: 418, class: "central-in" });
+  const arcos = [[500, 285, 0], [500, 725, 180], [345, 500, 270], [645, 500, 90]];
+  for (const [ax, ay, rot] of arcos) {
+    const g = el("g", { transform: `translate(${ax} ${ay}) rotate(${rot})` });
+    el("rect", { x: -8, y: -6, width: 16, height: 12, class: "arco-gap" }, g);
+    el("path", { d: "M -12 6 L -12 -2 A 12 12 0 0 1 12 -2 L 12 6", class: "arco" }, g);
+  }
+  el("text", { x: 420, y: 372, class: "clabel" }).textContent = "Distrito";
+  el("text", { x: 420, y: 398, class: "clabel" }).textContent = "Central";
+  el("text", { x: 420, y: 420, class: "csub" }).textContent = "amurallado";
+  // El tranvía cian dentro del centro: cada ramal entra por su arco, da la vuelta y sale por donde entró
+  const capaCentro = el("g", { class: "rutas" });
+  for (const p of RAMALES) el("polyline", { points: pts(p), class: "ruta ramal r-azul" }, capaCentro);
+  el("circle", { cx: 500, cy: 505, r: 50, class: "ruta ramal r-azul" }, capaCentro);
+  // El tranvía de la orilla: da la vuelta a toda la E.N.M.A. y nunca entra a los distritos
+  el("rect", { x: -7, y: -7, width: 1014, height: 1014, class: "ruta ramal r-negra" }, capaCentro);
+
+  // Norte (supuesto: arriba, por la esquina noroeste del Edificio 2)
+  el("path", { d: "M 500 -84 L 508 -66 L 500 -70 L 492 -66 Z", class: "norte-flecha" });
+  el("text", { x: 500, y: -44, class: "norte" }).textContent = "N";
+
+  // Nombres de distrito, fuera de los cuadrantes para no tapar números
+  const rotulo = { d3: [4, -50, "start"], d4: [996, -50, "end"], d1: [4, 1050, "start"], d2: [996, 1050, "end"] };
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [x, y, anc] = rotulo[d];
+    el("text", { x, y, class: "dlabel", "text-anchor": anc }).textContent = D[d].nombre;
+    el("text", { x, y: y + 22, class: "dsub", "text-anchor": anc }).textContent = D[d].sub;
+  }
+
+  // Marcadores numerados, encima de todo
+  const capas = {};
+  for (const d of ["d1", "d2", "d3", "d4"]) capas[d] = el("g", { "data-d": d, class: "numeros" });
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [tx, ty] = TILE[d];
+    for (const [n, lx, ly] of D[d].marcas) {
+      const e = entrada(d, n);
+      const cx = tx + lx * S;
+      const cy = ty + ly * S;
+      const g = el("g", {
+        class: `mk ${e.cat}${e.conf === "duda" ? " duda" : ""}${e.conf === "prop" ? " prop" : ""}`, tabindex: 0, role: "button",
+        "data-d": d, "data-n": n, "aria-label": `${D[d].nombre}, ${n}: ${e.nombre}`,
+      }, capas[d]);
+      el("title", {}, g).textContent = `${n} · ${e.nombre}`;
+      el("circle", { cx, cy, r: 14, class: "halo" }, g);
+      el("circle", { cx, cy, r: 9.5 }, g);
+      el("text", { x: cx, y: cy + 0.5 }, g).textContent = n;
+    }
+  }
+
+
+  // Capa de aficiones (apagada al empezar): rombos pequeños, sin número, para no saturar
+  const capaAf = el("g", { class: "aficiones" });
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [tx, ty] = TILE[d];
+    const usadas = new Map();
+    AFICIONES[d].forEach(([stat, af, lugar, , x, y, oficial], i) => {
+      // Si está dentro de un edificio con número, el icono se pega a ese número como insignia (una esquina por afición)
+      let cerca = null, dmin = 80;
+      for (const m of D[d].marcas) {
+        const dd = Math.hypot(m[1] - x, m[2] - y);
+        if (dd < dmin) { dmin = dd; cerca = m; }
+      }
+      let cx = tx + x * S, cy = ty + y * S;
+      if (cerca) {
+        const clave = `${cerca[1]},${cerca[2]}`, n = usadas.get(clave) || 0;
+        usadas.set(clave, n + 1);
+        const [ex, ey] = [[1, -1], [-1, -1], [1, 1], [-1, 1]][n % 4];
+        cx = tx + cerca[1] * S + ex * 11;
+        cy = ty + cerca[2] * S + ey * 11;
+      }
+      const g = el("g", { class: `af t-${TIPO_STAT[stat]}${oficial ? "" : " no-oficial"}`, tabindex: 0, role: "button", "data-d": d, "data-af": i,
+        "aria-label": `${af}: sube ${stat}` }, capaAf);
+      el("title", {}, g).textContent = `${af} · sube ${stat} (${NOMBRE_TIPO[TIPO_STAT[stat]]}) · ${lugar}`;
+      el("path", { d: FORMA[TIPO_STAT[stat]], transform: `translate(${cx} ${cy})`, class: "ico" }, g);
+    });
+  }
+
+
+  // ── Estaciones: cada línea tiene sus paradas; donde se toca con otra línea, la parada es de correspondencia ──
+  const NOMBRE_LINEA = { rojo: "roja", cian: "cian", morado: "morada", verde: "verde", azul: "azul", amarillo: "amarilla", marino: "marina", rosa: "rosa", naranja: "naranja", negra: "negra", cafe: "café", turquesa: "turquesa" };
+  const nombreLinea = l => l.tipo ? `${NOMBRE_LINEA[l.color]} (${l.tipo === "academica" ? "académica" : "de ocio"})` : NOMBRE_LINEA[l.color];
+  const largo = p => { let s = 0; for (let i = 1; i < p.length; i++) s += Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); return s; };
+  const aLoLargo = (p, s) => {
+    for (let i = 1; i < p.length; i++) {
+      const l = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]);
+      if (s <= l) { const f = l ? s / l : 0; return [p[i - 1][0] + (p[i][0] - p[i - 1][0]) * f, p[i - 1][1] + (p[i][1] - p[i - 1][1]) * f]; }
+      s -= l;
+    }
+    return p[p.length - 1];
+  };
+  const aLinea = (pt, p) => {
+    let m = Infinity;
+    for (let i = 1; i < p.length; i++) {
+      const [ax, ay] = p[i - 1], [bx, by] = p[i], dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy || 1;
+      const u = Math.max(0, Math.min(1, ((pt[0] - ax) * dx + (pt[1] - ay) * dy) / L2));
+      m = Math.min(m, Math.hypot(pt[0] - ax - dx * u, pt[1] - ay - dy * u));
+    }
+    return m;
+  };
+  const cruce = (a, b, c, e) => {
+    const r = [b[0] - a[0], b[1] - a[1]], s = [e[0] - c[0], e[1] - c[1]], den = r[0] * s[1] - r[1] * s[0];
+    if (Math.abs(den) < 1e-9) return null;
+    const u = ((c[0] - a[0]) * s[1] - (c[1] - a[1]) * s[0]) / den, v = ((c[0] - a[0]) * r[1] - (c[1] - a[1]) * r[0]) / den;
+    return u > 0 && u < 1 && v > 0 && v < 1 ? [a[0] + r[0] * u, a[1] + r[1] * u] : null;
+  };
+
+  // Todas las líneas en coordenadas del plano
+  const LINEAS = [];
+  for (const d of ["d1", "d2", "d3", "d4"]) {
+    const [tx, ty] = TILE[d];
+    RUTAS[d].forEach(([color, k, p, tipo, paradas], i) => LINEAS.push({ id: `${d}-${i}`, d, color, tipo,
+      paradas: paradas ? paradas.map(([x, y]) => [tx + x * S, ty + y * S]) : null,
+      pts: carril(d, p, k).map(([x, y]) => [tx + x * S, ty + y * S]), cerrada: igual(p[0], p[p.length - 1]) }));
+  }
+  RAMALES.forEach((p, i) => LINEAS.push({ id: `c-${i}`, d: "central", color: "azul", pts: p, cerrada: false }));
+  LINEAS.push({ id: "c-lazo", d: "central", color: "azul", cerrada: true,
+    pts: Array.from({ length: 41 }, (_, a) => [500 + 50 * Math.cos(a / 40 * 2 * Math.PI), 505 + 50 * Math.sin(a / 40 * 2 * Math.PI)]) });
+  LINEAS.push({ id: "orilla", d: "central", color: "negra", cerrada: true, pts: [[-7, -7], [1007, -7], [1007, 1007], [-7, 1007], [-7, -7]] });
+  const LINEA = Object.fromEntries(LINEAS.map(l => [l.id, l]));
+
+  const TOCA = 8;      // a esta distancia (unidades del plano) dos líneas se tocan
+  const PARADAS = [];  // { x, y, lineas: Set de ids }
+  const lineasCerca = (x, y) => LINEAS.filter(l => aLinea([x, y], l.pts) < TOCA).map(l => l.id);
+  const sumar = (x, y, ids) => {
+    const cerca = PARADAS.find(p => Math.hypot(p.x - x, p.y - y) < 32);
+    if (cerca) { ids.forEach(i => cerca.lineas.add(i)); return; }
+    PARADAS.push({ x, y, lineas: new Set(ids) });
+  };
+  // 1) Las paradas de cada línea, repartidas a lo largo de su recorrido
+  for (const l of LINEAS) {
+    if (l.id === "orilla") continue;
+    if (l.paradas) { for (const [x, y] of l.paradas) sumar(x, y, [l.id, ...lineasCerca(x, y)]); continue; }
+    const L = largo(l.pts), n = Math.max(2, Math.min(7, Math.round(L / 140)));
+    for (let j = 0; j < n; j++) {
+      const s = l.cerrada ? (j + 0.5) * L / n : j * L / (n - 1);
+      const [x, y] = aLoLargo(l.pts, s);
+      sumar(x, y, [l.id, ...lineasCerca(x, y)]);
+    }
+  }
+  // 2) Donde una línea cruza a otra, o termina en otra, hay correspondencia
+  for (let a = 0; a < LINEAS.length; a++) {
+    for (let b = a + 1; b < LINEAS.length; b++) {
+      const A = LINEAS[a], B = LINEAS[b];
+      if (A.d !== B.d && A.d !== "central" && B.d !== "central") continue;
+      for (let i = 1; i < A.pts.length; i++) for (let j = 1; j < B.pts.length; j++) {
+        const x = cruce(A.pts[i - 1], A.pts[i], B.pts[j - 1], B.pts[j]);
+        if (x) sumar(x[0], x[1], [A.id, B.id, ...lineasCerca(x[0], x[1])]);
+      }
+      for (const [P, Q] of [[A, B], [B, A]]) {
+        if (P.cerrada) continue;
+        for (const e of [P.pts[0], P.pts[P.pts.length - 1]]) {
+          if (aLinea(e, Q.pts) < 14) sumar(e[0], e[1], [P.id, Q.id, ...lineasCerca(e[0], e[1])]);
+        }
+      }
+    }
+  }
+  // 3) El tranvía de la orilla: paradas en las esquinas y donde terminan las avenidas
+  for (const [x, y] of [[-7, -7], [500, -7], [1007, -7], [1007, 500], [1007, 1007], [500, 1007], [-7, 1007], [-7, 500]]) sumar(x, y, ["orilla"]);
+
+  // Nombres: los de la lista ESTACIONES cuando caen cerca; si no, «parada n» de su línea
+  const nombradas = [];
+  for (const d of ["d1", "d2", "d3", "d4", "central"]) {
+    const [tx, ty] = d === "central" ? [0, 0] : TILE[d];
+    const k = d === "central" ? 1 : S;
+    for (const [nombre, x, y, , cerca] of ESTACIONES[d]) nombradas.push({ nombre, cerca, x: tx + x * k, y: ty + y * k });
+  }
+  const distritoDe = (x, y) => {
+    for (const d of ["d1", "d2", "d3", "d4"]) {
+      const [tx, ty] = TILE[d];
+      if (x >= tx && x <= tx + T && y >= ty && y <= ty + T) return d;
+    }
+    return "central";
+  };
+  for (const l of LINEAS) {
+    const suyas = PARADAS.filter(p => p.lineas.has(l.id) && p.lineas.size === 1);
+    const L = largo(l.pts);
+    const pos = p => { let mejor = 0, dm = Infinity; for (let s = 0; s <= L; s += 4) { const q = aLoLargo(l.pts, s), dd = Math.hypot(q[0] - p.x, q[1] - p.y); if (dd < dm) { dm = dd; mejor = s; } } return mejor; };
+    suyas.sort((p, q) => pos(p) - pos(q)).forEach((p, j) => { p.generico = `Línea ${nombreLinea(l)} · parada ${j + 1}`; });
+  }
+  PARADAS.forEach(p => {
+    p.d = distritoDe(p.x, p.y);
+    const colores = [...new Set([...p.lineas].map(id => nombreLinea(LINEA[id])))];
+    p.colores = colores;
+    p.correspondencia = colores.length > 1 || [...p.lineas].some(id => LINEA[id].d !== LINEA[[...p.lineas][0]].d);
+    const n = nombradas.find(e => Math.hypot(e.x - p.x, e.y - p.y) < 30);
+    p.nombre = n ? n.nombre : (p.generico || `Correspondencia ${colores.join(" · ")}`);
+    p.cerca = n ? n.cerca : "";
+  });
+
+  // Dibujo: parada simple, círculo pequeño del color de su línea; correspondencia, círculo blanco con borde oscuro
+  const capaEst = el("g", { class: "estaciones" });
+  PARADAS.forEach((p, i) => {
+    const g = el("g", { class: `est${p.correspondencia ? " corr" : ""}`, tabindex: 0, role: "button", "data-d": p.d, "data-est": i,
+      "aria-label": `Estación ${p.nombre}` }, capaEst);
+    el("title", {}, g).textContent = `${p.nombre} · línea${p.colores.length > 1 ? "s" : ""} ${p.colores.join(", ")}`;
+    if (p.correspondencia) {
+      el("circle", { cx: p.x, cy: p.y, r: 6.6, class: "est-aro" }, g);
+      el("circle", { cx: p.x, cy: p.y, r: 2.3, class: "est-punto" }, g);
+    } else {
+      el("circle", { cx: p.x, cy: p.y, r: 3.6, class: "est-simple", style: `stroke: var(--r-${LINEA[[...p.lineas][0]].color})` }, g);
+    }
+  });
+
+  // Panel por distrito
+  const tabs = document.getElementById("tabs");
+  const body = document.getElementById("panel-body");
+  const ficha = document.getElementById("ficha");
+  let actual = "d4";
+
+  const fila = (d, n, nombre, cat, conf, conMarca) => {
+    const li = document.createElement("li");
+    li.className = "fila"; li.tabIndex = 0; li.dataset.d = d; li.dataset.n = n;
+    const estado = conf === "pend" ? "por ubicar" : conf === "prop" ? "propuesta" : conf === "duda" ? "dudoso"
+      : cat === "nd" ? (d === "d4" ? "sin leyenda" : "sin leer") : (!conMarca ? "no está en la hoja" : "");
+    li.innerHTML = `<span class="num ${cat}">${n}</span><span class="nombre"></span>${estado ? `<span class="tag">${estado}</span>` : "<span></span>"}`;
+    li.querySelector(".nombre").textContent = nombre;
+    return li;
+  };
+
+  const pintar = d => {
+    actual = d;
+    for (const b of tabs.children) b.setAttribute("aria-selected", b.dataset.d === d ? "true" : "false");
+    const info = D[d];
+    body.innerHTML = "";
+    body.setAttribute("aria-label", info.nombre);
+    const head = document.createElement("div");
+    head.className = "dhead";
+    head.innerHTML = `<h2></h2><p></p>`;
+    head.querySelector("h2").textContent = info.nombre;
+    head.querySelector("p").textContent = info.lema;
+    body.appendChild(head);
+
+    const conMarca = new Set((info.marcas || []).map(m => m[0]));
+    // Lo que tiene todo distrito y sus cuatro carreras, con el número del edificio que les toca
+    for (const [titulo, lista] of [["Lo que tiene todo distrito", info.base], ["Sus carreras", info.carreras], ["Lo que maneja para toda la E.N.M.A.", info.servicio], ["Sus lugares", info.lugares]]) {
+      if (!lista) continue;
+      const s = document.createElement("div");
+      s.style.display = "grid"; s.style.gap = "8px";
+      s.innerHTML = `<h3>${titulo}</h3>`;
+      const ul = document.createElement("ul");
+      ul.className = "lista";
+      for (const [nombre, n] of lista) {
+        const e = entrada(d, n);
+        ul.appendChild(fila(d, n, nombre, e.cat, e.conf, conMarca.has(n)));
+      }
+      s.appendChild(ul);
+      body.appendChild(s);
+    }
+    {
+      // Sus líneas, con cuántas paradas tiene cada una, y sus correspondencias
+      const s = document.createElement("div");
+      s.style.display = "grid"; s.style.gap = "8px";
+      s.innerHTML = `<h3>${d === "central" ? "Líneas del centro y de la orilla" : "Sus líneas de tranvía"}</h3>`;
+      const ul = document.createElement("ul");
+      ul.className = "lista";
+      const vistos = new Set();
+      for (const l of LINEAS.filter(l => l.d === d)) {
+        const nombre = l.id.startsWith("c-") ? "azul (ramales y circuito del centro)" : nombreLinea(l);
+        if (vistos.has(nombre)) continue;
+        vistos.add(nombre);
+        const ids = LINEAS.filter(m => m.d === d && (l.id.startsWith("c-") ? m.id.startsWith("c-") : !m.id.startsWith("c-") && nombreLinea(m) === nombreLinea(l))).map(m => m.id);
+        const suyas = PARADAS.filter(p => ids.some(id => p.lineas.has(id)));
+        const corr = suyas.filter(p => p.correspondencia).length;
+        const li = document.createElement("li");
+        li.className = "fila";
+        li.innerHTML = `<span class="num est-chip"><svg viewBox="-9 -9 18 18" width="18" height="18" aria-hidden="true"><circle r="6" class="est-simple" style="stroke: var(--r-${l.color})${l.tipo === "ocio" ? "; stroke-dasharray: 3 2" : ""}"/></svg></span><span class="nombre"></span><span class="tag"></span>`;
+        li.querySelector(".nombre").textContent = `Línea ${nombre}`;
+        li.querySelector(".tag").textContent = `${suyas.length} paradas · ${corr} de correspondencia`;
+        ul.appendChild(li);
+      }
+      s.appendChild(ul);
+      const ul2 = document.createElement("ul");
+      ul2.className = "lista";
+      PARADAS.forEach((p, i) => {
+        if (p.d !== d || !p.correspondencia) return;
+        const li = document.createElement("li");
+        li.className = "fila"; li.tabIndex = 0; li.dataset.d = d; li.dataset.est = i;
+        li.innerHTML = `<span class="num est-chip"><svg viewBox="-9 -9 18 18" width="18" height="18" aria-hidden="true"><circle r="7" class="est-aro"/><circle r="2.5" class="est-punto"/></svg></span><span class="nombre"><b></b><br><span class="ref"></span></span><span class="tag">propuesta</span>`;
+        li.querySelector("b").textContent = p.nombre;
+        li.querySelector(".ref").textContent = `Correspondencia: ${p.colores.join(", ")}`;
+        ul2.appendChild(li);
+      });
+      if (ul2.children.length) {
+        const h = document.createElement("h3"); h.textContent = "Correspondencias";
+        s.appendChild(h); s.appendChild(ul2);
+      }
+      body.appendChild(s);
+    }
+    if (AFICIONES[d]) {
+      const s = document.createElement("div");
+      s.style.display = "grid"; s.style.gap = "8px";
+      s.innerHTML = `<h3>Sus aficiones</h3>`;
+      const ul = document.createElement("ul");
+      ul.className = "lista";
+      AFICIONES[d].forEach(([stat, af, lugar, , , , oficial], i) => {
+        const li = document.createElement("li");
+        li.className = "fila"; li.tabIndex = 0; li.dataset.d = d; li.dataset.af = i;
+        li.innerHTML = `<span class="num af-chip">${iconoSvg(TIPO_STAT[stat], oficial)}</span><span class="nombre"><b></b><br><span class="ref"></span></span>${oficial ? "<span></span>" : `<span class="tag">no oficial</span>`}`;
+        li.querySelector("b").textContent = `${af} → ${stat}`;
+        li.querySelector(".ref").textContent = lugar;
+        ul.appendChild(li);
+      });
+      s.appendChild(ul);
+      body.appendChild(s);
+    }
+    if (!info.base) {
+      const p = document.createElement("p"); p.className = "nota";
+      p.textContent = "Lo dejamos para después.";
+      body.appendChild(p);
+    }
+    body.scrollTop = 0;
+  };
+
+  for (const d of ["central", "d1", "d2", "d3", "d4"]) {
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role", "tab"); b.dataset.d = d; b.textContent = D[d].tab;
+    b.addEventListener("click", () => { pintar(d); limpiar(); });
+    tabs.appendChild(b);
+  }
+
+  const limpiar = () => {
+    svg.querySelectorAll(".mk.on, .af.on, .est.on").forEach(m => m.classList.remove("on"));
+    body.querySelectorAll(".fila.on").forEach(f => f.classList.remove("on"));
+  };
+
+  const elegir = (d, n) => {
+    if (actual !== d) pintar(d);
+    limpiar();
+    const ms = svg.querySelectorAll(`.mk[data-d="${d}"][data-n="${n}"]`);
+    ms.forEach(m => m.classList.add("on"));
+    const f = body.querySelector(`.fila[data-d="${d}"][data-n="${n}"]`);
+    if (f) {
+      f.classList.add("on");
+      const top = f.offsetTop - body.offsetTop - body.clientHeight / 2;
+      if (body.scrollHeight > body.clientHeight) body.scrollTop = Math.max(0, top);
+    }
+    const e = entrada(d, n);
+    const donde = ms.length > 1 ? `${ms.length} sitios en la hoja` : (ms.length ? "1 sitio en la hoja" : "no está en la hoja");
+    const conf = e.conf === "pend" ? "por ubicar" : e.conf === "prop" ? "propuesta mía" : e.conf === "duda" ? "dudoso"
+      : (e.cat === "nd" ? (d === "d4" ? "sin leyenda" : "sin leer") : "leído en tu leyenda");
+    ficha.innerHTML = `<b></b> <span class="tag">${CAT[e.cat]}</span><span class="tag">${conf}</span><span class="tag">${donde}</span>`;
+    ficha.querySelector("b").textContent = `${D[d].nombre} · ${n} · ${e.nombre}`;
+  };
+
+  const elegirEst = (d, i) => {
+    if (actual !== d) pintar(d);
+    limpiar();
+    chkE.checked = true; svg.classList.remove("sin-estaciones");
+    const m = svg.querySelector(`.est[data-d="${d}"][data-est="${i}"]`);
+    if (m) m.classList.add("on");
+    const f = body.querySelector(`.fila[data-d="${d}"][data-est="${i}"]`);
+    if (f) {
+      f.classList.add("on");
+      if (body.scrollHeight > body.clientHeight) body.scrollTop = Math.max(0, f.offsetTop - body.offsetTop - body.clientHeight / 2);
+    }
+    const p = PARADAS[i];
+    ficha.innerHTML = `<b></b> <span class="tag"></span><span class="tag">${p.correspondencia ? "correspondencia" : "parada"}</span><span class="tag">propuesta</span><br><span class="ref"></span>`;
+    ficha.querySelector("b").textContent = `Estación ${p.nombre}`;
+    ficha.querySelector(".tag").textContent = `línea${p.colores.length > 1 ? "s" : ""} ${p.colores.join(", ")}`;
+    ficha.querySelector(".ref").textContent = p.cerca ? `Cerca: ${p.cerca}` : "";
+  };
+  const elegirAf = (d, i) => {
+    if (actual !== d) pintar(d);
+    limpiar();
+    chkA.checked = true; svg.classList.add("con-aficiones");
+    const m = svg.querySelector(`.af[data-d="${d}"][data-af="${i}"]`);
+    if (m) m.classList.add("on");
+    const f = body.querySelector(`.fila[data-d="${d}"][data-af="${i}"]`);
+    if (f) {
+      f.classList.add("on");
+      if (body.scrollHeight > body.clientHeight) body.scrollTop = Math.max(0, f.offsetTop - body.offsetTop - body.clientHeight / 2);
+    }
+    const [stat, af, lugar, quien, , , oficial] = AFICIONES[d][i];
+    ficha.innerHTML = `<b></b> <span class="tag"></span><span class="tag">${NOMBRE_TIPO[TIPO_STAT[stat]]}</span>${oficial ? "" : `<span class="tag">no oficial</span>`}<br><span class="ref"></span>`;
+    ficha.querySelector("b").textContent = `${D[d].nombre} · ${af} → sube ${stat}`;
+    ficha.querySelector(".tag").textContent = lugar;
+    ficha.querySelector(".ref").textContent = `Quién va: ${quien}`;
+  };
+  svg.addEventListener("click", ev => {
+    const e = ev.target.closest(".est");
+    if (e) { elegirEst(e.dataset.d, Number(e.dataset.est)); return; }
+    const a = ev.target.closest(".af");
+    if (a) { elegirAf(a.dataset.d, Number(a.dataset.af)); return; }
+    const m = ev.target.closest(".mk");
+    if (m) elegir(m.dataset.d, num(m.dataset.n));
+  });
+  svg.addEventListener("keydown", ev => {
+    const m = ev.target.closest(".mk");
+    if (m && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); elegir(m.dataset.d, num(m.dataset.n)); }
+  });
+  body.addEventListener("click", ev => {
+    const fe = ev.target.closest(".fila[data-est]");
+    if (fe) { elegirEst(fe.dataset.d, Number(fe.dataset.est)); return; }
+    const fa = ev.target.closest(".fila[data-af]");
+    if (fa) { elegirAf(fa.dataset.d, Number(fa.dataset.af)); return; }
+    const f = ev.target.closest(".fila");
+    if (f) elegir(f.dataset.d, num(f.dataset.n));
+  });
+  body.addEventListener("keydown", ev => {
+    const f = ev.target.closest(".fila");
+    if (f && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); elegir(f.dataset.d, num(f.dataset.n)); }
+  });
+
+  const chk = document.getElementById("ver-bocetos");
+  chk.addEventListener("change", () => svg.classList.toggle("con-boceto", chk.checked));
+  const chkR = document.getElementById("ver-rutas");
+  chkR.addEventListener("change", () => svg.classList.toggle("sin-rutas", !chkR.checked));
+  document.getElementById("leyenda-af").innerHTML =
+    `Aficiones: ${iconoSvg("p")} principal ${iconoSvg("o")} ofensiva ${iconoSvg("d")} defensiva`;
+  const chkE = document.getElementById("ver-estaciones");
+  chkE.addEventListener("change", () => svg.classList.toggle("sin-estaciones", !chkE.checked));
+  const chkA = document.getElementById("ver-aficiones");
+  chkA.addEventListener("change", () => svg.classList.toggle("con-aficiones", chkA.checked));
+  const chkN = document.getElementById("ver-numeros");
+  chkN.addEventListener("change", () => svg.classList.toggle("sin-numeros", !chkN.checked));
+
+  pintar("d4");
+})();
+</script>
