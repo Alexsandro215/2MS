@@ -85,7 +85,7 @@ Los **enemigos usan las mismas etiquetas** (comparten motor y spells — ver [ar
 | Rol | Qué hace | Sistema donde vive |
 |---|---|---|
 | **Músico** | CM, Clasical, secciones de la canción | Carga Musical, música |
-| **Estratega** | Altera el orden de turnos, da Tempo, gana compases | Turno por compases, Tempo |
+| **Estratega** | Altera el orden de turnos, da Cadencia, gana compases | Turno por compases, Cadencia |
 | **Intendente** | Saca más de comida, consumibles y gadgets | Dominio de Objetos / Comida, gadgets `ITEM_GENERATION` |
 | **Ladrón** | Roba buffs, CM o stats al enemigo | Semilla: la emoción *Enamorado* copia stats de un villano |
 

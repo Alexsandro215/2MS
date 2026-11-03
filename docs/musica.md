@@ -1,4 +1,4 @@
-# E.N.M.A — Música, Cadencia, Tempo y modo CLASICAL
+# E.N.M.A — Música, Tempo, Cadencia y modo CLASICAL
 
 > La capa de identidad del proyecto. La música no es ambientación: **es el reloj, el recurso y el bonus**.
 
@@ -148,7 +148,7 @@ Los bonos de **"+1 BA" suman a la BASE**, no a la estadística de Attack Speed. 
 CONTADOR  (motor de fondo)
     cada X básicos CONECTADOS  →  1 carga de CM
     X por arma: ligera 8 · media 4 · pesada 2
-    la stat Cadencia reduce X
+    la stat Tempo reduce X
     ▶ PERSISTE ENTRE TURNOS — ningún golpe se desperdicia
 
 BONUS DE TEMPO  (sobre el contador)
@@ -283,21 +283,21 @@ Con esto, los golpes necesarios para 1 CM se reducen a la mitad si vas a tiempo:
 >
 > No es *"si aciertas el ritmo te llevas un extra"*: es **"si pierdes el ritmo, produces la mitad"**. La música no premia — castiga. Y eso motiva mucho más a mantener el pulso.
 
-### La estadística Cadencia
+### La estadística Tempo
 
-> ✅ **Renombrada (nov 2026).** Esta stat se llamaba *Tempo*. El nombre **Tempo** pasa a la stat de turno que ralentiza el tiempo de decisión (ver §2.1). Cadencia es **secundaria ofensiva**.
+> ✅ **El nombre se queda (02/11/2026).** Tempo sigue siendo esta, la **secundaria ofensiva** de la CM. La stat de turno que ralentiza el tiempo de decisión es otra, nueva: **Cadencia** (ver §2.1).
 
-**Cadencia = % de ataques básicos MENOS necesarios para obtener 1 carga de CM.**
+**Tempo = % de ataques básicos MENOS necesarios para obtener 1 carga de CM.**
 
-Es un **porcentaje**, no un contador. Por eso funciona igual para cualquier arma: cada arma conserva su base y Cadencia la reduce en proporción.
+Es un **porcentaje**, no un contador. Por eso funciona igual para cualquier arma: cada arma conserva su base y Tempo la reduce en proporción.
 
 ```
-INTERNO   Cadencia = % (sube con el nivel, baja con el desgaste, como toda stat)
+INTERNO   Tempo = % (sube con el nivel, baja con el desgaste, como toda stat)
 
-MOSTRADO  Golpes por CM = base_del_arma × (1 − Cadencia)
+MOSTRADO  Golpes por CM = base_del_arma × (1 − Tempo)
 ```
 
-| Arma | Base | Cadencia 25% | Cadencia 50% (cap) |
+| Arma | Base | Tempo 25% | Tempo 50% (cap) |
 |---|---|---|---|
 | **Ligera** | 8 | 6 | **4** |
 | **Media** | 4 | 3 | **2** |
@@ -305,7 +305,7 @@ MOSTRADO  Golpes por CM = base_del_arma × (1 − Cadencia)
 
 El **cap del 50%** que ya traía STATS MASTER da exactamente la curva buscada: alto al principio, cómodo en la etapa regular.
 
-| Nivel | Cadencia | Golpes por CM (ligera) |
+| Nivel | Tempo | Golpes por CM (ligera) |
 |---|---|---|
 | LV1 | 2.8% | 8 |
 | LV9 | 25% | 6 |
@@ -313,7 +313,7 @@ El **cap del 50%** que ya traía STATS MASTER da exactamente la curva buscada: a
 
 > ### ⚠️ Regla general: ninguna estadística debe ser "mejor cuanto más baja"
 >
-> Cadencia (entonces llamada Tempo) se diseñó primero como *"golpes necesarios"*, y eso rompía dos sistemas: el escalado por nivel (`MAX × g(L)` la haría **subir**, o sea empeorar) y sobre todo el **desgaste**, que multiplica por `(1 − desgaste)` — un personaje destrozado habría necesitado **menos** golpes por carga.
+> Tempo se diseñó primero como *"golpes necesarios"*, y eso rompía dos sistemas: el escalado por nivel (`MAX × g(L)` la haría **subir**, o sea empeorar) y sobre todo el **desgaste**, que multiplica por `(1 − desgaste)` — un personaje destrozado habría necesitado **menos** golpes por carga.
 >
 > La solución: **guardar la estadística como eficiencia ascendente y convertirla solo al mostrarla.** El jugador lee "6 golpes por carga"; por dentro se comporta como todas las demás.
 >
@@ -640,15 +640,15 @@ Si la bolsa se agota  →  el turno se CORTA ahí y pasa el enemigo,
 
 Esto une en un solo eje tres cosas que estaban sueltas: la Carga Musical como recurso, el bonus por tocar a tiempo, y la presión de decisión. **El pulso de la canción es el pulso de la partida.**
 
-### 2.1 La estadística Tempo — tiempo para pensar
+### 2.1 La estadística Cadencia — tiempo para pensar
 
-**Tempo = segundos de tiempo casi detenido para decidir, que se ganan al abrir el turno.**
+**Cadencia = segundos de tiempo casi detenido para decidir, que se ganan al abrir el turno.**
 
 ```
 Disparador   la PRIMERA acción activa del turno del equipo
              (DEFEND, consumible, gadget, BA, QWER…)
 Frecuencia   1 vez por turno de equipo
-Quién cuenta el Tempo del personaje que ABRE el turno
+Quién cuenta la Cadencia del personaje que ABRE el turno
 Efecto       el tiempo va casi detenido a la vista del jugador
              → navega todo el menú con calma para planear el resto
 Escala       la ralentización es FIJA; lo que escala con la stat
@@ -662,14 +662,14 @@ Ejecución    al ejecutar (tocar básicos, etc.) la música vuelve
 >
 > **Es un anti-parálisis.** Al empezar el turno el reloj corre a velocidad real: no puedes quedarte pensando sin hacer nada. Para ganarte tiempo de pensar, **primero tienes que comprometerte con algo**. Abrir con algo seguro (un DEFEND, el consumible gratis de la ventana pre-ofensiva) compra el respiro para planear lo complicado.
 >
-> **El orden de turnos decide cuánto piensas.** Como cuenta el Tempo de quien abre, elegir quién va primero también es elegir cuánto tiempo tendrá el equipo para decidir.
+> **El orden de turnos decide cuánto piensas.** Como cuenta la Cadencia de quien abre, elegir quién va primero también es elegir cuánto tiempo tendrá el equipo para decidir.
 >
-> **No acelera el ritmo de ejecución.** Si los básicos también se tocaran en cámara lenta, acertar el pulso sería trivial y el bonus rítmico perdería sentido. Tempo sirve para decidir, no para tocar.
+> **No acelera el ritmo de ejecución.** Si los básicos también se tocaran en cámara lenta, acertar el pulso sería trivial y el bonus rítmico perdería sentido. Cadencia sirve para decidir, no para tocar.
 
-**El protagonista es quien más Tempo tiene, porque no tiene Clasical.** Los demás aportan ráfaga; él aporta claridad. No aporta poder: aporta tiempo para usar bien el de los demás. Abrir el turno con él es darle al equipo el mayor margen de decisión.
+**El protagonista es quien más Cadencia tiene, porque no tiene Clasical.** Los demás aportan ráfaga; él aporta claridad. No aporta poder: aporta tiempo para usar bien el de los demás. Abrir el turno con él es darle al equipo el mayor margen de decisión.
 
 ❓ Pendientes:
-- Valores de N y de los segundos de Tempo (MAX por personaje, cap del juego).
+- Valores de N y de los segundos de Cadencia (MAX por personaje, cap del juego).
 - Factor exacto de la ralentización ("casi detenido").
 - Si la bolsa de compases se agota en mitad de una acción ya iniciada, ¿se completa o se corta?
 - Duración de las acciones dentro de la bolsa: propuesta de que cada skill declare su duración en tiempos musicales (p. ej. Q = 1 tiempo · R = 1 compás) para que la animación no balancee el juego por accidente.

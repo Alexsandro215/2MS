@@ -105,7 +105,7 @@ Mismo principio que la intro, con otra unidad: **cada run (o batalla clave) pres
 | **2** | El primer **recuerdo** (pasiva directa, tipo *Corazón de Acero*) | Una pelea donde quedar con poca vida es casi seguro: se ve activarse |
 | **3** | **Consumibles y comida** (ventana pre-ofensiva) | Aparece el primer enemigo de **Fuego**: la quemadura recorta la curación y se descubre que curarse no basta |
 | **4** | **Cambiar de estilo** entre los de dificultad baja | Una pelea donde un estilo rinde claramente mejor que otro |
-| **5** | **Tempo** | Una canción algo más rápida: abrir el turno da aire para pensar |
+| **5** | **Cadencia** | Una canción algo más rápida: abrir el turno da aire para pensar |
 
 > ❔ **Fuego y consumibles juntos a propósito.** Quemadura recorta la curación justo cuando se aprenden los objetos de curación: primera semilla de *"prevenir es mejor que reparar"*.
 
@@ -124,7 +124,7 @@ Unas 5–6 novedades por mes. Con ~20 días jugables por mes, **una novedad cada
 | **Consumibles y comida** | La quemadura recorta la curación: curarse no basta |
 | **Cambiar de estilo** (dificultad baja) | Ya conoce el kit; ahora lo puede cambiar |
 | **SWAP y banquillo** | Si no se puede curar bien, sacar al herido es la salida |
-| **Tempo** | Canción algo más rápida: abrir el turno da aire para pensar |
+| **Cadencia** | Canción algo más rápida: abrir el turno da aire para pensar |
 
 **🌿 Cap 3 · Naturaleza — el tablero y los elementos**
 

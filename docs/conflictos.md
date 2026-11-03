@@ -63,7 +63,7 @@ Eso conecta el `tempoPct`, la Carga Musical y el contexto de entorno (`Música/T
 
 ✅ **El turno dura N compases de la canción** (N ⚠️ provisional, ≥ 4), en una **bolsa compartida por todo el equipo**. Si se agota, el turno se corta y pasa el enemigo.
 ✅ **Qué lo acelera: el BPM de la canción.** No hace falta otra regla.
-✅ **La stat Tempo** da segundos de tiempo casi detenido al abrir el turno; la antigua stat Tempo se renombra **Cadencia**.
+✅ **La stat Cadencia** da segundos de tiempo casi detenido al abrir el turno. La stat Tempo (CM por básico) no cambia de nombre.
 
 Detalle en [musica.md](musica.md) §2 y §2.1.
 

@@ -110,8 +110,8 @@ Fijado por el autor.
 | **Daño Físico** | Amasar pan al amanecer | Cocina del comedor | Los madrugadores tranquilos y cariñosos | La fuerza sale de las manos pacientes, no del gimnasio |
 | **Daño Mágico** | Mirar las estrellas | Cúpula de Mudrick | Los soñadores nocturnos | La magia empieza por imaginar |
 | **Generación de CM** | Colmenas | Jardín de Fa | Los pacientes y dulces | La carga se junta gota a gota, como la miel |
-| **Cadencia** *(antes Tempo)* | Saltar la cuerda | Patio de juegos | Los alegres e infantiles | El ritmo se lleva en los pies |
-| **Tempo** (stat de turno, [musica.md](musica.md) §2.1) ❔ | Ajedrez con reloj | Mesas del parque del arroyo | Los que piensan rápido bajo presión | Decidir bien cuando el reloj corre |
+| **Tempo** | Saltar la cuerda | Patio de juegos | Los alegres e infantiles | El ritmo se lleva en los pies |
+| **Cadencia** (stat de turno, [musica.md](musica.md) §2.1) ❔ | Ajedrez con reloj | Mesas del parque del arroyo | Los que piensan rápido bajo presión | Decidir bien cuando el reloj corre |
 | **Robo de Vida** | Donar sangre | Hospital | Los altruistas… y los que van por las galletas | La ironía: das vida para aprender a quitarla |
 | **Daño de Área** | Boliche | Deportivo Haser | Los competitivos ruidosos | Derribar todos los pinos de un tiro |
 | **Resistencia al Desgaste** | Meditación | Sala de silencio | Los agotados y espirituales | Descansar de verdad |
@@ -123,5 +123,5 @@ Fijado por el autor.
 ## Pendiente
 
 - ❓ Qué secundario lleva cada lugar, y qué aficiones le gustan o le disgustan a cada principal.
-- ❓ Si *Daño Verdadero* y *Extensión de Objetos* cuentan como estadísticas propias. [equipo.md](equipo.md) habla de 34 estadísticas y aquí salen 40 (con la nueva stat Tempo de turno).
+- ❓ Si *Daño Verdadero* y *Extensión de Objetos* cuentan como estadísticas propias. [equipo.md](equipo.md) habla de 34 estadísticas y aquí salen 40 (con la nueva stat Cadencia, la de turno).
 - El Deportivo Haser (boliche) queda cerca de un edificio de aulas del Distrito 4. Lo dejé porque es un lugar del autor y un deportivo es público.

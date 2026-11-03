@@ -25,7 +25,7 @@ RPG táctico por turnos con capa musical. Combate posicional en línea, habilida
 | [`docs/estilos.md`](docs/estilos.md) | Los 20 kits QWER |
 | [`docs/roles.md`](docs/roles.md) | Roles: familias, asignación de estilos, huecos |
 | [`docs/progresion.md`](docs/progresion.md) | Capítulos, elementos y orden de enseñanza |
-| [`docs/lazos.md`](docs/lazos.md) | Lazos: organizaciones, HPS y HS |
+| [`docs/lazos.md`](docs/lazos.md) | Lazos: clubes, HPS y HS |
 | [`docs/produccion.md`](docs/produccion.md) | Notas para la fase de creación |
 | [`docs/lore-contexto.md`](docs/lore-contexto.md) | Mundo, distritos, estructura social |
 | [`docs/conflictos.md`](docs/conflictos.md) | Divergencias pendientes de decidir |

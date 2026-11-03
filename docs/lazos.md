@@ -1,4 +1,4 @@
-# E.N.M.A — Lazos y organizaciones
+# E.N.M.A — Lazos y clubes
 
 > Cómo se reparten los **81 personajes secundarios** sin tener que escribir 81 historias profundas.
 > ✅ = confirmado por el autor · ❔ = propuesta, pendiente de confirmar.
@@ -7,21 +7,15 @@
 
 ## 0. El problema que resuelve
 
-81 historias completas, todas con la misma profundidad, son inmanejables: de escribir, y de jugar (~200 días jugables, 3 bloques por día, tareas de lazo de 2 bloques). La solución: **la profundidad la lleva el grupo, no el individuo.**
+81 historias completas, todas con la misma profundidad, son inmanejables: de escribir, y de jugar (~200 días jugables, 3 bloques por día, tareas de lazo de 2 bloques). La solución: **la profundidad la lleva el club, no el individuo.**
 
 ---
 
-## 1. Las organizaciones ✅
+## 1. Los grupos son los clubes ✅
 
-Los secundarios se reparten según la **organización a la que pertenecen**: las **administraciones**, divididas por distrito.
-
-```
-4 DISTRITOS + EL CENTRAL  =  5 administraciones
-```
+Los secundarios siguen el **listario** (un lazo por mes para cada principal), pero no se puede dar profundidad a 81 historias. Por eso se **agrupan por club**: los 18 del listario, que son el Consejo, el Muro Mercantil y las 16 carreras ([lore-contexto.md](lore-contexto.md) §2).
 
 **Los secundarios no pelean.** Son personajes del simulador de vida, no del combate.
-
-> ⚠️ **Manda [lore-contexto.md](lore-contexto.md) donde choque con esto** (fusión del 02/11/2026). Allí los lazos siguen el **listario**: un lazo por mes para cada principal, repartidos por **clubes (carreras)**, y el Consejo y el Muro Mercantil quedan aparte. Las administraciones por distrito son la propuesta de este documento para agrupar a los 81; no sustituyen al listario.
 
 ---
 
@@ -29,29 +23,29 @@ Los secundarios se reparten según la **organización a la que pertenecen**: las
 
 | Nivel | Historia | Qué es |
 |---|---|---|
-| **Grupo** | **HPS** — Historia Principal Secundaria | La historia de la organización. **Profunda.** Una por grupo |
-| **Individuo** | **HS** — Historia Secundaria | El lazo propio de cada secundario. **No es profundo, pero puede dar cosas importantes** |
+| **Club** | **HPS** — Historia Principal Secundaria | La historia del club. **Profunda.** Una por club |
+| **Miembro** | **HS** — Historia Secundaria | La minihistoria de cada miembro, que se vive al **salir con él**. **No es profunda, pero puede dar cosas importantes** |
 
 ### HPS — la corrupción de uno de los suyos ✅
 
-**Cada grupo tiene una HPS.** Es la historia de la **corrupción de un miembro del grupo**.
+**Cada club tiene una HPS.** Termina con un **jefe**: uno de sus miembros **cede ante la corrupción** que traen los acontecimientos de la Historia Principal.
 
-Suele estar ligada a cómo el **libre albedrío que ofrece Alextsu**, de forma pasiva, **no siempre da el resultado deseado** cuando se obtiene: en cada grupo, alguien acaba **cediendo ante la corrupción de la Historia Principal**.
+La causa es el **libre albedrío que ofrece Alextsu** de forma pasiva: no siempre da el resultado deseado cuando se obtiene. En cada club, alguien acaba usándolo mal.
 
-> El tema se repite en los cinco grupos con cinco desenlaces distintos. Dar libertad no garantiza que se use bien.
+> El tema se repite en todos los clubes con desenlaces distintos. Dar libertad no garantiza que se use bien.
 
-> ⚠️ **Lo que ya está decidido en el lore:** las corrupciones son **por club**, no por administración. Los 18 personajes de las viñetas del Capítulo 1 (uno por club) serán las futuras corrupciones de su club, y cada uno es el lazo de un principal ([lore-contexto.md](lore-contexto.md) §6). Si las HPS se mantienen, tienen que contar esas 18 corrupciones, no inventar otras cinco.
+Esos miembros ya existen: son los **18 personajes de las viñetas del Capítulo 1**, uno por club, cada uno lazo de un principal ([lore-contexto.md](lore-contexto.md) §6). Sus nombres se quedan como en la historia.
 
 ### HS — el lazo individual ✅
 
 ```
-Intro            ✔ ya hecha: llega al presentar el grupo
+Intro            ✔ ya hecha: llega al presentar el club
 1er acercamiento ┐ se pueden SALTAR si ya se convivió
 2º acercamiento  ┘ con el personaje de alguna manera
 Final
 ```
 
-- Como la intro viene con el grupo, **cada secundario tiene como máximo 3 escenas propias**.
+- Como la intro viene con el club, **cada secundario tiene como máximo 3 escenas propias**.
 - El salto premia al jugador que ya convivió con alguien: no se repite una presentación de algo ya vivido.
 - **Las salidas pueden variar según dónde se vaya** — y pueden ser completamente diferentes una de otra.
 
@@ -73,7 +67,7 @@ Ya está escrito que salir reduce la espera *"según el lugar y sus preferencias
 ### Qué cuenta como "ya convivió"
 
 Cosas que ya existen y se pueden contar (los secundarios no pelean, así que el combate no cuenta):
-- Haber compartido escenas de la **HPS** de su grupo.
+- Haber compartido escenas de la **HPS** de su club.
 - **Sentarse con él en clase** varias veces.
 
 ### Qué da cada etapa
@@ -91,14 +85,13 @@ Cosas que ya existen y se pueden contar (los secundarios no pelean, así que el 
 
 ### Presentación por capítulo
 
-Así como Floristas llega con Kali en Naturaleza ([progresion.md](progresion.md)), cada capítulo puede presentar a sus grupos y secundarios en vez de soltar los 81 al inicio.
+Así como Floristas llega con Kali en Naturaleza ([progresion.md](progresion.md)), cada capítulo puede presentar a sus clubes y secundarios en vez de soltar los 81 al inicio.
 
 ---
 
 ## Pendientes
 
-✅ El **Distrito Central** es el rectángulo amurallado del centro ([lore-contexto.md](lore-contexto.md) §2). ❓ Su administración como organización de lazos queda aparte por ahora, igual que en el lore.
-❓ ¿Cuántos secundarios tiene cada grupo? (81 / 5 ≈ 16 de media)
-❓ ¿Cómo se reparten las **5 HPS** entre los capítulos?
-❓ ¿El miembro corrompido de cada HPS acaba siendo un **jefe**?
+❓ ¿Cuántos secundarios tiene cada club? (81 entre 18 clubes ≈ 4–5 de media)
+❓ ¿Cómo se reparten las **18 HPS** entre los capítulos?
+✅ El miembro corrompido de cada HPS es el **jefe** con que termina esa HPS.
 ❓ ¿Cuántas salidas tiene cada secundario? Los lugares ya existen: son las **aficiones** de [aficiones.md](aficiones.md), cada una con el tipo de persona que atrae, y están en el plano ([plano/plano-enma.html](plano/plano-enma.html)).
