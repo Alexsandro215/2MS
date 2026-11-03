@@ -202,7 +202,7 @@ Es **proporcional**, no un umbral fijo de puntos. Curarte un quinto de barra cue
 >
 > Y penalizaría a los personajes de vida alta: un tanque curándose un quinto de su barra pagaría mucho más que un caster curándose un quinto de la suya. Los tanques ya reciben más daño y ya necesitan más curación; no hace falta cobrarles además una tarifa peor por unidad.
 >
-> Es el mismo principio que se aplicó a Tempo: **ninguna regla debe romperse cuando las estadísticas escalan.**
+> Es el mismo principio que se aplicó a Cadencia: **ninguna regla debe romperse cuando las estadísticas escalan.**
 
 **Proyección a final de run:**
 
@@ -621,7 +621,7 @@ P_element = base n% + modificadores
 |---|---|---|
 | Preparación | Reduce 1 turno de preparación al llegar al umbral | 75% |
 | Velocidad de Ataque | `hits = base × (1 + AS)` | 60% |
-| Tempo | `CM_gain = CM_base × (1 + TMP)` | 50% |
+| Cadencia | Reduce los básicos necesarios por CM: `golpes_por_CM = base × (1 − CAD)` *(antes llamada Tempo)* | 50% |
 | Pen. Armadura | `Armor_f = Armor − PenArmor_eff` | ≤80% ARM objetivo |
 | Pen. Mágica | `RM_f = RM − PenRM_eff` | ≤80% RM objetivo |
 | Robo de Vida | `Heal = Damage × LS` | 25% |
@@ -631,6 +631,12 @@ P_element = base n% + modificadores
 | Daño Explosivo | `× (1 + EXPL)` | 100% |
 | Última Bala | Umbral de KO | 10–15% |
 | Rebote | Chance de rebotar daño a enemigo cercano | 30% |
+
+### De turno
+
+| Stat | Efecto | Cap |
+|---|---|---|
+| **Tempo** | Segundos de tiempo casi detenido para decidir. Se activa con la primera acción activa del turno; cuenta el Tempo de quien abre. Ver [musica.md](musica.md) §2.1 | ❓ |
 
 ### Defensivas
 
@@ -649,7 +655,7 @@ P_element = base n% + modificadores
 | Dominio / Extensión de Comida | | 50% / 30% |
 | Reflejos | Intercepta daño letal a aliado | 20% |
 
-**Picos de referencia:** AS 60% → 10 hits pasan a 16 · Tempo 50% → ×1.5 de CM · Daño Explosivo 100% → 200 pasa a 400.
+**Picos de referencia:** AS 60% → 10 hits pasan a 16 · Cadencia 50% → la mitad de básicos por CM · Daño Explosivo 100% → 200 pasa a 400.
 
 ---
 

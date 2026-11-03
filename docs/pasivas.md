@@ -138,7 +138,7 @@ Para que el sistema haga su trabajo, conviene que haya pasivas de estas familias
 ❓ ¿Persisten entre runs, como los emblemas guardados, o son temporales?
 ❓ ¿Un recuerdo lo puede llevar cualquier personaje, o están atados a alguien?
 ❓ ¿Se pueden **anular o suprimir** las pasivas enemigas?
-❓ ¿Qué **etiquetas de arquetipo** existen? De momento consta **mago**.
+✅ **Etiquetas de arquetipo:** definidas en [roles.md](roles.md) — 6 familias, rol principal · secundario · curva. (*Mago* sigue siendo válido como etiqueta de tipo de daño, aparte del rol.)
 ❓ ¿Cuántas pasivas lleva un enemigo normal frente a un jefe? ¿Hay tope?
 
 ---

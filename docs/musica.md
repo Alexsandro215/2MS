@@ -1,4 +1,4 @@
-# E.N.M.A — Música, Tempo y modo CLASICAL
+# E.N.M.A — Música, Cadencia, Tempo y modo CLASICAL
 
 > La capa de identidad del proyecto. La música no es ambientación: **es el reloj, el recurso y el bonus**.
 
@@ -148,7 +148,7 @@ Los bonos de **"+1 BA" suman a la BASE**, no a la estadística de Attack Speed. 
 CONTADOR  (motor de fondo)
     cada X básicos CONECTADOS  →  1 carga de CM
     X por arma: ligera 8 · media 4 · pesada 2
-    la stat Tempo reduce X
+    la stat Cadencia reduce X
     ▶ PERSISTE ENTRE TURNOS — ningún golpe se desperdicia
 
 BONUS DE TEMPO  (sobre el contador)
@@ -283,19 +283,21 @@ Con esto, los golpes necesarios para 1 CM se reducen a la mitad si vas a tiempo:
 >
 > No es *"si aciertas el ritmo te llevas un extra"*: es **"si pierdes el ritmo, produces la mitad"**. La música no premia — castiga. Y eso motiva mucho más a mantener el pulso.
 
-### La estadística Tempo
+### La estadística Cadencia
 
-**Tempo = % de ataques básicos MENOS necesarios para obtener 1 carga de CM.**
+> ✅ **Renombrada (nov 2026).** Esta stat se llamaba *Tempo*. El nombre **Tempo** pasa a la stat de turno que ralentiza el tiempo de decisión (ver §2.1). Cadencia es **secundaria ofensiva**.
 
-Es un **porcentaje**, no un contador. Por eso funciona igual para cualquier arma: cada arma conserva su base y Tempo la reduce en proporción.
+**Cadencia = % de ataques básicos MENOS necesarios para obtener 1 carga de CM.**
+
+Es un **porcentaje**, no un contador. Por eso funciona igual para cualquier arma: cada arma conserva su base y Cadencia la reduce en proporción.
 
 ```
-INTERNO   Tempo = % (sube con el nivel, baja con el desgaste, como toda stat)
+INTERNO   Cadencia = % (sube con el nivel, baja con el desgaste, como toda stat)
 
-MOSTRADO  Golpes por CM = base_del_arma × (1 − Tempo)
+MOSTRADO  Golpes por CM = base_del_arma × (1 − Cadencia)
 ```
 
-| Arma | Base | Tempo 25% | Tempo 50% (cap) |
+| Arma | Base | Cadencia 25% | Cadencia 50% (cap) |
 |---|---|---|---|
 | **Ligera** | 8 | 6 | **4** |
 | **Media** | 4 | 3 | **2** |
@@ -303,7 +305,7 @@ MOSTRADO  Golpes por CM = base_del_arma × (1 − Tempo)
 
 El **cap del 50%** que ya traía STATS MASTER da exactamente la curva buscada: alto al principio, cómodo en la etapa regular.
 
-| Nivel | Tempo | Golpes por CM (ligera) |
+| Nivel | Cadencia | Golpes por CM (ligera) |
 |---|---|---|
 | LV1 | 2.8% | 8 |
 | LV9 | 25% | 6 |
@@ -311,7 +313,7 @@ El **cap del 50%** que ya traía STATS MASTER da exactamente la curva buscada: a
 
 > ### ⚠️ Regla general: ninguna estadística debe ser "mejor cuanto más baja"
 >
-> Tempo se diseñó primero como *"golpes necesarios"*, y eso rompía dos sistemas: el escalado por nivel (`MAX × g(L)` la haría **subir**, o sea empeorar) y sobre todo el **desgaste**, que multiplica por `(1 − desgaste)` — un personaje destrozado habría necesitado **menos** golpes por carga.
+> Cadencia (entonces llamada Tempo) se diseñó primero como *"golpes necesarios"*, y eso rompía dos sistemas: el escalado por nivel (`MAX × g(L)` la haría **subir**, o sea empeorar) y sobre todo el **desgaste**, que multiplica por `(1 − desgaste)` — un personaje destrozado habría necesitado **menos** golpes por carga.
 >
 > La solución: **guardar la estadística como eficiencia ascendente y convertirla solo al mostrarla.** El jugador lee "6 golpes por carga"; por dentro se comporta como todas las demás.
 >
@@ -610,17 +612,67 @@ Es la decisión correcta y encaja con la arquitectura: lo normal es que no inter
 
 ## 2. La velocidad de la música es la velocidad del juego
 
-El `timeout` de turno no es una constante: **lo marca la música.**
+> ✅ **Rediseñado (nov 2026).** Sustituye al timeout fijo de 3 s por personaje. El turno ya no se mide en segundos: **se mide en compases de la canción que suena.**
 
-> Si la música va rápida, hay que **reaccionar rápido**. Si va lenta, hay más margen.
+### El turno se mide en compases
 
-**Duración base: 3 segundos.** Es el margen por defecto para tomar una acción antes de que el turno pase al siguiente personaje.
+```
+Turno aliado = N compases de la canción          (N ⚠️ provisional, ≥ 4)
+             = una BOLSA COMPARTIDA por todo el equipo
 
-> ✅ **El timeout lo determina la canción.** No es una constante del combate ni depende del enemigo: **lo marca la música que suena.** Los 3 segundos son la referencia por defecto; cada tema impone el suyo.
+El jugador reparte ese tiempo entre sus integrantes como quiera.
+Si la bolsa se agota  →  el turno se CORTA ahí y pasa el enemigo,
+                         aunque falten aliados por actuar.
+```
 
-> Tres segundos es poco para deliberar y suficiente para ejecutar. Confirma que el juego no espera que pienses tu turno completo en ese margen: **la decisión se toma mientras miras el tablero, y los 3 s son para encadenar**. Encaja con la regla de "empiezas con B o con QWER y no vuelves atrás" — una vez arrancas, el turno es una cadena, no un menú.
+- **N sale de cómo se componen las secciones** (4, 8… compases). El valor exacto se fija en playtesting.
+- **La duración real en segundos la dicta el BPM.** Una canción rápida aprieta; una lenta da margen. Si la batalla se vuelve caótica y la música acelera, la bolsa se encoge sola, sin regla adicional.
+- **La presión es del jugador, no del personaje:** cuánto se apura depende de él y del tempo de la canción.
+
+| BPM | 1 compás (4/4) | Bolsa de 4 | Bolsa de 8 |
+|---|---|---|---|
+| 80 | 3.0 s | 12.0 s | 24.0 s |
+| 100 | 2.4 s | 9.6 s | 19.2 s |
+| 120 | 2.0 s | 8.0 s | 16.0 s |
+| 150 | 1.6 s | 6.4 s | 12.8 s |
+
+> **Coincidencia de diseño:** cada arma llena un compás con los básicos que necesita para 1 CM (8 corcheas · 4 negras · 2 blancas). Un compás de básicos ≈ 1 CM, sea cual sea el arma.
 
 Esto une en un solo eje tres cosas que estaban sueltas: la Carga Musical como recurso, el bonus por tocar a tiempo, y la presión de decisión. **El pulso de la canción es el pulso de la partida.**
+
+### 2.1 La estadística Tempo — tiempo para pensar
+
+**Tempo = segundos de tiempo casi detenido para decidir, que se ganan al abrir el turno.**
+
+```
+Disparador   la PRIMERA acción activa del turno del equipo
+             (DEFEND, consumible, gadget, BA, QWER…)
+Frecuencia   1 vez por turno de equipo
+Quién cuenta el Tempo del personaje que ABRE el turno
+Efecto       el tiempo va casi detenido a la vista del jugador
+             → navega todo el menú con calma para planear el resto
+Escala       la ralentización es FIJA; lo que escala con la stat
+             son los SEGUNDOS que dura
+Consumo      los segundos solo corren mientras estás en el MENÚ
+Ejecución    al ejecutar (tocar básicos, etc.) la música vuelve
+             a su velocidad normal — el ritmo sigue siendo un reto real
+```
+
+> ### Por qué así
+>
+> **Es un anti-parálisis.** Al empezar el turno el reloj corre a velocidad real: no puedes quedarte pensando sin hacer nada. Para ganarte tiempo de pensar, **primero tienes que comprometerte con algo**. Abrir con algo seguro (un DEFEND, el consumible gratis de la ventana pre-ofensiva) compra el respiro para planear lo complicado.
+>
+> **El orden de turnos decide cuánto piensas.** Como cuenta el Tempo de quien abre, elegir quién va primero también es elegir cuánto tiempo tendrá el equipo para decidir.
+>
+> **No acelera el ritmo de ejecución.** Si los básicos también se tocaran en cámara lenta, acertar el pulso sería trivial y el bonus rítmico perdería sentido. Tempo sirve para decidir, no para tocar.
+
+**El protagonista es quien más Tempo tiene, porque no tiene Clasical.** Los demás aportan ráfaga; él aporta claridad. No aporta poder: aporta tiempo para usar bien el de los demás. Abrir el turno con él es darle al equipo el mayor margen de decisión.
+
+❓ Pendientes:
+- Valores de N y de los segundos de Tempo (MAX por personaje, cap del juego).
+- Factor exacto de la ralentización ("casi detenido").
+- Si la bolsa de compases se agota en mitad de una acción ya iniciada, ¿se completa o se corta?
+- Duración de las acciones dentro de la bolsa: propuesta de que cada skill declare su duración en tiempos musicales (p. ej. Q = 1 tiempo · R = 1 compás) para que la animación no balancee el juego por accidente.
 
 ### Los enemigos también escuchan — o no
 

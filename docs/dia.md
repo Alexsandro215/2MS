@@ -324,7 +324,7 @@ Sigue premiando lo mismo: **prevenir es más barato que reparar**. Escudos, evas
 
 ## Pendiente
 
-❓ Cuántos **días** dura la campaña completa (la partida entera), para calibrar el ritmo de los 81 lazos.
+❓ Cuántos **días** dura la campaña completa (la partida entera), para calibrar el ritmo de los 81 lazos. Estructura de los lazos en [lazos.md](lazos.md).
 - **Herramienta acordada:** un Excel con **cada día y cada bloque**, para ver cuáles ocupa la HP (HP-P, HP-S…) y cuáles quedan libres.
 
 ❓ **El dinero.** Tiene que ser un recurso valioso, para que no se sobre-farmee. Todavía no se decide de dónde sale.

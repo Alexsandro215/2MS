@@ -7,6 +7,8 @@
 
 ## Los nueve elementos
 
+> Cada capítulo de la historia corresponde a un elemento — ver [progresion.md](progresion.md).
+
 | Elemento | Estado L1 | Qué hace | Prob. | Amplificador AD | L2 |
 |---|---|---|---|---|---|
 | **Oscuridad** | **Aterrado** (gravedad) | **Solo se defiende** | 25% | +50% del daño como **DAÑO VERDADERO** | 3 turnos |

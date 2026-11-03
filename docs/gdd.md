@@ -18,6 +18,10 @@
 | [**dia.md**](dia.md) | **El bucle fuera del combate: bloques, lazos, clase, historia, emoción** | **Canónico** |
 | [lore-contexto.md](lore-contexto.md) | Mundo, distritos, estructura del día, lazos, entrenamiento | Contexto |
 | [divergencias-biografias.md](divergencias-biografias.md) | Qué corregir en `BIOGRAFIAS 8de10.docx` | Lista de trabajo |
+| [**roles.md**](roles.md) | **Roles / etiquetas de arquetipo: 6 familias, asignación de los 20 estilos, huecos** | **Canónico** |
+| [**progresion.md**](progresion.md) | **Capítulos ↔ elementos: presentar en 3 meses, dominar después** | Parcial (intro y cap 1 confirmados) |
+| [**lazos.md**](lazos.md) | **Los 81 secundarios: organizaciones, HPS y HS** | Parcial |
+| [produccion.md](produccion.md) | Notas para la fase de creación (animación, retargeting) | Notas |
 | [pasivas.md](pasivas.md) | Pasivas como modificadores condicionales | **Canónico** |
 | [arquitectura.md](arquitectura.md) | Forma del sistema, capas, esquema único de reglas | **Canónico** |
 | [elementos.md](elementos.md) | Los 9 efectos elementales, estados y amplificadores | Notas del autor (desactualizadas) |

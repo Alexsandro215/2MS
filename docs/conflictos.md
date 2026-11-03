@@ -49,7 +49,7 @@ Gadget           →  SIEMPRE consume turno
 
 ---
 
-## R3. El timeout: ritmo, no tiempo real
+## R3. El timeout: ritmo, no tiempo real → ✅ turno por compases
 
 El `timeout` **no** convierte el juego en acción en tiempo real. Es un **límite de inactividad**: si no tomas una acción en cierto periodo, el turno **pasa al siguiente personaje**.
 
@@ -59,8 +59,13 @@ Sigue siendo un RPG por turnos. Pero:
 
 Eso conecta el `tempoPct`, la Carga Musical y el contexto de entorno (`Música/Tempo`) en un mismo eje: **la música marca el pulso real de la partida**. Es, con diferencia, la mejor idea de identidad del proyecto.
 
-✅ **Duración base: 3 segundos.**
-❓ Pendiente: qué lo acelera exactamente, y si perder el turno por inactividad tiene penalización adicional.
+~~✅ Duración base: 3 segundos.~~ **Superado (nov 2026).**
+
+✅ **El turno dura N compases de la canción** (N ⚠️ provisional, ≥ 4), en una **bolsa compartida por todo el equipo**. Si se agota, el turno se corta y pasa el enemigo.
+✅ **Qué lo acelera: el BPM de la canción.** No hace falta otra regla.
+✅ **La stat Tempo** da segundos de tiempo casi detenido al abrir el turno; la antigua stat Tempo se renombra **Cadencia**.
+
+Detalle en [musica.md](musica.md) §2 y §2.1.
 
 ---
 

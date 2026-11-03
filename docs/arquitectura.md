@@ -89,7 +89,7 @@ Conviene **nombrarlas aparte** y que sean pocas y explícitas. Son la parte cara
 | **Una sola regla de agregación** | `StatFinal = StatOperativa + Σflats + (StatOperativa × Σpcts)`. Un único punto de cálculo. Ya se rechazó la excepción multiplicativa de las pasivas justamente por esto. |
 | **Orden de resolución explícito** | El pipeline por impacto está escrito paso a paso. Elimina la ambigüedad más cara de un juego de combate. |
 | **Jerarquía de autoridad declarada** | *"Ante contradicción prevalece STATS MASTER"*. Con varios documentos vivos, esto es lo que evita la deriva. |
-| **Ninguna stat es "mejor cuanto más baja"** | Regla ya adoptada con Tempo. Mantenerla para toda stat futura. |
+| **Ninguna stat es "mejor cuanto más baja"** | Regla ya adoptada con Cadencia (antes Tempo). Mantenerla para toda stat futura. |
 | **Pool de CM fijo** | La capacidad no escala; escala el poder adquisitivo. Un número que el jugador aprende una vez. |
 
 ---

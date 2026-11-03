@@ -263,7 +263,7 @@ Valor(L) = MAX × g(L)          Pct(L) = CAP × g(L)
 |---|---|---|
 | Preparación | Reduce 1 turno de preparación al alcanzar el umbral | 75% |
 | Velocidad de Ataque | `hits = base × (1 + VA)` | 60% |
-| Tempo | `CM_gain = CM_base × (1 + TMP)` | 50% |
+| Cadencia | Reduce los básicos necesarios por CM *(antes Tempo)* | 50% |
 | Penetración de Armadura | `Armor_f = ARM − PenArm_eff` | ≤ 80% de la ARM objetivo |
 | Penetración Mágica | `RM_f = RM − PenRM_eff` | ≤ 80% de la RM objetivo |
 | Robo de Vida | `Heal = Daño × LS` | 25% |
@@ -274,7 +274,7 @@ Valor(L) = MAX × g(L)          Pct(L) = CAP × g(L)
 | Última Bala | Umbral de K.O. automático | 10 – 15% |
 | Rebote | Probabilidad de rebotar daño a un enemigo cercano | 30% |
 
-**Picos de referencia:** VA 60% → 10 impactos pasan a 16 · Tempo 50% → ×1.5 de CM · Daño Explosivo 100% → 200 pasa a 400.
+**Picos de referencia:** VA 60% → 10 impactos pasan a 16 · Cadencia 50% → la mitad de básicos por CM · Daño Explosivo 100% → 200 pasa a 400.
 
 ## 3.4 Estadísticas secundarias defensivas
 
@@ -705,7 +705,7 @@ Modificadores conocidos: **Enfermo ×1.5** · **Terror −25%**.
 CM por impacto = BASE (según el arma) + BONUS (por seguir el pulso o la melodía)
 ```
 
-La **estadística Tempo** es el tamaño del bonus, no la probabilidad de conseguirlo. Acertar el ritmo es **habilidad del jugador**; cuánto se paga por acertarlo es estadística.
+La **estadística Cadencia** (antes llamada Tempo) es el tamaño del bonus, no la probabilidad de conseguirlo. Acertar el ritmo es **habilidad del jugador**; cuánto se paga por acertarlo es estadística.
 
 **Cada impacto se evalúa por separado.** En un multi-hit de 7 básicos pueden acertarse 4 y fallarse 3.
 
@@ -721,7 +721,8 @@ La **estadística Tempo** es el tamaño del bonus, no la probabilidad de consegu
 
 | Aspecto | Regla |
 |---|---|
-| **Velocidad de decisión** | El margen de turno lo marca la música. Si acelera, hay menos tiempo para decidir |
+| **Velocidad de decisión** | El turno dura **N compases** de la canción, en una bolsa compartida por el equipo; al agotarse pasa el enemigo. El BPM fija los segundos reales |
+| **Tempo** | Stat de turno: la primera acción activa abre unos segundos de tiempo casi detenido para decidir (cuenta el Tempo de quien abre). Ver musica.md §2.1 |
 | **Bonus de Clasical** | Cada tema aporta un **% de bonus** que **varía según la sección de la canción** |
 | **Escala del encuentro** | A mayor importancia del combate, **más capas musicales y más variación de bonus** |
 
