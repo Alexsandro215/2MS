@@ -82,6 +82,13 @@ public sealed record Regla
     /// Util para gadgets de un solo uso y para DEFEND.
     /// </summary>
     public bool UnSoloUso { get; init; }
+
+    /// <summary>
+    /// Turnos que le quedan de vida. -1 = no caduca, que es el caso de casi
+    /// todo: pasivas, emblemas, equipo. Lo usan los buffs concedidos en
+    /// combate, que son los unicos que nacen con fecha de caducidad.
+    /// </summary>
+    public int TurnosRestantes { get; set; } = -1;
 }
 
 /// <summary>Un evento que puede disparar reglas.</summary>

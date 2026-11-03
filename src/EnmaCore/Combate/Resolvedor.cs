@@ -100,6 +100,13 @@ public sealed class Resolvedor(Evaluador evaluador)
                 0, 0, false, 0, 0, false, false, null, Remato: true);
         }
 
+        // ---- INMUNIDAD. El golpe conecta, pero no hace nada. ----
+        // El flag existia y solo anulaba la CM: un "invulnerable" que recibia
+        // dano entero. Conectar y no doler es lo que da Halltus R.
+        if (defensor.TieneFlag("invulnerable"))
+            return new EventoImpacto(atacante.Id, defensor.Id, true,
+                0, 0, false, 0, 0, false, false, null);
+
         // ---- 2. DANO ----
         bool critDecidido = e.Rng.Siguiente() * 100.0 < _ev.ResolverStat(e, atacante, Stat.Crit);
 

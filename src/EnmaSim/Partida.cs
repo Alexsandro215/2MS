@@ -228,13 +228,19 @@ sealed class PartidaConsola(EstadoCombate estado, int semilla, TextReader entrad
     {
         string costes = string.Join("   ", "qwer".Select(t => $"{t} {Cm(_m.CosteDeTecla(t))}"));
         salida.WriteLine($"   ¿Qué tecla? Cuestan   {costes}   (tienes {Cm(estado.CmActual)} CM · v vuelve)");
-        salida.WriteLine("   Ojo: aún no tienen efecto, solo gastan CM.");
 
         while (true)
         {
             var txt = Leer();
             if (txt is null or "" or "v") return null;
-            if (txt is "q" or "w" or "e" or "r") return new UsarHabilidad { ActorId = quien.Id, Tecla = txt[0] };
+            if (txt is "q" or "w" or "e" or "r")
+            {
+                // Las que pegan necesitan objetivo; las que solo concentran o
+                // dan cargas lo ignoran. Se manda siempre: decidirlo es del kit.
+                var rival = estado.Combatientes.FirstOrDefault(c =>
+                    c.Bando != quien.Bando && c.Zona == Zona.Front && (!c.EnKo || c.Rematable));
+                return new UsarHabilidad { ActorId = quien.Id, Tecla = txt[0], ObjetivoId = rival?.Id };
+            }
             salida.WriteLine("   Escribe q, w, e o r, o v para volver al menú.");
         }
     }
@@ -330,7 +336,27 @@ sealed class PartidaConsola(EstadoCombate estado, int semilla, TextReader entrad
                 break;
 
             case UsarHabilidad h:
-                salida.WriteLine($"   Usa {char.ToUpperInvariant(h.Tecla)}: gasta {Cm(cmAntes - estado.CmActual)} CM. (Sin efecto todavía: los kits no tienen contenido.)");
+                salida.WriteLine($"   Usa {char.ToUpperInvariant(h.Tecla)}: gasta {Cm(cmAntes - estado.CmActual)} CM.");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "contador"))
+                    salida.WriteLine($"     {c.Detalle}: {c.Valor:0.##}");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "contador-consumido" && c.Valor > 0.001))
+                    salida.WriteLine($"     consume {c.Detalle} ({c.Valor:0.##})");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "desgaste"))
+                    salida.WriteLine($"     desgaste: {c.Valor * 100:0}% sobre todas tus stats");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "buff"))
+                    salida.WriteLine($"     {c.ObjetivoId}: {c.Detalle.Split(':').Last()} {c.Valor * 100:+0;-0}%");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "limpiar" && c.Valor > 0))
+                    salida.WriteLine($"     {c.ObjetivoId}: le quita {c.Valor:0} efecto(s)");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "flag"))
+                    salida.WriteLine($"     {c.ObjetivoId}: {c.Detalle} ({c.Valor:0} turno)");
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "escudo"))
+                    salida.WriteLine($"     {c.ObjetivoId}: escudo {c.Valor:0}");
+                foreach (var g in r.Impactos)
+                    salida.WriteLine(g.Acerto
+                        ? $"     acierta {g.DanoAplicado + g.AbsorbidoPorEscudo,6:F0}{(g.Critico ? "  ¡crítico!" : "")}"
+                        : "     falla");
+                if (r.Impactos.Count == 0 && !r.Cambios.Any())
+                    salida.WriteLine("     sin efecto: este personaje no lleva kit.");
                 break;
 
             case CargarMusica:
@@ -404,8 +430,8 @@ sealed class PartidaConsola(EstadoCombate estado, int semilla, TextReader entrad
         salida.WriteLine();
         salida.WriteLine(" El muñeco tiene un millón de vida y no ataca nunca. Prueba armas, golpes,");
         salida.WriteLine(" casillas, CM y Clasical: en la ofensiva aciertas más, en la defensiva no puedes");
-        salida.WriteLine(" pegar. Las habilidades QWER todavía no tienen efecto, y el ritmo del básico aún");
-        salida.WriteLine(" no está conectado: todos los golpes cuentan como fuera de tempo.");
+        salida.WriteLine(" pegar. La MEDIA lleva Kronwell: Q y W acumulan cargas, E y R las gastan.");
+        salida.WriteLine(" La PESADA lleva Halltus: ninguna tecla pega, todas ayudan a los demas.");
         salida.WriteLine(" En los submenús, v vuelve atrás. Escribe s para salir de la partida.");
     }
 

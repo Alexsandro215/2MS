@@ -40,6 +40,19 @@ public readonly record struct ResultadoDano(
     double ReduccionUsada);
 
 /// <summary>
+/// Un golpe que pidio una regla y el motor aun no ha repartido.
+///
+/// Un efecto es un DATO: no alcanza al Resolvedor ni debe hacerlo. Pide el
+/// golpe, y el motor lo pasa por el mismo pipeline que un basico, para que una
+/// habilidad no pueda saltarse el hit-check, el escudo ni las pasivas.
+/// </summary>
+public readonly record struct ImpactoPendiente(
+    string ObjetivoId,
+    Impacto Perfil,
+    string? Elemento = null,
+    double ProbabilidadElemento = 0.0);
+
+/// <summary>
 /// Pipeline de dano por impacto. Fuente: docs/formulas.md  5 y  13.
 ///
 /// El orden importa y no es negociable: aplicar el critico DESPUES de la

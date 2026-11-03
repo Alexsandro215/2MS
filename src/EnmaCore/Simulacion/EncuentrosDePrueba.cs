@@ -36,6 +36,19 @@ public static class EncuentrosDePrueba
     {
         var e = Nuevo(semilla);
         e.Combatientes.Add(Pj("muneco", Bando.Enemigo, ClaseArma.Media, 0, 1_000_000, 0, 40, 0, 40, nombre: "Muñeco"));
+
+        // La MEDIA lleva el kit de Kronwell para que QWER haga algo contra el
+        // muneco. Es el unico encuentro donde se cuelga un kit a mano: el lote
+        // de combates sigue sin kits, para no mezclar lo que mide.
+        var media = e.Buscar("media")!;
+        media.MaxAspirable[Stat.Ap] = 120;   // ⚠️ provisional, como el kit
+        e.ReglasActivas.AddRange(Reglas.Kits.Kronwell("media"));
+
+        // Y la PESADA lleva Halltus, que es lo contrario: ninguna de sus teclas
+        // pega, todas van a los compañeros. Con los dos a la vez se ve ademas
+        // que un kit no dispara el del otro.
+        e.ReglasActivas.AddRange(Reglas.Kits.Halltus("pesada"));
+
         e.RecalcularCm();
         return e;
     }
@@ -54,7 +67,7 @@ public static class EncuentrosDePrueba
 
     private static Combatiente Pj(string id, Bando bando, ClaseArma arma, int linea,
         double hp, double ad, double arm, double press, double eva,
-        Zona zona = Zona.Front, string? nombre = null)
+        Zona zona = Zona.Front, string? nombre = null, double ap = 0)
     {
         var c = new Combatiente
         {
@@ -67,6 +80,7 @@ public static class EncuentrosDePrueba
         c.MaxAspirable[Stat.Arm] = arm;
         c.MaxAspirable[Stat.Press] = press;
         c.MaxAspirable[Stat.Eva] = eva;
+        c.MaxAspirable[Stat.Ap] = ap;
         c.MaxAspirable[Stat.Crit] = 10;
         c.Hp = c.HpMax;
         return c;

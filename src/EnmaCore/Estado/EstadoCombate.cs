@@ -121,6 +121,12 @@ public sealed class EstadoCombate
     /// <summary>Reglas vigentes que no vienen de un terreno (pasivas, emblemas, buffs...).</summary>
     public List<Reglas.Regla> ReglasActivas { get; } = new();
 
+    /// <summary>
+    /// Golpes que las reglas han pedido y el motor aun no ha repartido. Se
+    /// vacia en cada accion: nada debe sobrevivir al turno que lo encolo.
+    /// </summary>
+    public List<Combate.ImpactoPendiente> ImpactosPendientes { get; } = new();
+
     /// <summary>Fuente de azar. Inyectada para que las simulaciones sean reproducibles.</summary>
     public Combate.IAleatorio Rng { get; set; } = new Combate.AleatorioSemilla(0);
 

@@ -326,3 +326,84 @@ public sealed record Curar(Expr Cantidad, bool GeneraDesgaste = true, Selector? 
         }
     }
 }
+
+/// <summary>
+/// Pide un golpe de habilidad. No lo resuelve: lo encola, y el motor lo
+/// reparte con el mismo pipeline que un basico.
+///
+/// El coeficiente es una EXPRESION, asi que "n x X% AP" se escribe
+///   Ex.Por(Ex.K(0.40), Ex.Cargas("cargas_kronwell"))
+/// sin que el verbo sepa nada de cargas. Se evalua AQUI, al pedir el golpe,
+/// no al repartirlo: lo que el kit decide en el momento no se lo puede
+/// cambiar un efecto posterior de la misma accion.
+///
+/// AtkOfensivo se deja en 0 a proposito: lo rellena el motor con el AD o el
+/// AP del atacante EN ESE INSTANTE, que es la referencia canonica.
+/// </summary>
+public sealed record Estallar(
+    Combate.TipoDano Tipo,
+    Expr Coef,
+    Selector? A = null,
+    double DvPct = 0.0,
+    string? Elemento = null,
+    double ProbabilidadElemento = 0.0) : Efecto
+{
+    public override void Aplicar(EstadoCombate e, Contexto ctx, List<Cambio> log)
+    {
+        double coef = Coef.Evaluar(e, ctx);
+
+        // Con 0 cargas no hay golpe. Que no sea un impacto de 0 importa: un
+        // impacto de 0 consume el hit-check, erosiona EVA y genera CM.
+        if (coef <= 0.0) return;
+
+        foreach (var c in (A ?? Selector.Objetivo).Resolver(e, ctx))
+        {
+            e.ImpactosPendientes.Add(new Combate.ImpactoPendiente(
+                c.Id,
+                new Combate.Impacto(Tipo, AtkOfensivo: 0, MultSkill: coef, DvPct: DvPct),
+                Elemento, ProbabilidadElemento));
+            log.Add(new Cambio("golpe-pedido", c.Id, $"{Tipo}:{coef:F2}", coef));
+        }
+    }
+}
+
+/// <summary>
+/// Concede un modificador de stat que DURA.
+///
+/// <see cref="ModificarStat"/> por si solo no guarda nada: lo recolecta quien
+/// calcula la stat, y para eso la regla tiene que estar viva en el estado. Este
+/// verbo mete esa regla, con fecha de caducidad.
+///
+/// El valor se congela AQUI, al conceder. Es lo correcto y no un atajo: "X% de
+/// EVA por cada compañero al que le quitaste debuffs" se decide al lanzarlo —
+/// si se evaluara despues, ya no quedarian debuffs que contar.
+/// </summary>
+public sealed record ConcederStat(
+    Stat Stat, Capa Capa, Expr Valor, int Turnos,
+    Selector? A = null, string Etiqueta = "") : Efecto
+{
+    public override void Aplicar(EstadoCombate e, Contexto ctx, List<Cambio> log)
+    {
+        double v = Valor.Evaluar(e, ctx);
+        if (v == 0.0) return;
+
+        foreach (var c in (A ?? Selector.Yo).Resolver(e, ctx))
+        {
+            // Volver a lanzarlo REFRESCA, no apila: si no, repetir la tecla
+            // cada turno acumularia sin techo.
+            string id = $"buff.{Etiqueta}.{Stat}.{c.Id}";
+            e.ReglasActivas.RemoveAll(r => r.Id == id);
+            e.ReglasActivas.Add(new Regla
+            {
+                Id = id,
+                Fuente = Fuente.Habilidad,
+                Disparador = Disparador.Siempre,
+                PortadorId = c.Id,
+                Etiqueta = Etiqueta,
+                TurnosRestantes = Turnos,
+                Efecto = new ModificarStat(Stat, Capa, Ex.K(v))
+            });
+            log.Add(new Cambio("buff", c.Id, $"{Etiqueta}:{Stat}", v));
+        }
+    }
+}

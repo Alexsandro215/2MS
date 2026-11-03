@@ -28,7 +28,7 @@ Necesita Godot 4.7.2 con C# (el que instala winget, igual que el grabador de tem
 
 ## Lo que aún no hay
 
-- Las habilidades QWER **solo gastan CM**: los kits todavía no tienen contenido.
+- De los 20 kits hay **dos** montados: **Kronwell** en la *media* (Q y W acumulan cargas, E y R las gastan) y **Halltus** en la *pesada* (ninguna tecla pega: sube stats a los compañeros, les limpia debuffs y da inmunidad). Los demas personajes gastan CM y no hacen nada, y el registro lo dice.
 - **El ritmo del básico no está conectado**: todos los golpes cuentan como fuera de tempo, y la sección de la canción de la Carga Musical se elige con el botón.
 - El muñeco **no ataca**, así que no se ven el K.O., el rescate ni el remate.
 

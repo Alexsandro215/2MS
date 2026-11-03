@@ -132,6 +132,16 @@ public sealed class Evaluador
             if (estado.Terrenos[i].TurnosRestantes <= 0) estado.Terrenos.RemoveAt(i);
         }
 
+        // Los buffs concedidos en combate son reglas con fecha. Todo lo demas
+        // —pasivas, equipo, emblemas— nace con -1 y no se toca.
+        for (int i = estado.ReglasActivas.Count - 1; i >= 0; i--)
+        {
+            var r = estado.ReglasActivas[i];
+            if (r.TurnosRestantes < 0) continue;
+            r.TurnosRestantes--;
+            if (r.TurnosRestantes <= 0) estado.ReglasActivas.RemoveAt(i);
+        }
+
         estado.Historial.Reiniciar();
         estado.Turno++;
     }

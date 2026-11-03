@@ -39,6 +39,12 @@ public sealed record Filtro
     public string? EsPersonaje { get; init; }
     public bool? PisaTerrenoPropio { get; init; }
 
+    /// <summary>Lleva encima algo que quitarle: flags de estado o elementos.</summary>
+    public bool? ConDebuffs { get; init; }
+
+    /// <summary>Vida minima, en fraccion [0,1]. Halltus R pide "al menos X%".</summary>
+    public double? HpPctMinimo { get; init; }
+
     public bool Acepta(Combatiente c, EstadoCombate e, Combatiente portador)
     {
         if (EnCasilla.HasValue && c.Posicion != EnCasilla.Value) return false;
@@ -48,6 +54,8 @@ public sealed record Filtro
         if (SinFlag is not null && c.TieneFlag(SinFlag)) return false;
         if (EnKo.HasValue && c.EnKo != EnKo.Value) return false;
         if (EsPersonaje is not null && c.Id != EsPersonaje) return false;
+        if (ConDebuffs.HasValue && (c.Flags.Count > 0 || c.Elementos.Count > 0) != ConDebuffs.Value) return false;
+        if (HpPctMinimo.HasValue && c.HpPct < HpPctMinimo.Value) return false;
         if (PisaTerrenoPropio == true)
         {
             var t = e.TerrenoDe(c);

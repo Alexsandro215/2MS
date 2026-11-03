@@ -117,8 +117,42 @@ public sealed record Breakpoint(Expr Cuenta, int Umbral) : Condicion
 }
 
 /// <summary>Azucar para escribir condiciones sin tanto ruido.</summary>
+/// <summary>
+/// Que quien lanzo la accion sea el portador de la regla.
+///
+/// Sin esto, DOS KITS EN EL MISMO COMBATE SE DISPARAN ENTRE SI: el evento
+/// AlUsarHabilidad no dice de quien es la regla, solo que alguien pulso una
+/// tecla, y la R de un personaje acababa lanzando la R del otro.
+/// </summary>
+public sealed record LoHaceElPortador : Condicion
+{
+    public override bool Cumple(EstadoCombate e, Contexto ctx)
+        => ctx.Portador is not null && ctx.Evento?.ActorId == ctx.Portador.Id;
+}
+
+/// <summary>
+/// Que la habilidad que disparo el evento sea esta tecla.
+///
+/// Sin esto las cuatro teclas de un kit disparan las cuatro reglas: el motor
+/// manda el evento con la tecla en Detalle, y alguien tiene que leerla.
+/// </summary>
+public sealed record TeclaEs(char Tecla) : Condicion
+{
+    public override bool Cumple(EstadoCombate e, Contexto ctx)
+    {
+        string d = ctx.Evento?.Detalle ?? "";
+        return d.Length == 1 && char.ToUpperInvariant(d[0]) == char.ToUpperInvariant(Tecla);
+    }
+}
+
 public static class Cond
 {
+    /// <summary>La tecla, y que la pulse su dueño. Lo que necesita todo kit.</summary>
+    public static Condicion Tecla(char t) => new Y(new LoHaceElPortador(), new TeclaEs(t));
+
+    /// <summary>Solo la tecla, sin mirar quien. Para reglas que reaccionan a otros.</summary>
+    public static Condicion SoloTecla(char t) => new TeclaEs(t);
+
     public static Condicion Mayor(Expr a, Expr b) => new Comparar(a, Comparador.Mayor, b);
     public static Condicion Menor(Expr a, Expr b) => new Comparar(a, Comparador.Menor, b);
     public static Condicion MayorIgual(Expr a, Expr b) => new Comparar(a, Comparador.MayorIgual, b);

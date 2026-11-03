@@ -353,7 +353,40 @@ public sealed class MotorCombate
             cambios.AddRange(r.Cambios);
         }
 
+        // Los golpes que pidieron las reglas se reparten DESPUES de que todas
+        // hayan corrido: asi una que doble la habilidad (Rudentlein R) o que
+        // sume cargas ya ha dicho lo suyo cuando el primer golpe sale.
+        RepartirPendientes(actor, impactos);
+
         return new(true, "", impactos, cambios, false);
+    }
+
+    /// <summary>
+    /// Reparte los golpes que encolaron las reglas, por el mismo camino que un
+    /// basico: hit-check, escudo, Carga Musical y pasivas al golpear.
+    /// </summary>
+    private void RepartirPendientes(Combatiente actor, List<EventoImpacto> impactos)
+    {
+        if (Estado.ImpactosPendientes.Count == 0) return;
+
+        // Se copia y se vacia ANTES de resolver: un golpe puede disparar una
+        // pasiva que encole otro, y ese no debe entrar en esta misma vuelta
+        // —si no, una pasiva al golpear que pide golpe no termina nunca.
+        var cola = Estado.ImpactosPendientes.ToList();
+        Estado.ImpactosPendientes.Clear();
+
+        foreach (var p in cola)
+        {
+            var objetivo = Estado.Buscar(p.ObjetivoId);
+            if (objetivo is null || objetivo.Muerto || objetivo.EnKo) continue;
+            if (objetivo.Zona != Zona.Front) continue;
+
+            int stacks = _stacksEva.GetValueOrDefault(objetivo.Id);
+            var golpe = new Resolvedor.Golpe(
+                p.Perfil, p.Elemento, p.ProbabilidadElemento, EsBasico: false);
+            impactos.Add(_res.ResolverImpacto(Estado, actor, objetivo, golpe, ref stacks));
+            _stacksEva[objetivo.Id] = stacks;
+        }
     }
 
     private ResultadoAccion Defensa(Combatiente actor, List<Cambio> cambios)

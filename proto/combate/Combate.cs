@@ -461,9 +461,13 @@ public partial class Combate : Control
 
         string id = quien.Id;
         var basicos = Basicos(quien);
+
+        // Las habilidades que pegan necesitan objetivo. Se coge el mismo que el
+        // basico: contra el muneco solo hay uno, y el motor rechaza el resto.
+        string? blanco = basicos?.ObjetivoId;
         var teclas = "QWER".Select(t =>
-            (Control)Boton($"{t} · {Cm(_m.CosteDeTecla(t))}", () => Hacer(new UsarHabilidad { ActorId = id, Tecla = t }),
-                ayuda: $"Habilidad {t}: cuesta {Cm(_m.CosteDeTecla(t))} CM. Aún no tiene efecto.")).ToArray();
+            (Control)Boton($"{t} · {Cm(_m.CosteDeTecla(t))}", () => Hacer(new UsarHabilidad { ActorId = id, Tecla = t, ObjetivoId = blanco }),
+                ayuda: $"Habilidad {t}: cuesta {Cm(_m.CosteDeTecla(t))} CM.")).ToArray();
 
         // Empezada la ofensiva solo quedan basicos, QWER o terminar.
         if (_enOfensiva.Contains(id))
@@ -573,7 +577,43 @@ public partial class Combate : Control
                 break;
 
             case UsarHabilidad h:
-                Escribir($"{quien.Nombre} usa {h.Tecla}: gasta {Cm(cmAntes - _e.CmActual)} CM (aún sin efecto).");
+                Escribir($"{quien.Nombre} usa {h.Tecla}: gasta {Cm(cmAntes - _e.CmActual)} CM.");
+
+                // Las cargas y la concentracion son contadores con nombre: se
+                // enseñan porque son la mitad del kit que no se ve pegando.
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "contador"))
+                    Escribir($"    {Bonito(c.Detalle)}: {c.Valor:0.##}", Cian);
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "contador-consumido" && c.Valor > Tolerancia))
+                    Escribir($"    consume {Bonito(c.Detalle)} ({c.Valor:0.##})", Cian);
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "desgaste"))
+                    Escribir($"    desgaste: {c.Valor * 100:0}% sobre TODAS tus stats", Rojo);
+
+                // Lo que hace un kit de soporte no se ve en la barra de vida
+                // del rival: si no se escribe aqui, parece que no paso nada.
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "buff"))
+                    Escribir($"    {Nombre(c.ObjetivoId)}: {c.Detalle.Split(':').Last()} {c.Valor * 100:+0;-0}%", Cian);
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "limpiar" && c.Valor > 0))
+                    Escribir($"    {Nombre(c.ObjetivoId)}: le quita {c.Valor:0} efecto(s)", Cian);
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "flag"))
+                    Escribir($"    {Nombre(c.ObjetivoId)}: {c.Detalle} ({c.Valor:0} turno)", Cian);
+                foreach (var c in r.Cambios.Where(c => c.Tipo == "escudo"))
+                    Escribir($"    {Nombre(c.ObjetivoId)}: escudo {c.Valor:0}", Cian);
+
+                foreach (var g in r.Impactos)
+                {
+                    if (!g.Acerto) { Escribir("    falla", Gris); continue; }
+                    Escribir($"    acierta  {Dano(g.DanoAplicado + g.AbsorbidoPorEscudo)}{(g.Critico ? "  ¡crítico!" : "")}{(g.ProvocoKo ? "  ¡K.O.!" : "")}",
+                        g.Critico ? Dorado : Verde);
+                }
+                if (r.Impactos.Count > 0)
+                {
+                    double totalH = r.Impactos.Where(g => g.Acerto).Sum(g => g.DanoAplicado + g.AbsorbidoPorEscudo);
+                    Escribir($"    {r.Impactos.Count(g => g.Acerto)} de {r.Impactos.Count} · {Dano(totalH)} de daño");
+                }
+                else if (!r.Cambios.Any())
+                {
+                    Escribir("    sin efecto: este personaje no lleva kit.", Gris);
+                }
                 break;
 
             case CargarMusica:
@@ -662,6 +702,15 @@ public partial class Combate : Control
             Escribir($"    Con la barra llena se perdieron {Cm(_cmPerdida)} CM de golpes.", Gris);
     }
 
+    /// <summary>
+    /// "cargas_kronwell" -> "cargas kronwell". Los contadores los nombra el
+    /// kit, y ese nombre es una clave, no un texto para leer.
+    /// </summary>
+    /// <summary>Del id al nombre que se ve en la ficha.</summary>
+    private string Nombre(string id) => _e.Buscar(id)?.Nombre ?? id;
+
+    private static string Bonito(string clave) => clave.Replace('_', ' ');
+
     private void Escribir(string bbcode, Color? color = null)
     {
         _bitacora.AppendText(color is { } c ? $"[color=#{c.ToHtml(false)}]{bbcode}[/color]" : bbcode);
@@ -720,7 +769,10 @@ public partial class Combate : Control
             {
                 "basicos" => Basicos(quien),
                 "mover" when n is >= 1 and <= 3 => new Moverse { ActorId = quien.Id, Destino = (Casilla)(n - 1) },
-                "tecla" when arg.Length == 1 => new UsarHabilidad { ActorId = quien.Id, Tecla = char.ToUpperInvariant(arg[0]) },
+                // Mismo objetivo que el boton: si no, desde el guion las
+                // habilidades que pegan se quedaban sin a quien.
+                "tecla" when arg.Length == 1 => new UsarHabilidad
+                    { ActorId = quien.Id, Tecla = char.ToUpperInvariant(arg[0]), ObjetivoId = Basicos(quien)?.ObjetivoId },
                 "carga" when n is >= 1 and <= 3 => new CargarMusica { ActorId = quien.Id, MultiplicadorSeccion = _secciones[n - 1] },
                 "objeto" when n is >= 1 and <= 3 => new UsarObjeto
                 {
