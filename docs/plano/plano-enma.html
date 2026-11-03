@@ -636,12 +636,13 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
       ["Plaza del Arco del Triunfo", 507, 232, "azul · rosa", "el centro del distrito, la plaza y Derecho"],
       ["Puerta norte", 230, 110, "azul · roja", "las aulas del norte y Derecho"],
       ["Auditorio", 211, 583, "azul · roja", "el auditorio, Economía y el comedor"],
-      ["Sur", 378, 862, "azul · roja · rosa", "Tecnología, el comedor y los campos antiguos"],
+      ["Campos antiguos", 380, 716, "roja · rosa", "el comedor, los campos de recreación antiguos y el parque"],
+      ["Sur", 378, 862, "azul · roja", "Tecnología y el comedor"],
       ["Hospital", 737, 862, "azul", "el hospital y el módulo de seguridad"],
     ],
     d2: [
       ["Norte", 806, 104, "azul · morada", "Textiles, Teatro y dormitorios"],
-      ["Comedor", 870, 566, "azul · verde", "el comedor y el parque principal"],
+      ["Parque principal", 790, 566, "azul · verde", "el parque principal, el centro y el comedor"],
       ["Centro del Distrito 2", 796, 700, "azul", "el centro del distrito y el comedor"],
       ["Sur", 372, 860, "azul · morada", "Electricidad, el hospital y las aulas"],
     ],
@@ -915,7 +916,7 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
     d1: [["azul", 0, [[230,0],[230,110],[610,110],[507,232],[339,431],[218,583],[218,862],[1000,862]], null,
       [[230,110],[507,232],[339,431],[218,583],[218,862],[432,862],[737,862]]]],
     d2: [["azul", 0, [[806,0],[806,104],[806,482],[870,482],[870,566],[790,566],[796,866],[800,905],[512,905],[512,860],[372,860],[200,858],[0,860]], null,
-      [[806,104],[806,300],[806,482],[870,566],[796,700],[800,905],[512,905],[372,860]]]],
+      [[806,104],[806,300],[806,482],[790,566],[796,700],[800,905],[512,905],[372,860]]]],
     d3: [["azul", 0, [[1000,140],[845,170],[880,390],[775,405],[736,420],[736,471],[678,539],[566,539],[537,505],[413,622],[311,715],[232,800],[232,1000]], null,
       [[845,170],[880,390],[736,471],[566,539],[413,622],[232,800],[232,920]]]],
     d4: [["azul", 0, [[0,118],[240,118],[357,180],[852,180],[852,1000]], null,
@@ -928,14 +929,14 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
     d1: {
       academica: ["rojo", [[230,110],[45,110],[127,340],[211,583],[378,583],[378,862]],
         [[230,110],[92,110],[127,340],[211,583],[378,716],[378,862]]],           // aulas norte, Agronomía y Derecho, auditorio, comedor, Tecnología
-      ocio: ["rosa", [[507,232],[552,312],[495,456],[600,505],[670,653],[595,720],[380,716],[378,862]],
-        [[507,232],[600,505],[670,653],[595,720],[378,862]]],                     // centro, mercado antiguo, parque y museo, campos antiguos
+      ocio: ["rosa", [[507,232],[552,312],[495,456],[600,505],[670,653],[595,720],[380,716]],
+        [[507,232],[600,505],[670,653],[595,720],[380,716]]],                     // centro, mercado antiguo, parque y museo, campos antiguos
     },
     d2: {
       academica: ["morado", [[806,104],[512,96],[512,482],[375,484],[375,860]],
         [[806,104],[650,100],[512,278],[512,482],[375,592],[375,860]]],           // Textiles y Teatro, dormitorios, seguridad, aulas, Electricidad
-      ocio: ["verde", [[870,566],[512,560],[512,728],[185,736]],
-        [[870,566],[700,566],[512,560],[512,728],[378,734],[185,736]]],           // comedor, parque, electricidad, residencia, Rudentlein
+      ocio: ["verde", [[790,566],[512,560],[512,728],[185,736]],
+        [[790,566],[650,563],[512,560],[512,728],[378,734],[185,736]]],           // parque, electricidad, residencia, Rudentlein
     },
     d3: {
       academica: ["amarillo", [[845,170],[680,195],[468,236],[338,258],[328,136],[168,150]],
