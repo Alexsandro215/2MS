@@ -75,7 +75,8 @@ Hay bocetos a lápiz por distrito en `G:\MAPAS` (01/11/2026). El plano limpio y 
     | 4 | café | turquesa |
 
     La azul cruza la E.N.M.A. y la negra la rodea.
-  - **Una línea no recorre todo el distrito** (regla del autor, 02/11/2026): pasa solo por los lugares más importantes de su tipo, con pocas estaciones y pocos giros. Cada una empieza o termina en la línea azul, que también tiene sus paradas fijas en cada distrito.
+  - **Una línea no recorre todo el distrito** (regla del autor, 02/11/2026): pasa solo por los lugares más importantes de su tipo, con pocas estaciones y pocos giros. La azul también tiene sus paradas fijas en cada distrito.
+  - **Cada línea de distrito es un circuito** (regla del autor, 02/11/2026): sale de un punto, recorre su zona y vuelve a ese mismo punto, no por donde vino. A lo sumo repite el tramo corto que la une con la azul. En el Distrito 2, el circuito morado va junto a la azul por un lado del patio del lago, porque ahí no hay otra calle.
   - El archivo del plano está en [plano/plano-enma.html](plano/plano-enma.html); las rutas y paradas de cada línea están a mano en `LINEAS_DISTRITO` y las de la azul en `RUTAS`.
   - **La línea azul** atraviesa toda la E.N.M.A. y **la negra** la rodea.
   - **La línea cian une los distritos pasando por el centro:** sale de un distrito, va por la avenida al Distrito Central, pasa por él y regresa por la misma vía, en sentido contrario, para entrar al siguiente. Por ejemplo, del 1 al Central y de vuelta al 3. Así con todos.

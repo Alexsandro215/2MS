@@ -266,7 +266,7 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
   <header>
     <p class="eyebrow">E.N.M.A. · borrador de trabajo · 1 de noviembre de 2026</p>
     <h1>Plano de la E.N.M.A.</h1>
-    <p class="lede">Tus cuatro hojas de <code>G:\MAPAS</code> pasadas a limpio y unidas alrededor del Distrito Central. Los edificios son los de tus hojas, sin partir, y todas las calles tienen el mismo ancho. Cada distrito tiene dos líneas de tranvía, cada una de su propio color: la académica (continua) y la de ocio y exploración (punteada); la azul atraviesa toda la E.N.M.A. y la negra la rodea. Los círculos pequeños son paradas de una línea y los blancos con borde oscuro, de correspondencia. La numeración es igual en los cuatro distritos: 1 centro con su plaza, 2 parque, 3 hospital, 4 comedor, 5 auditorio, 6–9 carreras, 10 dormitorios, 11 aulas, 12 lo que maneja para toda la E.N.M.A., 13 seguridad, R residencias (provisional) y letras para sus lugares propios. No está a escala.</p>
+    <p class="lede">Tus cuatro hojas de <code>G:\MAPAS</code> pasadas a limpio y unidas alrededor del Distrito Central. Los edificios son los de tus hojas, sin partir, y todas las calles tienen el mismo ancho. Cada distrito tiene dos líneas de tranvía en circuito, cada una de su propio color: la académica (continua) y la de ocio y exploración (punteada); la azul atraviesa toda la E.N.M.A. y la negra la rodea. Los círculos pequeños son paradas de una línea y los blancos con borde oscuro, de correspondencia. La numeración es igual en los cuatro distritos: 1 centro con su plaza, 2 parque, 3 hospital, 4 comedor, 5 auditorio, 6–9 carreras, 10 dormitorios, 11 aulas, 12 lo que maneja para toda la E.N.M.A., 13 seguridad, R residencias (provisional) y letras para sus lugares propios. No está a escala.</p>
   </header>
 
   <section class="atlas" aria-label="Plano">
@@ -633,32 +633,78 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
   // Distritos en coordenadas del distrito; «central» en coordenadas del plano (incluye las paradas de la orilla).
   const ESTACIONES = {
     d1: [
-      ["Plaza del Arco del Triunfo", 507, 232, "azul · rosa", "el centro del distrito, la plaza y Derecho"],
-      ["Puerta norte", 230, 110, "azul · roja", "las aulas del norte y Derecho"],
-      ["Auditorio", 211, 583, "azul · roja", "el auditorio, Economía y el comedor"],
-      ["Campos antiguos", 380, 716, "roja · rosa", "el comedor, los campos de recreación antiguos y el parque"],
-      ["Sur", 378, 862, "azul · roja", "Tecnología y el comedor"],
-      ["Hospital", 737, 862, "azul", "el hospital y el módulo de seguridad"],
+      ["Puerta norte", 230, 110, "azul", "las aulas del norte, la residencia y Derecho"],
+      ["Torres del Batallón", 610, 110, "azul · rosa", "las Torres del Último Batallón y el centro del distrito"],
+      ["Plaza del Arco del Triunfo", 507, 232, "azul", "la plaza del hexágono y Derecho"],
+      ["Economía", 339, 431, "azul · roja", "Economía, el auditorio y la plaza"],
+      ["Auditorio", 218, 583, "azul · roja", "el auditorio, las aulas y el comedor"],
+      ["Agronomía", 127, 340, "roja", "Agronomía con sus granjas, y Derecho"],
+      ["Mercado antiguo", 412, 525, "roja", "el mercado antiguo y Economía"],
+      ["Comedor", 300, 583, "roja", "el comedor y las aulas"],
+      ["Centro del Distrito 1", 683, 300, "rosa", "el centro del distrito"],
+      ["Dormitorios", 842, 460, "rosa", "los dormitorios"],
+      ["Seguridad", 918, 745, "rosa", "el módulo de seguridad y los dormitorios"],
+      ["Campos antiguos", 695, 695, "rosa", "los campos de recreación antiguos, el museo y el parque"],
+      ["Museo de Historia", 600, 505, "rosa", "el Museo de Historia y el mercado antiguo"],
+      ["Sur", 218, 862, "azul", "las aulas del sur y Tecnología"],
+      ["Tecnología", 432, 862, "azul", "Tecnología y los campos antiguos"],
+      ["Hospital", 737, 862, "azul", "el hospital"],
     ],
     d2: [
-      ["Norte", 806, 104, "azul · morada", "Textiles, Teatro y dormitorios"],
-      ["Parque principal", 790, 566, "azul · verde", "el parque principal, el centro y el comedor"],
-      ["Centro del Distrito 2", 796, 700, "azul", "el centro del distrito y el comedor"],
-      ["Sur", 372, 860, "azul · morada", "Electricidad, el hospital y las aulas"],
+      ["Norte", 806, 104, "azul · morada", "Teatro y los dormitorios"],
+      ["Textiles", 650, 100, "morada", "Textiles y Teatro"],
+      ["Mesetas de Janna", 512, 280, "morada", "las Mesetas de Janna, el patio del lago y los dormitorios"],
+      ["Museo de Cristal", 806, 300, "azul · morada", "el Museo de Cristal y el patio del lago"],
+      ["Parque principal", 659, 492, "morada", "el parque principal y el patio del lago"],
+      ["Dormitorios del este", 806, 482, "azul · morada", "los dormitorios y el parque principal"],
+      ["Centro del Distrito 2", 790, 566, "azul · verde", "el centro del distrito, el parque y el comedor"],
+      ["Central de Energía", 512, 560, "verde", "la Central de Energía, el centro y el parque"],
+      ["Seguridad", 375, 520, "verde", "el módulo de seguridad"],
+      ["Aulas del oeste", 185, 530, "verde", "las aulas"],
+      ["Rudentlein", 185, 680, "verde", "el Parque auditorio de Rudentlein y la residencia"],
+      ["Electricidad", 378, 734, "verde", "Electricidad, las aulas y la residencia"],
+      ["Comedor", 796, 700, "azul", "el comedor y el centro del distrito"],
+      ["Pintura y Arte", 800, 905, "azul", "Pintura y Arte"],
+      ["Auditorio", 512, 905, "azul", "el auditorio y el hospital"],
+      ["Hospital", 372, 860, "azul", "el hospital y las aulas"],
     ],
     d3: [
-      ["Norte", 845, 170, "azul · amarilla", "los dormitorios y la residencia"],
-      ["Central de Innovación", 566, 539, "azul", "el centro del distrito y Mecatrónica"],
-      ["Parque Levantado", 413, 622, "azul · naranja", "el Parque Levantado y las aulas"],
+      ["Norte", 845, 170, "azul · amarilla", "los dormitorios"],
+      ["Residencias", 680, 195, "amarilla", "la residencia y los dormitorios"],
+      ["Dormitorios del norte", 555, 114, "amarilla", "los dormitorios"],
+      ["Hospital", 540, 222, "amarilla", "el hospital"],
+      ["Química", 328, 136, "amarilla", "Química, Matemáticas y el comedor"],
+      ["Matemáticas", 338, 258, "amarilla", "Matemáticas, el auditorio y el comedor"],
+      ["Almacén de tranvías", 880, 390, "azul", "el almacén de tranvías y el módulo de seguridad"],
+      ["Central de Innovación", 736, 471, "azul", "el centro del distrito"],
+      ["Mecatrónica", 566, 539, "azul", "Mecatrónica y el centro del distrito"],
+      ["Parque Levantado", 413, 622, "azul", "el Parque Levantado del Progreso y las aulas"],
+      ["Puerta del Parque Levantado", 311, 715, "azul · naranja", "el Parque Levantado y las aulas"],
       ["Parque principal", 232, 800, "azul · naranja", "el parque principal y el Parque de Girasoles"],
+      ["Sur", 232, 920, "azul", "el Parque de Girasoles"],
+      ["Parque de Girasoles", 425, 980, "naranja", "el Parque de Girasoles y las aulas"],
+      ["Imprenta", 557, 800, "naranja", "la Imprenta y los Caminos y monumentos del pensamiento"],
+      ["Aulas del parque", 406, 713, "naranja", "las aulas y el Parque Levantado"],
+      ["Aulas del oeste", 282, 557, "naranja", "las aulas"],
     ],
     d4: [
       ["Parada al Distrito 4", 102, 118, "azul · turquesa", "el parque del arroyo, la plaza principal 1 y el Edificio 2"],
-      ["Botánica", 195, 118, "azul · café", "Botánica y el parque del arroyo"],
-      ["Centro del Distrito 4", 690, 440, "café", "el centro, el comedor y Gastronomía"],
-      ["Este", 852, 562, "azul · café", "el comedor y los dormitorios del este"],
-      ["Hospital", 606, 718, "turquesa", "el hospital, el Deportivo Haser y la logística"],
-      ["Medicina", 852, 842, "azul", "Medicina y la residencia"],
+      ["Botánica", 195, 274, "turquesa", "Botánica y las aulas"],
+      ["Cúpula de Mudrick", 357, 350, "turquesa", "la Cúpula de Mudrick e Historia Universal"],
+      ["Jardín de Fa", 140, 440, "turquesa", "el Jardín de flores y los invernaderos de Botánica"],
+      ["Historia Universal", 438, 180, "azul · café", "Historia Universal, la biblioteca y el auditorio"],
+      ["Auditorio", 640, 180, "azul", "el auditorio y los dormitorios"],
+      ["Aulas del norte", 565, 274, "café", "las aulas"],
+      ["Centro del Distrito 4", 690, 355, "café", "el centro, el comedor y Gastronomía"],
+      ["Deportivo Haser", 737, 600, "café", "el Deportivo Haser y las aulas"],
+      ["Medicina", 737, 718, "café", "Medicina, las aulas y el hospital"],
+      ["Hospital", 560, 718, "café", "el hospital y la logística"],
+      ["Logística", 464, 600, "café", "la logística de la E.N.M.A. y el centro"],
+      ["Dormitorios del norte", 852, 180, "azul", "los dormitorios"],
+      ["Gastronomía", 852, 355, "azul", "Gastronomía y los dormitorios"],
+      ["Este", 852, 562, "azul", "el comedor y los dormitorios del este"],
+      ["Aulas del este", 852, 718, "azul", "las aulas y Medicina"],
+      ["Residencia", 852, 842, "azul", "la residencia y Medicina"],
     ],
     central: [
       ["Muros del Pasado (estación central)", 500, 455, "azul", "el corazón del Distrito Central; aquí bajan los trabajadores en la introducción"],
@@ -920,35 +966,45 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
     d3: [["azul", 0, [[1000,140],[845,170],[880,390],[775,405],[736,420],[736,471],[678,539],[566,539],[537,505],[413,622],[311,715],[232,800],[232,1000]], null,
       [[845,170],[880,390],[736,471],[566,539],[413,622],[232,800],[232,920]]]],
     d4: [["azul", 0, [[0,118],[240,118],[357,180],[852,180],[852,1000]], null,
-      [[102,118],[195,118],[606,180],[852,180],[852,355],[852,562],[852,718],[852,842]]]],
+      [[102,118],[438,180],[640,180],[852,180],[852,355],[852,562],[852,718],[852,842]]]],
   };
   // Las dos líneas de cada distrito, cada una de un color distinto: la académica, continua, y la de ocio y exploración, punteada.
-  // Trazadas a mano por las calles: pocos giros y pocas paradas, solo junto a lo importante. Empiezan o acaban en la azul.
-  // [color, puntos del recorrido, paradas]
+  // Cada una es un circuito: sale de su punto, da la vuelta por su zona y vuelve a él, no por donde vino (a lo sumo
+  // repite el tramo corto que la une con la azul). Pocos giros y pocas paradas, solo junto a lo importante.
+  // [color, puntos del recorrido (el primero y el último coinciden), paradas]
   const LINEAS_DISTRITO = {
     d1: {
-      academica: ["rojo", [[230,110],[45,110],[127,340],[211,583],[378,583],[378,862]],
-        [[230,110],[92,110],[127,340],[211,583],[378,716],[378,862]]],           // aulas norte, Agronomía y Derecho, auditorio, comedor, Tecnología
-      ocio: ["rosa", [[507,232],[552,312],[495,456],[600,505],[670,653],[595,720],[380,716]],
-        [[507,232],[600,505],[670,653],[595,720],[380,716]]],                     // centro, mercado antiguo, parque y museo, campos antiguos
+      // Alrededor del auditorio y Economía: Agronomía, Derecho, el mercado, las aulas y el comedor
+      academica: ["rojo", [[218,583],[378,583],[412,585],[412,465],[368,468],[268,340],[127,340],[211,583],[218,583]],
+        [[218,583],[300,583],[412,525],[339,431],[127,340]]],
+      // De las Torres al este: el centro, los dormitorios, los campos antiguos, el museo y el parque
+      ocio: ["rosa", [[610,110],[683,165],[683,455],[842,460],[850,500],[918,745],[720,738],[670,653],[600,505],[683,455],[683,165],[610,110]],
+        [[610,110],[683,300],[842,460],[918,745],[695,695],[600,505]]],
     },
     d2: {
-      academica: ["morado", [[806,104],[512,96],[512,482],[375,484],[375,860]],
-        [[806,104],[650,100],[512,278],[512,482],[375,592],[375,860]]],           // Textiles y Teatro, dormitorios, seguridad, aulas, Electricidad
-      ocio: ["verde", [[790,566],[512,560],[512,728],[185,736]],
-        [[790,566],[650,563],[512,560],[512,728],[378,734],[185,736]]],           // parque, electricidad, residencia, Rudentlein
+      // Alrededor del patio del lago: Textiles, Teatro, las Mesetas y los dormitorios. Su lado este va junto a la azul:
+      // ahí no hay otra calle
+      academica: ["morado", [[806,104],[512,96],[512,482],[806,482],[806,104]],
+        [[806,104],[650,100],[512,280],[659,492],[806,482]]],
+      // Del centro al oeste: la Central de Energía, seguridad, las aulas, Rudentlein, la residencia y Electricidad
+      ocio: ["verde", [[790,566],[512,560],[512,728],[378,734],[186,736],[185,592],[185,476],[318,482],[375,484],[375,560],[512,560],[790,566]],
+        [[790,566],[512,560],[378,734],[185,680],[185,530],[375,520]]],
     },
     d3: {
-      academica: ["amarillo", [[845,170],[680,195],[468,236],[338,258],[328,136],[168,150]],
-        [[845,170],[680,195],[468,236],[338,258],[168,150]]],                     // dormitorios, hospital, comedor, Matemáticas y auditorio, Química
-      ocio: ["naranja", [[413,622],[605,697],[557,800],[425,980],[232,800]],
-        [[413,622],[605,697],[557,800],[425,980],[232,800]]],                     // Parque Levantado, Mecatrónica y los Caminos, aulas, Girasoles, parque
+      // Alrededor del comedor: los dormitorios, el hospital, Química, Matemáticas y el auditorio
+      academica: ["amarillo", [[845,170],[680,195],[468,236],[338,258],[328,136],[468,125],[640,103],[680,195],[845,170]],
+        [[845,170],[680,195],[540,222],[338,258],[328,136],[555,114]]],
+      // Alrededor del sur: el parque principal, Girasoles, la Imprenta, los Caminos y el Parque Levantado
+      ocio: ["naranja", [[232,800],[425,980],[557,800],[500,760],[406,713],[357,760],[266,670],[319,624],[245,490],[92,562],[232,800]],
+        [[232,800],[425,980],[557,800],[406,713],[282,557]]],
     },
     d4: {
-      academica: ["cafe", [[195,118],[195,274],[690,274],[690,562],[852,562]],
-        [[195,118],[195,274],[438,274],[690,274],[690,440],[852,562]]],           // Botánica, Historia, Gastronomía, centro y comedor
-      ocio: ["turquesa", [[102,118],[102,440],[464,440],[464,718],[852,718]],
-        [[102,118],[102,440],[290,440],[464,718],[606,718],[852,718]]],           // parque, Jardín de Fa, cúpula de Mudrick, logística, hospital y Haser
+      // Alrededor del centro: Historia, las aulas, Gastronomía, el comedor, Haser, Medicina, el hospital y la logística
+      academica: ["cafe", [[438,180],[438,274],[690,274],[690,562],[737,562],[737,718],[464,718],[464,274],[438,274],[438,180]],
+        [[438,180],[565,274],[690,355],[737,600],[737,718],[560,718],[464,600]]],
+      // Del parque del arroyo al oeste: Botánica, la Cúpula de Mudrick y el Jardín de Fa
+      ocio: ["turquesa", [[102,118],[102,274],[357,274],[357,440],[102,440],[102,274],[102,118]],
+        [[102,118],[195,274],[357,350],[140,440]]],
     },
   };
   // La línea cian entre distritos: sale de uno, baja por la avenida al Distrito Central, lo recorre
@@ -1044,6 +1100,16 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
       if (Math.hypot(x[0] - p[i + 1][0], x[1] - p[i + 1][1]) > 30) out.push(fin.p, ini.p);
       else out.push(x);
     }
+    // En un circuito, también la esquina donde se cierra
+    if (igual(p[0], p[p.length - 1]) && piezas.length > 1) {
+      const ult = piezas[piezas.length - 1], fin = ult[ult.length - 1], ini = piezas[0][0];
+      const den = fin.t[0] * ini.t[1] - fin.t[1] * ini.t[0];
+      if (Math.abs(den) > 1e-6) {
+        const u = ((ini.p[0] - fin.p[0]) * ini.t[1] - (ini.p[1] - fin.p[1]) * ini.t[0]) / den;
+        const x = [fin.p[0] + fin.t[0] * u, fin.p[1] + fin.t[1] * u];
+        if (Math.hypot(x[0] - p[0][0], x[1] - p[0][1]) <= 30) { out[0] = x; out[out.length - 1] = x; }
+      }
+    }
     return out;
   };
   // Aparta un número de las calles
@@ -1088,9 +1154,16 @@ ol.pend li::marker { font-family: var(--f-mono); color: var(--muted); }
     return marcas;
   };
 
+  // Para dibujar: el tramo que el circuito repite al volver a su punto va una sola vez (si no, la punteada se ve continua)
+  const unaVez = p => {
+    const n = p.length;
+    let i = 0;
+    while (i + 2 < n - 1 - i && igual(p[i], p[n - 1 - i]) && igual(p[i + 1], p[n - 2 - i])) i++;
+    return p.slice(0, n - i);
+  };
   for (const d of ["d1", "d2", "d3", "d4"]) {
     const { academica: [ca, pa, ea], ocio: [co, po, eo] } = LINEAS_DISTRITO[d];
-    RUTAS[d].push([ca, -1, pa, "academica", ea], [co, 1, po, "ocio", eo]);
+    RUTAS[d].push([ca, -1, unaVez(pa), "academica", ea], [co, 1, unaVez(po), "ocio", eo]);
   }
 
   const defs = el("defs");
