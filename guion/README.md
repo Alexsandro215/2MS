@@ -4,6 +4,7 @@ La Historia Principal de `BIOGRAFIAS 8de10.docx` pasada a **formato de guion par
 
 - La historia se edita en `BIOGRAFIAS 8de10 - EDITABLE.docx`. Estos `.md` son una copia formateada del 24/10/2026: si cambias la historia en el Word, no se actualizan solos.
 - `NOTAS.md` tiene el resumen de cada capítulo y las sugerencias.
+- `MAPA-HP.md` es el mapa de la Historia Principal: cada capítulo con su principal, corrupción, guía, lo que aprende Alextsu y lo que pierde Artur, más los huecos que faltan.
 - `GUION - Historia Principal.docx` se genera desde estos `.md` con `python tools/build_guion.py`.
 
 ---

@@ -74,7 +74,87 @@ Resumen de cada capítulo y sugerencias, sacados de la conversión a guion (24/1
 - **Las reglas del mundo** están recogidas en [docs/lore-contexto.md](../docs/lore-contexto.md) §6.
 - **La estatua de la entrada:** "del rector" (antes "del fundador"), y la placa dice "Rector de la academia" (antes "5.º Rector"). Nadie sabe que Artur fundó la E.N.M.A.
 
+## Decisiones del autor (26/10/2026)
+
+**Aplicadas en el EDITABLE y en el guion:**
+- **Cuatro fallos del Capítulo 1:** Alextsu la llama "chica del tren" (aún no sabe su nombre); "¿además del violín, también eres pianista?"; Robert le dice que comparte la 248 con Dorokan; "por poco me arrestan junto a un señor que escondía una gata".
+- **Robert (1.5):**
+  - "la guerra de los 50 años" (antes "50 o 60");
+  - mira "la pantalla verde de una terminal" (antes "la computadora");
+  - al oír "¿Guerra?" baja la voz y le aconseja no preguntarlo en voz alta: "casi todos perdieron algo en ella";
+  - plano del expediente «PROMESA DE CLASICAL — INGRESO DIRECTO — RESULTADO: PENDIENTE», que sella sin leer dos veces: "si ellos te pusieron aquí, por algo será".
+- **Demian Linkin** (antes "Damara Linkyn"), como en el listario. El personaje pasa a ser chico.
+- **El periódico:** la matrícula sube de 10,754 a **11,000** (antes 15,000). Es una noticia de relleno, sin trama detrás.
+- **La elección de la plaza (1.27):** la pregunta es "¿Ir a descansar…?". En la rama «Sí», Alextsu se queda ido e Itzela le dice "¿Estás ahí? No tiene caso quedarnos… a menos que te guste perder el tiempo", y van igual a la heladería.
+- **Las primeras escenas de Artur (la HP envolvente):**
+  - **1.12A, la noche del 23 (intercalada):** el expediente de Alextsu no le da ningún pensamiento. Mientras, Itzela, despierta en la litera, susurra "Cuatro años viéndote dormir… y nunca habías roncado". Una queja del Distrito 4 tampoco le deja ver nada, y por la ventana, alrededor de un edificio, las ventanas están "sin futuro". Artur escribe a mano la orden de expulsión, la carta que Daly le lleva a Ren el día 24.
+  - **1.26, el discurso:** desde su punto de vista, cada rostro tiene un pensamiento, salvo el hueco que rodea a Alextsu (Itzela, Ren, Amy). Añade la frase "la E.N.M.A. siempre ha sabido cuidar de los suyos".
+- **Las viñetas, repartidas por el día en que se presenta su club** (según el listario):
+  - **23, llegada:** Alice (Consejo) y Rene (Mercantil).
+  - **25, Distrito 1:** Ivan (Derecho y Ley), Edward (Economía), Liz (Agronomía), Demian (Tecnología).
+  - **26, Distrito 2:** Elian (Pintura y Arte), Nicolas (Electricidad), Nadia (Textiles), Fernanda (Teatro).
+  - **27, Distrito 3:** Han (Matemáticas), Olivia (Imprenta), Sabrina (Mecatrónica), Samato (Química).
+  - **28, Distrito 4:** Thomas (Medicina), Hilda (Botánica), Uwin (Gastronomía), Remilia (Historia Universal), justo antes del concierto.
+  - **Retocadas porque hablaban de la llegada:**
+    - Hilda teme haber dejado encendido "el calentador del invernadero".
+    - Olivia fotografía "los puestos del festival".
+    - Samato carga una caja que le mandó su padre, y Alextsu, las compras de alguien que se fue corriendo a ver los puestos.
+    - Nadia: "creo que tú tienes mucho que ver".
+    - Ivan extraña "la sopa del festival".
+    - Liz: "todavía te falta mucho festival por recorrer".
+    - Demian ya no ve la marca de la bofetada, sino "el pianista que volvió de la muerte".
+- **Alextsu, el mediador (1.31):** a oscuras, después del ronquido falso de Itzela, dice para sí "No sé quién era antes… pero no me gusta que la gente se pelee por mi culpa". En la litera de arriba, Itzela abre los ojos y no dice nada. Rima con la noche del 23 y plantea el hilo de que el mediador fue la causa de todo.
+- **Los personajes de las viñetas serán las futuras corrupciones de su club, ya en esta entrega** (sin desarrollar todavía). Por eso sus nombres son una excepción al listario y no se tocan (Uwin Wednes, Remilia Mendelov, Elian Xosherxe, Nicolas Krikov, Edward Rutterford).
+- **«Propuesta de posible resolución»** es el título de la secuencia de la coartada de Ren (1.30), no una nota de la parada del tranvía.
+- **El Preludio sin voces (1.1), aprobado el 27/10/2026:**
+  - Solo se entienden las palabras de Alextsu y el "Alextsu…" que susurra Itzela; el resto se oye ahogado, como bajo el agua.
+  - Cada punto de vista termina mirando el cartel o el programa, y el nombre del pianista no aparece nunca en pantalla.
+  - Al salir Alextsu al escenario, un plano recorre a los ocho; al final, corte a negro en el último acorde.
+  - Las líneas quitadas están en «Las voces del Preludio»: cada punto de vista se repite con el sonido completo cuando su principal despierta.
+- **El "¿qué es…?" de Alextsu, creíble:** recuerda las cosas, pero no haberlas vivido. Por ejemplo:
+  - "Sé lo que es un helado… creo. Pero no recuerdo haber probado uno".
+  - "¿Y qué tiene de especial ese chocolate?".
+  - "Un teléfono. ¿A quién se supone que llamo?".
+  - "¿Nunca habías probado la miel? / No que yo recuerde".
+  - El 25: "¿Helados? ¿Por fin?" (antes lo volvía a preguntar). El "¿Verano?" pasa a "¿Y en pleno invierno?", e Itzela responde "El buen helado no tiene temporada".
+- **Los puestos del 24 (1.19)**, con los nombres y los líderes del listario:
+  - Economía, de Tao Ling;
+  - Derecho y Ley, de Maxwell Ruterford;
+  - Agronomía, de Max Royal (antes "Agricultura y Ganadería");
+  - Tecnología, de Demian Linkin (antes "Programación").
+  - Además, el "club de Finanzas" de Itzela pasa a ser el de Economía.
+- **La tarde libre del 24 (1.19)** es el primer bloque libre: dos bloques por el Distrito 4.
+  - **Centro deportivo:** Vida Base, el primer entrenamiento por ubicación.
+  - **Invernadero:** primer contacto con Merie Lamber, amiga de la infancia de Itzela, con sus semillas de invierno.
+  - **Cocina del comedor:** primer contacto con Julian Duran ("¡Carne! ¡Por supuesto, carne!"), que espera a Ren para hornear y esconde algo en la alacena (Ñom Ñom).
+  - **Opcional:** Dorokan saliendo con su maleta del edificio de chicas.
+- **El chico que se quejó es Dorokan**, confirmado por el autor: le tocaba la 248, Itzela ocupó su sitio y lo mandaron a un edificio de chicas. En la clausura tocan por él.
+- **Nombre por confirmar:** el listario dice "Merie Lamber" y su biografía, "Merie Lambert". En la historia se usa el del listario.
+- **Introducción al conocimiento (1.24):** minijuego corto de preguntas durante la explicación de Kruger; cada respuesta correcta aumenta el conocimiento.
+
+**Reglas:**
+- **La posguerra se cuenta desde la gente, no desde la E.N.M.A.** La E.N.M.A. es la burbuja, rica e independiente. Cada residente trae lo que le dejó la guerra, y que la FDPH lo aceptara es su milagro. Alextsu entró directo por el piano y ni sabe que hubo guerra: su ignorancia suena casi a burla.
+- **No todos están igual:** cambia de dónde vienen y qué hacen con su destino. Las cinco posturas están en [docs/lore-contexto.md](../docs/lore-contexto.md) §6.
+- **Cómo ve Artur el destino:** a través de sus ojos, como un pensamiento. Lo que ve es lo que de verdad pasaría si se toman ciertas decisiones, por ejemplo permitir que un estudiante resida en la E.N.M.A.
+- **Robert** es el alineado que acepta su destino: agradecido, pero no rígido. Es amigo de Ren, cumple con su trabajo aunque esté cansado y quiere una vida tranquila. Es comprensivo con Alextsu porque acaba de leer el papel del hospital.
+
+- **El primer "¿Guerra?" en público (1.14, comedor):** Alextsu lo pregunta en voz alta después de leer el periódico. Itzela le tapa la boca con la mano llena de miel ("¡La guerra de los hot cakes!") y le susurra "Aquí no se pregunta eso". Una trabajadora del comedor se le queda mirando un segundo más: es la burla que se nota sin decirla. El remate es que Alextsu tampoco conoce la miel.
+
+**Pendiente:**
+- **Idea para la noche del 27:** Artur saca un libro del estante y la escarcha se extiende por la tapa, la víspera del ser de hielo.
+- **El periódico es semanal** y hacen falta noticias para cada semana del juego, no solo de relleno.
+- Una pasada por las 18 viñetas (ya repartidas por días): de dónde viene cada uno y qué postura tiene ante su destino, en media línea y sin decir nunca "guerra".
+
 ---
+
+## Decisiones del autor (01/11/2026)
+
+- **Las voces son los recuerdos de la línea 3.**
+  - Los siete principales que no recuerdan (Ren, Kali, Dorokan, Richard, Ares, Haruka y Alextsu) las oyen durante su arco, cada vez más claras.
+  - Al despertar y vencer al jefe, los recuerdos se conectan en un flashback: su punto de vista del Preludio con sonido. Eso explica la euforia y el odio hacia Alextsu.
+  - Itzela y Amy no las oyen, porque ya recuerdan.
+  - En la voz de Alextsu habla también la Oscuridad, porque ya vivía en él en la línea 3. Él es el último en conectar.
+  - La regla completa está en [docs/lore-contexto.md](../docs/lore-contexto.md) §6, "Las voces".
 
 ## Lo que se repite en toda la historia
 
@@ -118,7 +198,7 @@ Conviene tener una ficha de personajes y lugares con una sola forma para cada un
 ### 4. Lo que falta por escribir
 - **Los Capítulos 8 y 9 y el Epílogo** solo tienen título.
 - **El final se corta** en la frase de Haruka (§4449), sin respuesta de Alextsu ni cierre de la despedida.
-- **Los cuatro "Preludios de distrito"** del Capítulo 1 están EN PROCESO.
+- **Los cuatro "Preludios de distrito"** del Capítulo 1 están EN PROCESO. Desde el 26/10/2026 llevan las viñetas de sus clubes.
 - **Las introducciones de Shiro Durán y de Mark Norst** son títulos vacíos; Mark Norst no aparece en ninguna parte.
 - **Días vacíos:** el 6 de julio (justo donde haría falta explicar la vuelta de Alextsu) y el 28 de julio.
 
@@ -159,7 +239,7 @@ En el Capítulo Final, al morir, Itzela le dice: *"Aún me duele que me hayas ab
 
 **Resumen.**
 - **Preludio (24/12/2012):** ocho puntos de vista en el Auditorio Nacional, siete víctimas anónimas e Itzela niña, antes del concierto de Mendelssohn de un Alextsu frío ("Soy quien lo cambiará todo").
-- **23 de enero:** en el tren, Alextsu, sin memoria, conoce a Itzela; hacen el trato de la galleta; él le dice su nombre, ella recuerda y le da una bofetada. Después vienen Mike en la estación, 18 eventos opcionales, la estatua de Artur, Ren por el altavoz, Robert ("antigua estrella", la guerra de 50 años), la secuencia del título en el tranvía, la Aclaración y el cuarto 248 ("Murió…").
+- **23 de enero:** en el tren, Alextsu, sin memoria, conoce a Itzela; hacen el trato de la galleta; él le dice su nombre, ella recuerda y le da una bofetada. Después vienen Mike en la estación, 2 eventos opcionales (Alice y Rene; las otras 16 viñetas van en los preludios de distrito del 25 al 28), la estatua de Artur, Ren por el altavoz, Robert ("antigua estrella", la guerra de 50 años), la secuencia del título en el tranvía, la Aclaración y el cuarto 248 ("Murió…").
 - **24 de enero:** el comedor y la lista del día; la clase de Charles, que se atraganta con el nombre de Alextsu; Artur ordena en persona expulsar a quien ocupe un cuarto ajeno; Ren le pide un autógrafo a Alextsu y choca con Itzela por el "amigo" muerto.
 - **25 de enero:** Amy en sombra jura desenmascararlo; Kruger reconoce a la leyenda; en el discurso de Artur, Alextsu oye "Pronto la E.N.M.A. te necesitará"; la heladería de Riko.
 - **26-27 de enero:** Magdalena; la librería de Mike; el minijuego con la sonata de Grieg.
@@ -168,17 +248,17 @@ En el Capítulo Final, al morir, Itzela le dice: *"Aún me duele que me hayas ab
 - **31 de enero:** el juicio. Amy pide la expulsión y Alextsu se compromete a encontrar al culpable.
 
 **Sugerencias, por prioridad.**
-1. **§2677:** Alextsu la llama "Itzela" antes de que ella le diga su nombre (§2714).
-2. **§3204-3211:** la elección de la plaza tiene las etiquetas invertidas respecto a la pregunta y no desarrolla la rama «Sí».
+1. ~~**§2677:** Alextsu la llama "Itzela" antes de que ella le diga su nombre (§2714).~~ Corregido: "chica del tren".
+2. ~~**§3204-3211:** la elección de la plaza.~~ Resuelto: la rama «Sí» lleva a la heladería con un comentario de Itzela.
 3. **El juicio (§3710):**
    - Daly habla de "ayer", aunque han pasado tres días.
    - No queda claro quién preside: Emilia, Leopold…
    - Nadie usa el "¡BUSCO EL CLASICAL!", que es la mejor prueba de la defensa.
-4. **La línea de Ren** (§3053-3056): "¿Salvar a quién, Itzela? Nunca me dijiste ni su nombre." / "Porque no me habrías creído." Resuelve que Ren hable del "amigo" sin saber que es Alextsu (lo hablamos).
-5. **§2783:** que Robert o el papel de inscripción digan que su compañero es Dorokan; ahora Alextsu lo sabe sin motivo.
-6. **§2691:** "por poco me arrestan por un gato": los guardias persiguieron a Mike, no a él.
-7. **§2737-2740:** "¿eres pianista?" / "violinista", cuando ya lo dijo en el tren.
-8. **§2557:** ¿el −1 de prestigio es por evento, hasta −18? Castiga ver contenido escrito antes de que se explique el prestigio, que llega el día 24.
+4. ~~**La línea de Ren** (§3053-3056).~~ Resuelto: "¿Salvar a quién? Ni siquiera recuerdo su nombre." / "Ya lo recordarás."
+5. ~~**§2783:** que Robert o el papel de inscripción digan que su compañero es Dorokan.~~ Corregido: se lo dice Robert.
+6. ~~**§2691:** "por poco me arrestan por un gato".~~ Corregido: "junto a un señor que escondía una gata".
+7. ~~**§2737-2740:** "¿eres pianista?" / "violinista".~~ Corregido: "¿además del violín, también eres pianista?".
+8. ~~**§2557:** ¿el −1 de prestigio es por evento, hasta −18?~~ Resuelto: es una sola vez.
 9. **§3401/§3454:** Ren les da una partitura y al día siguiente la compran en la librería.
 10. **Grieg:** los movimientos no cuadran (§3463, §3476, §3604).
 11. **Para el 3D:**
@@ -186,16 +266,16 @@ En el Capítulo Final, al morir, Itzela le dice: *"Aún me duele que me hayas ab
     - El encabezado §2872 debería ser INT. TRANVÍA.
     - La escena de Mike ocurre en la estación, no en las escaleras (§2526).
 12. **Continuidad ya conocida:**
-    - El edificio 2/4/3.
-    - La letra D/C.
-    - La hora del comedor.
-    - El nivel tecnológico.
-    - Las edades y la gata de Mike.
-    - "Eres la tercera persona que me dice eso".
+    - ~~El edificio 2/4/3.~~ Edificio 2: el 248 se lee edificio 2, piso 4, cuarto 8.
+    - ~~La letra D/C.~~ La misma letra: "¡OTRA VEZ LA LETRA D!".
+    - ~~La hora del comedor.~~ El 24, a las 7:00.
+    - El nivel tecnológico. *(Robert ya mira una terminal; falta la hoja de época.)*
+    - ~~Las edades y la gata de Mike.~~ 58 años en las dos escenas (nació en 1959); la gata ya era Lluvia en toda la historia.
+    - ~~"Eres la tercera persona que me dice eso".~~ Era "la tercera persona que se pone así por mi historia": Itzela, Mike y Robert.
     - ~~Los "5 años" de coma~~: corregido a 4 años.
-    - El tobillo/rodilla de Itzela en el tren (§2484-2487).
-    - El periódico anuncia el concierto del "viernes 20".
-    - **§2876:** texto pegado de una IA. En el guion está omitido, pero sigue en el docx.
+    - ~~El tobillo/rodilla de Itzela en el tren (§2484-2487).~~ Rodilla.
+    - ~~El periódico anuncia el concierto del "viernes 20".~~ "Este sábado 28 de enero… el gran concierto de clausura".
+    - ~~**§2876:** texto pegado de una IA.~~ Eliminado también del EDITABLE.
 
 **Oportunidades.**
 - **"Como si viera otra cosa"** (§2519): un destello de 2012 de dos segundos.

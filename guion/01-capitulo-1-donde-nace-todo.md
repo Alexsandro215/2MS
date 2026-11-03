@@ -17,229 +17,128 @@
 > - T:
 > - Auditorio Nacional
 
-<!-- §2405 -->
+<!-- reescrito el 26/10/2026 a partir de §2405-2452: sin diálogos salvo Alextsu y el nombre que susurra Itzela. Las líneas originales están en el bloque «Las voces del Preludio», al final. -->
 ### 1.1 · INT. AUDITORIO NACIONAL — NOCHE
 
-<!-- §2406 -->
+**[SONIDO: en todo el Preludio, las voces de la gente se oyen ahogadas, como bajo el agua: se ve que hablan, pero no se entiende ninguna palabra. Las únicas palabras claras son las de Alextsu y el nombre que susurra Itzela.]**
+
 Las lámparas comienzan a encenderse poco a poco. La nieve no cesa. La gente empieza a llegar al auditorio donde se llevará a cabo la presentación de aquel día, entre murmullos.
 
 El ambiente deslumbra con sus luces candentes de color amarillento, que se hacen presentes junto con el vestuario fino de cada uno de los asistentes. Todos tienen un mismo propósito para estar en aquel lugar: observar a la nueva estrella de la década.
 
 El vestíbulo está lleno de luz y la gente muestra un interés genuino por el evento del día de hoy. Los murmullos y la duda sobre la presentación de la nueva estrella están presentes en todo momento.
 
-<!-- §2407 -->
+En la entrada cuelga un cartel enorme: un niño sentado al piano, bajo las palabras «LA NUEVA ESTRELLA DE LA DÉCADA».
+
+**[PLANO: el nombre del pianista nunca entra en cuadro.]**
+
 **[PLANO: punto de vista 1]**
 
-<!-- §2408-2409 -->
-Sin mayor atención, un MAYORDOMO habla con una NIÑA algo molesta y triste, que se niega. El mayordomo la lleva del brazo; está nervioso porque no sabe cómo controlar los sentimientos de la niña, y por la atención que les están prestando todos los presentes.
+Sin mayor atención, un MAYORDOMO le habla a una NIÑA de apariencia aristócrata, algo molesta y triste. Se le ve suplicar, nervioso; no se entiende lo que dice. La lleva del brazo sin querer lastimarla, pendiente de las miradas de todos los presentes.
 
-**MAYORDOMO**
-*(nervioso, forcejeando sin tratar de lastimarla)*
-Por favor, señorita. Solo preséntese y nos vamos en la primera pausa del evento. Su padre realmente se lo agradecería. Además, estamos a la vista de todos; no querrá verse mal ante algún conocido.
+La niña se niega, como una niña de su edad, y se suelta de un tirón. En la mano lleva el programa del concierto, con la cara del pianista en la portada. Lo mira un instante y lo arruga.
 
-<!-- §2410 -->
-Aquella niña de apariencia aristócrata se niega, actuando como una niña de su edad.
-
-**NIÑA ARISTÓCRATA**
-No me importa. Le dije a mi padre que no quería venir, después de tal humillación…
-
-<!-- §2411 -->
 **[PLANO: punto de vista 2]**
 
-<!-- §2412 -->
 Un CHICO desahuciado, con muy mal aspecto en el cabello pero con una fachada en su vestimenta que logra convencer, y gracias también a su estatura bastante pequeña, burla la seguridad de la entrada del vestíbulo y se escabulle entre el público.
 
-**CHICO DESAHUCIADO**
-*(susurrando, molesto)*
-Estrella… Si lo tuviera de frente, lo golpearía hasta que vea estrellas por ser un mentiroso ante todos. Pero aún no entiendo por qué hay tanta seguridad para solo una presentación.
+Se detiene frente al cartel. Sus labios se mueven, furiosos, sin que se oiga nada, y aprieta el puño. Luego mira extrañado a los guardias: hay demasiada seguridad para un simple concierto.
 
-<!-- §2413 -->
 **[PLANO: punto de vista 3]**
 
-<!-- §2414 -->
-En la entrada, un NIÑO en silla de ruedas, que no puede mover el cuerpo debido a un accidente, se limita a mirar a su costado con el rostro sin alma. Lo acompaña su PADRE, que trata de animarlo, ya que no observa ningún estímulo por parte de su hijo.
-
-<!-- §2415 -->
-**PADRE**
-*(tratando de animarlo con algo de plática)*
-Vamos… este evento te animará… Siempre decías que te gustaría venir aquí, a pesar de que no teníamos mucho dinero, ¿no?… Vamos, disfrutémoslo lo más que podamos…
+En la entrada, un NIÑO en silla de ruedas, que no puede mover el cuerpo debido a un accidente, se limita a mirar a su costado con el rostro sin alma. Lo acompaña su PADRE, que le habla con cariño, tratando de animarlo; sus palabras se pierden entre los murmullos.
 
 Sin respuesta. Aquel niño solo se limita a mirar…
 
-<!-- §2416 -->
 **[PLANO: punto de vista 4]**
 
-<!-- §2417 -->
 Una JOVEN camina por el piso superior del vestíbulo con un vestido de color rojo tenue. Todos voltean a verla, pero no por razones estéticas, sino por una razón mala: las miradas de quienes entienden quién es aquella chica son bastante negativas y juiciosas.
 
-Ella rechina los dientes del enojo. A simple vista no se nota: en todo momento mantiene la postura, a pesar de que su puño izquierdo aprieta con fuerza.
+Ella rechina los dientes del enojo. A simple vista no se nota: en todo momento mantiene la postura, a pesar de que su puño izquierdo aprieta con fuerza. Desde el barandal mira el cartel de la entrada. Sus labios dicen algo que nadie oye.
 
-**JOVEN DEL VESTIDO ROJO**
-*(susurrando)*
-Yo no soy la farsa… Yo no soy quien todos creen… Él es la farsa a quien todos aclaman.
-
-<!-- §2418 -->
 **[PLANO: punto de vista 5]**
 
-<!-- §2419 -->
-Un CHICO sin rumbo y moribundo, en la acera con nieve, es observado por uno de los REPRESENTANTES del evento. Al ver de quién se trata, el representante lo invita a entrar de forma gratuita por ser ganador de un concurso del año, y lo persuade de entrar.
+Un CHICO sin rumbo y moribundo, en la acera con nieve, es observado por uno de los REPRESENTANTES del evento. Al reconocerlo, el representante se le acerca con una gran sonrisa y le habla sin parar; no se entiende lo que dice. Le pone en la mano una entrada gratuita y le señala el cartel.
 
-**REPRESENTANTE**
-¡Hey, chico! Buenas noches, joven talentoso. Yo sé que usted no me reconoce, pero nosotros a usted sí. ¿Gusta venir a entrar a este evento tan especial que se celebrará el día de hoy?
+El chico mira la entrada con tristeza en los ojos, sin entender. Después se encoge de hombros y entra.
 
-<!-- §2420 -->
-**CHICO SIN RUMBO**
-*(con tristeza en los ojos, sin entender)*
-¿Está seguro? No creo que…
-
-<!-- §2421 -->
-**REPRESENTANTE**
-Oh, no se preocupe. Nos gustaría que grandes talentos como usted vengan a ver a nuestra nueva estrella de la década. Eso nos ayudaría con nuestra próxima nueva publicidad, en la que puede aparecer, y cambiará el mundo.
-
-<!-- §2422 -->
-El chico, sin poder declinar, se deja persuadir, aunque sin entender.
-
-**CHICO SIN RUMBO**
-¿Nueva estrella? Bueno, ya no pierdo nada a estas alturas.
-
-<!-- §2423 -->
 **[PLANO: punto de vista 6]**
 
-<!-- §2424 -->
-Una pequeña NIÑA entra tímidamente, nerviosa y alerta de su entorno. Es sensible a los ruidos, y los murmullos, por alguna extraña razón, la estresan. Con las manos juntas, de forma tímida, susurra repitiéndose a sí misma:
+Una pequeña NIÑA entra tímidamente, nerviosa y alerta de su entorno. Es sensible a los ruidos.
 
-**NIÑA TÍMIDA**
-*(susurrando)*
-Yo no quería venir, yo no quería venir, yo no quería venir… De seguro todos me están juzgando, de seguro todos me están mirando, de seguro él está poniendo a todos en mi contra…
+**[SONIDO: para ella, los murmullos ahogados crecen hasta volverse insoportables.]**
 
-<!-- §2425 -->
-Uno de los GUARDIAS le toca el hombro.
+Con las manos juntas, mueve los labios sin parar, repitiéndose algo a sí misma. Uno de los GUARDIAS le toca el hombro. La niña grita, un grito sin palabras, y corre directamente al auditorio.
 
-**GUARDIA**
-Disculpe, jovencita, ¿podría…?
-
-<!-- §2426 -->
-**NIÑA TÍMIDA**
-*(asustándose)*
-¡Noooo!
-
-<!-- §2427 -->
-La niña se asusta demasiado por la ansiedad acumulada y corre directamente al auditorio.
-
-<!-- §2429 -->
 **[PLANO: punto de vista 7]**
 
-<!-- §2430 -->
-Un CHICO bastante acabado, con la tristeza reflejada en los ojos y en su ropa de invierno vieja y desgastada, llena del agua de la nieve, entra por la puerta trasera. En su sonrisa hay esperanza: la de lograr encontrar algo en aquel lugar. Camina con hambre y cansado.
+Un CHICO bastante acabado, con la tristeza reflejada en los ojos y en su ropa de invierno vieja y desgastada, llena del agua de la nieve, entra por la puerta trasera. Camina con hambre y cansado. Al pasar junto al cartel se detiene: en su sonrisa hay esperanza, la de lograr encontrar algo en aquel lugar.
 
-**CHICO DE ROPA GASTADA**
-Puede que sí… Le pido un consejo a la nueva estrella… Puede que logre encontrar algo. Después de todo, ya no puede ser peor esto.
-
-<!-- §2431 -->
 **[PLANO: punto de vista 8]**
 
-<!-- §2432 -->
-Por los asientos del auditorio principal se mueve una NIÑA a la que no se le puede ver el rostro. Por su pequeño tamaño, pasa torpemente entre los presentes, tratando de no caer encima de alguno de ellos. Durante su paso solo se logra ver parte de su cabello y poco más de su cabeza.
+Por los asientos del auditorio principal se mueve una NIÑA a la que no se le puede ver el rostro. Por su pequeño tamaño, pasa torpemente entre los presentes, disculpándose con gestos y tratando de no caer encima de alguno de ellos. Durante su paso solo se logra ver parte de su cabello y poco más de su cabeza.
 
-<!-- §2433 -->
+Una vez que logra llegar a su lugar, podemos verle el rostro: es ITZELA. Con una mirada decidida y los puños, posados sobre las piernas, cerrándose con todas sus fuerzas, mira preocupada y con miedo el lugar junto al piano donde se llevará a cabo el evento.
+
 **ITZELA**
-*(pasando entre las personas sentadas)*
-Lo siento… disculpe… cuidado con las patas…
-
-<!-- §2434 -->
-Una vez que logra llegar a su lugar, podemos verle el rostro. Con una mirada decidida y los puños, posados sobre las piernas, cerrándose con todas sus fuerzas, mira preocupada y con miedo el lugar junto al piano donde se llevará a cabo el evento.
-
-**ITZELA** *(pensando)*
+*(susurra, apenas audible)*
 Alextsu…
 
-<!-- §2435 -->
 **[PLANO: último punto de vista]**
 
-<!-- §2436 -->
 En el balcón se realizan los últimos preparativos para el inicio del gran evento. Todos se preparan y, una vez que todo está listo, entra primero toda la banda sinfónica.
 
-<!-- §2437 -->
-**TÉCNICO**
-*(concentrado)*
-Estamos a punto de iniciar… Prepárese para su entrada, pianista.
+Un TÉCNICO, concentrado, le habla a un CHICO sentado en un banco; no se entiende lo que dice. El chico no responde ni hace ningún gesto. El técnico, desconcertado, se rinde y le da la señal al DIRECTOR DE ORQUESTA, que entra al escenario. El público aplaude.
 
-<!-- §2438 -->
-Un CHICO, sentado en un banco, no responde ni articula ningún gesto que le devuelva alguna respuesta al administrador.
+El técnico se gira de nuevo hacia el chico, nervioso, casi regañándolo. Al final, con media sonrisa, le da una palmada en el hombro, como quien le recuerda que es uno más.
 
-<!-- §2439 -->
-**TÉCNICO**
-*(desconcertado)*
-Sí que no hablas mucho… Bueno, no importa.
-
-Una vez que todos entran, el técnico da la señal al DIRECTOR DE ORQUESTA.
-
-**TÉCNICO**
-Ya puede entrar, señor director.
-
-<!-- §2440 -->
-**DIRECTOR DE ORQUESTA**
-De acuerdo.
-
-El director de orquesta entra al escenario.
-
-<!-- §2441 -->
-El técnico del evento se gira para ver a ALEXTSU.
-
-**TÉCNICO**
-*(algo nervioso)*
-Sabes, no porque seas la nueva estrella proclamada por los mejores músicos del mundo te da derecho… a… a no responderme ni a los demás…
-
-Sin respuesta.
-
-**TÉCNICO**
-Eres un niño extraño, sabes.
-
-<!-- §2442 -->
-El público aplaude la entrada del director.
-
-<!-- §2443 -->
-El chico suspira y mira fijamente al técnico.
+El chico, ALEXTSU, suspira y lo mira fijamente.
 
 **ALEXTSU**
 Ustedes, las personas como tú, ¿qué saben de lo que yo soy?
 
-<!-- §2444 -->
-**TÉCNICO**
-*(susurrando, mientras recibe la señal para dar paso a Alextsu)*
-No lo sé… ¿Un músico innato, prodigio? Yo solo soy el pasante. Pero recuerda, chico: eres como todos los demás en este mundo.
+El técnico se encoge de hombros y le contesta algo que no se entiende, mientras recibe la señal para darle paso.
 
-<!-- §2445 -->
 Alextsu se detiene y lo observa de reojo.
 
 **ALEXTSU**
 *(con voz fría)*
 No te equivoques. No somos iguales.
 
-<!-- §2446 -->
 Camina unos pasos más y se detiene nuevamente, girándose un poco hacia el técnico con aire desafiante.
 
 **ALEXTSU**
 Soy más que eso… más que una estrella. Soy quien lo cambiará todo.
 
-<!-- §2447 -->
 El público, atento y expectante, rompe en aplausos cuando Alextsu cruza el escenario. Pero no todos lo reciben igual: algunos muestran asombro, otros incredulidad, y unos pocos parecen incluso molestos. Se siente en el aire una tensión palpable, eco de las emociones contradictorias que el joven prodigio inspira.
 
-<!-- §2448 -->
+**[PLANO: los ocho, uno por uno, mientras él camina hacia el piano: la niña del programa arrugado; el chico del puño cerrado; el niño de la silla de ruedas, que por primera vez en toda la noche mueve los ojos; la joven del vestido rojo, desde el barandal; el chico sin rumbo, con su entrada en la mano; la niña tímida, con los oídos tapados; el chico de la ropa gastada, todavía sonriendo; e Itzela, con los puños cerrados.]**
+
 Alextsu ignora las reacciones. Su andar sereno lo lleva al centro del escenario; cada paso resuena en el auditorio como un tamborileo que precede algo monumental. Finalmente se posiciona frente al piano, con los ojos clavados en el director de orquesta, que, nervioso, le asiente con duda y da la señal para iniciar.
 
-<!-- §2449 -->
 **[MÚSICA: Mendelssohn — Piano Concerto No. 1 in G Minor, Op. 25]**
 
-<!-- §2450 -->
 Cuando las primeras notas irrumpen en el aire, el público queda atónito. La intensidad abrasadora del piano arrasa como un vendaval y opaca incluso a la orquesta, que lucha por seguir el ritmo. Alextsu toca con furia contenida; cada tecla es golpeada con precisión milimétrica, pero detrás de esa perfección hay algo inquietante.
 
-<!-- §2451 -->
 El clímax de la pieza desata un torbellino emocional: odio, desesperación y una búsqueda feroz de algo más allá. El público lo siente, pero algo en la ejecución parece… falso, vacío. No es la música de un alma entregada, sino la de un espíritu atrapado.
 
-<!-- §2452 -->
 A pesar de esto, la fuerza y la técnica son tan aplastantes que nadie puede apartar la mirada. El piano domina y sobrecoge…
 
-*«Sin embargo, nadie estaría preparado para lo que sucedería esa noche, ni para cómo cambiaría todo lo que creían saber sobre el mundo».*
+**[TRANSICIÓN: corte a negro en el último acorde. Silencio.]**
+
+> **[DISEÑO] Las voces del Preludio**
+> En el Preludio solo se entienden las palabras de Alextsu y el nombre que susurra Itzela. Cuando un principal despierta y recupera sus recuerdos de la línea 3, **su punto de vista del Preludio se repite con el sonido completo**: el recuerdo recupera la voz. La de Itzela puede sonar en el tren, en el destello que tiene al oír el nombre. Estas son las líneas del texto original:
+>
+> - **Punto de vista 1.** MAYORDOMO: «Por favor, señorita. Solo preséntese y nos vamos en la primera pausa del evento. Su padre realmente se lo agradecería. Además, estamos a la vista de todos; no querrá verse mal ante algún conocido». NIÑA ARISTÓCRATA: «No me importa. Le dije a mi padre que no quería venir, después de tal humillación…».
+> - **Punto de vista 2.** CHICO DESAHUCIADO: «Estrella… Si lo tuviera de frente, lo golpearía hasta que vea estrellas por ser un mentiroso ante todos. Pero aún no entiendo por qué hay tanta seguridad para solo una presentación».
+> - **Punto de vista 3.** PADRE: «Vamos… este evento te animará… Siempre decías que te gustaría venir aquí, a pesar de que no teníamos mucho dinero, ¿no?… Vamos, disfrutémoslo lo más que podamos…».
+> - **Punto de vista 4.** JOVEN DEL VESTIDO ROJO: «Yo no soy la farsa… Yo no soy quien todos creen… Él es la farsa a quien todos aclaman».
+> - **Punto de vista 5.** REPRESENTANTE: «¡Hey, chico! Buenas noches, joven talentoso. Yo sé que usted no me reconoce, pero nosotros a usted sí. ¿Gusta venir a entrar a este evento tan especial que se celebrará el día de hoy?». CHICO SIN RUMBO: «¿Está seguro? No creo que…». REPRESENTANTE: «Oh, no se preocupe. Nos gustaría que grandes talentos como usted vengan a ver a nuestra nueva estrella de la década. Eso nos ayudaría con nuestra próxima nueva publicidad, en la que puede aparecer, y cambiará el mundo». CHICO SIN RUMBO: «¿Nueva estrella? Bueno, ya no pierdo nada a estas alturas».
+> - **Punto de vista 6.** NIÑA TÍMIDA: «Yo no quería venir, yo no quería venir, yo no quería venir… De seguro todos me están juzgando, de seguro todos me están mirando, de seguro él está poniendo a todos en mi contra…». GUARDIA: «Disculpe, jovencita, ¿podría…?». NIÑA TÍMIDA: «¡Noooo!».
+> - **Punto de vista 7.** CHICO DE ROPA GASTADA: «Puede que sí… Le pido un consejo a la nueva estrella… Puede que logre encontrar algo. Después de todo, ya no puede ser peor esto».
+> - **Punto de vista 8.** ITZELA: «Lo siento… disculpe… cuidado con las patas…».
+> - **El técnico.** «Estamos a punto de iniciar… Prepárese para su entrada, pianista». «Sí que no hablas mucho… Bueno, no importa». «Ya puede entrar, señor director» (DIRECTOR DE ORQUESTA: «De acuerdo»). «Sabes, no porque seas la nueva estrella proclamada por los mejores músicos del mundo te da derecho… a… a no responderme ni a los demás…». «Eres un niño extraño, sabes». «No lo sé… ¿Un músico innato, prodigio? Yo solo soy el pasante. Pero recuerda, chico: eres como todos los demás en este mundo».
+> - **El narrador (quitado).** «Sin embargo, nadie estaría preparado para lo que sucedería esa noche, ni para cómo cambiaría todo lo que creían saber sobre el mundo».
 
 <!-- §2454 -->
 ## 23 DE ENERO DE 2017
@@ -366,7 +265,7 @@ Alextsu, aún con dolor, ayuda a Itzela a levantarse: la toma del brazo y le aco
 ¿Que si estoy bien? ¡No puedo estar mejor! Estoy ansiosa de llegar a la E.N.M.A., el lugar donde nacen las estrellas y donde hacen el mejor chocolate calientito del mundo.
 
 <!-- §2476 -->
-Alextsu la mira, confundido: a ella no parece dolerle nada el golpe de cabeza, y él no sabe a qué se refiere con «chocolate calientito». La mira decepcionado, con una ceja arriba y otra abajo.
+Alextsu la mira, confundido: a ella no parece dolerle nada el golpe de cabeza, y no entiende qué tiene de especial un «chocolate calientito». La mira decepcionado, con una ceja arriba y otra abajo.
 
 **ALEXTSU** *(pensando)*
 ¿Acaso no le dolió el golpe contra el piso?
@@ -426,7 +325,7 @@ Itzela cierra los puños, con los ojos decididos.
 **ITZELA**
 Bueno… ¡Piano y violín, juntos, lograremos dominar la E.N.M.A. con nuestra música! Seríamos una combinación impresionante y seríamos el centro de atención en todos los eventos musicales.
 
-Al terminar de hablar, Itzela se levanta para hacer una pose y mostrar su forma de expresarse; sin embargo, quita el seguro de la mesa y se pega en el tobillo con la mesa inferior. Le comienza a doler el tobillo por el impacto, y se acaricia la herida.
+Al terminar de hablar, Itzela se levanta para hacer una pose y mostrar su forma de expresarse; sin embargo, quita el seguro de la mesa y se pega en la rodilla con la mesa inferior. Le comienza a doler la rodilla por el impacto, y se acaricia la herida.
 
 <!-- §2485 -->
 **ITZELA**
@@ -785,7 +684,7 @@ Mike y su gata Lluvia, alertados, comienzan a correr.
 
 **MIKE**
 *(molesto, gritando)*
-¡No soy tan anciano, tengo 59 años!
+¡No soy tan anciano, tengo 58 años!
 
 Mientras se prepara para correr, Mike le susurra a Alextsu:
 
@@ -939,746 +838,6 @@ Sí… no pasa nada.
 *(carcajea)*
 Deberías evitar limitarte a escuchar. No querrás que te caiga nieve de nuevo. Bueno, yo me limitaré a seguir trabajando… Ten cuidado con la nieve, chico.
 
-<!-- §2570 -->
-**— Distrito 4 —**
-
-<!-- §2571-2572 -->
-#### [EVENTO OPCIONAL] Thomas Soto
-
-Thomas está comprando unas postales y una carta para escribir. Piensa en voz alta, alegre y emocionado.
-
-**THOMAS**
-¿Qué debería escribir? Debe ser algo importante… No sé. ¿Usted qué opina, cartero?
-
-**CARTERO**
-*(ocupado)*
-Simplemente escribe lo que te nazca.
-
-**THOMAS**
-*(algo disgustado por la respuesta)*
-Ya lo sé, pero… ya pensé en mucho.
-
-**CARTERO**
-*(aún ocupado, lo escucha)*
-¿Cómo que has pensado?
-
-**THOMAS**
-*(alegre al recordar lo que ha pensado)*
-He pensado cosas como… «Eres el sistema nervioso que me mueve todos los días. Eres los glóbulos rojos que laten mi corazón cada vez que te veo»… Ya sabes, cosas así.
-
-**CARTERO**
-*(suspira)*
-¿Por qué no le escribes eso?
-
-**THOMAS**
-*(serio)*
-No puedo decirle eso… Además, ya se lo dije con anterioridad.
-
-Thomas hace bola la hoja de papel y la tira hacia atrás, en dirección al bote de basura; pero en ese momento Alextsu está ahí, y la bola de papel choca con él. Thomas se percata y voltea.
-
-**THOMAS**
-¡Ni se te ocurra abrir ese bosquejo!
-
-**ALEXTSU**
-*(desconcertado)*
-No te preocupes… solo lo voy a tirar a la basura.
-
-**THOMAS**
-*(mirándolo fijamente)*
-Más te vale. Mi corazoncito de chocolate es la única que puede ver mis cartas.
-
-Suspira y vuelve a escribir.
-
-**THOMAS**
-Como sea, espero poder encontrar alguna idea.
-
-<!-- §2573-2574 -->
-#### [EVENTO OPCIONAL] Hilda Delionor
-
-Hilda está parada cerca de una de las estatuas de los fundadores, mirando unos documentos.
-
-**HILDA**
-*(dudosa)*
-¿Acaso dejé encendido el calentador antes de irme de casa?
-
-**HILDA**
-*(un poco más asustada)*
-¿No será que generé un incendio por accidente?
-
-Gira la cabeza de un lado a otro, negando.
-
-**HILDA**
-No, no, no, eso es imposible. Chequé todas las posibles posibilidades, como en aquella película donde podía ver todas las posibilidades, pero… si ni siquiera puedo cuidar de mí misma, no creo que pueda lograrlo con las plantas.
-
-Se golpea las mejillas con las palmas de las manos.
-
-**HILDA**
-No digas eso… Simplemente, ten seguridad en ti misma.
-
-Abre las manos y las levanta, y en el proceso golpea a Alextsu.
-
-**HILDA**
-Solo debo confiar en que podré cui…
-
-Se percata de Alextsu en el suelo y voltea a mirarlo.
-
-**HILDA**
-Este… ¿Escuchaste lo que dije?
-
-**ALEXTSU**
-*(confundido por el golpe)*
-¿Qué?
-
-**HILDA**
-*(lo mira seriamente)*
-¿O simplemente eres uno de esos espías que roban las semillas de la E.N.M.A. para otros distritos y así ganar la feria del año?
-
-**ALEXTSU**
-*(nervioso)*
-¿Qué? No… Solo pasaba por aquí…
-
-Hilda suspira mientras toma sus cosas.
-
-**HILDA**
-Qué alivio… De cualquier manera, ¡no me sigas!
-
-<!-- §2575-2576 -->
-#### [EVENTO OPCIONAL] Uwin Wednes
-
-**ENTREVISTADORA**
-Buenos días, Uwin Wednes. Queríamos saber si podías ayudarnos con una entrevista para el periódico de la escuela.
-
-**UWIN**
-No te preocupes, el placer es mío. Dime qué quieres preguntarme, pequeño aperitivo.
-
-**ENTREVISTADORA**
-¿Tiene proyectos planeados para el club de gastronomía?
-
-**UWIN**
-*(sonríe)*
-Por supuesto. Después de todo, somos líderes en comida de toda la E.N.M.A., y creo que lo mejor de todo es que tenemos planeado algo grandioso.
-
-**ENTREVISTADORA**
-*(intrigada)*
-Claro. ¿Puedes decirnos qué tiene planeado?
-
-Uwin se dirige a Alextsu.
-
-**UWIN**
-Tú, chico. Dime, ¿qué crees que haremos este año?
-
-**ALEXTSU**
-*(dudoso)*
-Em… ¿yo?
-
-**UWIN**
-*(sonríe)*
-Claro que sí. Adivina.
-
-**ALEXTSU**
-¿Leche de vainilla?
-
-**UWIN**
-*(carcajea)*
-Buen intento. Pero lo que realmente realizaremos son… ¡cupcakes de brócoli!
-
-La entrevistadora queda decepcionada.
-
-**ENTREVISTADORA**
-Bueno… creo que la leche no está mal después de todo…
-
-**UWIN**
-*(sonríe)*
-Claro, soy un genio… Espera, ¿qué? Mejor retírate, chico: tus sugerencias me están dejando mal ante mi entrevista…
-
-**ALEXTSU**
-*(simplemente acepta)*
-Bueno… como tú digas.
-
-<!-- §2577-2578 -->
-#### [EVENTO OPCIONAL] Remilia Mendelov
-
-Remilia está sentada en un banco, cantando.
-
-**REMILIA**
-*(cantando)*
-Las noches que vienes… nunca olvidaré… Las cosas divertidas que una vez hicimos. Las cartas que hiciste… las fotos que lograste… jamás olvidarán tu paso en este mundo…
-
-Alextsu solo observa.
-
-**ALEXTSU** *(pensando)*
-Qué linda canción.
-
-**REMILIA**
-*(sonríe)*
-Veo que me llevas un rato mirando cómo canto…
-
-**ALEXTSU**
-*(avergonzado)*
-Perdón, no quise molestar.
-
-**REMILIA**
-*(carcajea alegremente)*
-No te preocupes, puedes seguir oyendo si gustas. Pero solo puedes oír. Nada de preguntas…
-
-Alextsu asiente. Remilia continúa.
-
-**REMILIA**
-*(cantando)*
-Los libros que leíste… los objetos que encontraste… Las veces que me contaste que siempre estarás conmigo… Lalalalalalaaaa.
-
-<!-- §2579 -->
-**— Distrito 3 —**
-
-<!-- §2580-2581 -->
-#### [EVENTO OPCIONAL] Han Fan
-
-Han está angustiado por beber tanto café.
-
-**HAN**
-N… No… No… Los cálculos no salen. ¿Por qué no salen? Se supone que deberían funcionar, deben funcionar. ¿O soy yo el que no funciona?
-
-Alextsu escucha, desconcertado.
-
-**ALEXTSU** *(pensando)*
-Ese chico parece algo raro…
-
-Han verifica y cuenta de nuevo.
-
-**HAN**
-A ver, si agrego esto y resto esto… La ecuación debería dar, pero parece que no da con el resultado que me había dicho mi asesora. ¡No! ¿Por qué no da?
-
-Alextsu intenta tocarle el hombro.
-
-**ALEXTSU**
-Oye, chico…
-
-Han se altera y tira el café al piso.
-
-**HAN**
-¡Rayos!
-
-**ALEXTSU**
-Lo siento, no quería alterarte.
-
-A Han no le importa eso más que sus cálculos: tiene la mirada clavada en las hojas llenas de números.
-
-**HAN**
-No te preocupes, es mi culpa… Llamo tanto la atención que te preocupaste. No te preocupes por el café, ya me había tomado 5 tazas.
-
-**ALEXTSU**
-*(dudoso)*
-¿Seguro?
-
-Han suspira: pensó que le había salido la ecuación.
-
-**HAN**
-Sí, no te preocupes. Ahora solo déjame terminar esto, por favor.
-
-<!-- §2582-2583 -->
-#### [EVENTO OPCIONAL] Olivia Drimur
-
-Olivia toma fotos de todos los estudiantes que van llegando, emocionada por dentro.
-
-**OLIVIA**
-*(para sí)*
-¡Esta vez me voy a ganar un ascenso! Ya no seré la típica chica que tiene que tomarle fotos a los aburridos eventos jurídicos del consejo. ¡No! Ya no más, niña. Yo seré la que haga las primeras planas, como lo fue una vez la inauguración del parque del Distrito 4.
-
-Olivia piensa un momento.
-
-**OLIVIA**
-Ahora que lo pienso, incluso puedo sustituir al líder si le llevo una exclusiva. Pero como casi no pasa nada en la E.N.M.A., probablemente me mande a corregir los textos de los editores. Qué triste… Bueno, creo que si me tomo una foto desde aquí, tal vez la guarde como recuerdo.
-
-Olivia se toma una foto, y Alextsu sale de fondo.
-
-**OLIVIA**
-*(molesta)*
-¡Oye, chico!
-
-**ALEXTSU**
-*(desconcertado)*
-¿Yo?
-
-**OLIVIA**
-*(seria)*
-Arruinaste mi foto, ahora voy a tener que tener que…
-
-Olivia trata de guardar el equilibrio, pero se cae a la nieve.
-
-**ALEXTSU**
-*(dudoso)*
-¿Estás bien?
-
-**OLIVIA**
-*(disgustada)*
-Ay, no… se mojaron las fotos. Voy a tener que quedarme un rato más. Ahora dame permiso, chico, antes de que empeores mi día, que iba fabuloso.
-
-**ALEXTSU**
-*(extrañado por lo que sucedió)*
-De acuerdo…
-
-<!-- §2584-2585 -->
-#### [EVENTO OPCIONAL] Sabrina Jiménez
-
-Sabrina sonríe, optimista. No lleva abrigo, pero parece que no tiene frío.
-
-**SABRINA**
-Veamos. Parece que este año será uno muy productivo, tanto académicamente como para mi cuerpo. Si logro terminar el proyecto que nos encargó la E.N.M.A., puede que hasta me dedique a esto por completo. Ya no más circuitos tontos que hacen perder el tiempo.
-
-Sabrina gira, alegre y emocionada.
-
-**SABRINA**
-Después de todo, es lo que me tocó a mí.
-
-Alextsu observa a Sabrina, impresionado. Ella se da cuenta de su mirada.
-
-**SABRINA**
-*(alegre)*
-¿Impresionado de ver a alguien que no tiene frío?
-
-**ALEXTSU**
-*(impresionado)*
-Por supuesto. Estamos a −8 grados.
-
-**SABRINA**
-*(carcajea)*
-Si entrenas mucho, puedes llegar a tener esta resistencia. Claro está que mis zapatos, que fabriqué con última tecnología, me brindan calor en mis patitas.
-
-**ALEXTSU**
-Bueno, creo que de cualquier manera deberías tener un abrigo, por si te llega a dar un resfriado.
-
-**SABRINA**
-*(estornuda)*
-No es nece… ¡Achú! Bueno, creo que tienes algo de razón… Buscaré un abrigo. Luego te veo… ¡Achú!…
-
-<!-- §2586-2587 -->
-#### [EVENTO OPCIONAL] Samato Kutoro
-
-Samato carga su maleta con dificultad.
-
-**SAMATO**
-Maldición… Le dije a mi papá que no me llenara las maletas con ropa y peluches de mi infancia. Ahora se me hará imposible subir las escaleras.
-
-Alextsu observa a la chica que está a su lado. Los dos lo dicen al mismo tiempo.
-
-**ALEXTSU Y SAMATO**
-*(a la vez)*
-Odio las escaleras con esta condición.
-
-**SAMATO**
-*(suspira)*
-¿Y a ti por qué no te gustan?
-
-**ALEXTSU**
-*(suspira)*
-¿A ti por qué no te gustan?
-
-**SAMATO**
-*(seria)*
-¿No es obvio?
-
-Alextsu se avergüenza al notar la estatura de Samato y no haberse dado cuenta.
-
-**ALEXTSU**
-Lo siento, a veces malinterpreto lo que es obvio a simple vista.
-
-**SAMATO**
-*(carcajea levemente, a pesar de su seriedad)*
-Es lo que muchos dicen cuando ven mi tamaño. ¿Por qué no te gustan las escaleras a ti?
-
-**ALEXTSU**
-Digamos que me dieron una bofetada, la persona que me la dio corrió dejando su maleta, y ahora tengo que cargar dos maletas.
-
-**SAMATO**
-*(suspira)*
-Es más fácil eliminar esa maleta con ácido clorítico y subir tú solo con tu maleta. Y así llevar mi maleta.
-
-**ALEXTSU**
-*(desconcertado)*
-¿Ácido qué?
-
-**SAMATO**
-*(suspira)*
-No lo entenderías… Bueno, intentaré pensar en cómo subir las escaleras. Suerte con tu golpe.
-
-<!-- §2588 -->
-**— Distrito 2 —**
-
-<!-- §2589-2590 -->
-#### [EVENTO OPCIONAL] Elian Xosherxe
-
-Elian está molesto. Su estuche está tirado en el suelo.
-
-**ELIAN**
-*(molesto)*
-¡¿Qué se supone que haga con acuarelas de esta calidad?! Mi padre debió pensar en algo mejor antes de darme un regalo de despedida. Después de todo, soy de los pocos con renombre que aún traen algo de honor a la familia. Ya que «No deberías ir a actuación», por favor.
-
-Alextsu observa el estuche tirado.
-
-**ALEXTSU** *(pensando)*
-¿Por qué habrá tirado su estuche aquel chico?
-
-**ELIAN**
-*(suspira)*
-Dios mío, ahora a esperar a que el distrito disponga de material que valga la pena. Pero… me perderé esta hermosa vista. Una lástima, después de todo.
-
-Alextsu se dirige a Elian.
-
-**ALEXTSU**
-Oye, chico… tiraste eso.
-
-Elian, desconcertado, observa su estuche.
-
-**ELIAN**
-¿Eh?
-
-**ALEXTSU**
-*(desconcertado al ver que no lo toma)*
-¿No lo vas a tomar?
-
-**ELIAN**
-*(serio, fanfarronea)*
-No puedo tener esa cosa. No serviría para la calidad de mis obras.
-
-**ALEXTSU**
-*(dudoso)*
-Pero si alguien más lo toma, lo podría usar en nombre tuyo.
-
-**ELIAN**
-*(sorprendido de no haberlo pensado)*
-Es verdad. No puedo dejar que cualquier principiante de manos inexpertas venda obras a base de mis materiales. El renombre que he hecho se perdería en un momento.
-
-**ALEXTSU**
-*(desconcertado)*
-Solo piensa en sus obras.
-
-**ELIAN**
-*(tranquilo)*
-En ese caso, me dispongo a pintar esta bella imagen de la E.N.M.A. Por favor, retírese de mi magnate siguiente obra de arte.
-
-Alextsu simplemente se aleja…
-
-<!-- §2591-2592 -->
-#### [EVENTO OPCIONAL] Nicolas Krikov
-
-Nicolas está indeciso en una tienda.
-
-**NICOLAS**
-Esto… ¿Cree que con esto le logre ganar al distrito 3?
-
-**VENDEDOR**
-¿Eh?
-
-**NICOLAS**
-*(serio)*
-Sí… algo que pueda incluso opacar la integridad de los clubes del distrito 3. Es hora de que el distrito 2 recupere la corona, ¿no cree?
-
-**VENDEDOR**
-*(desconcertado)*
-Chico, nosotros solo vendemos focos.
-
-**NICOLAS**
-*(dudoso)*
-Aunque este, en forma de fogata, podría estar bien para mi cuarto. ¿Tú qué opinas, chico?
-
-**ALEXTSU**
-*(desconcertado)*
-Oh… Lo siento, solo estoy viendo.
-
-**NICOLAS**
-Oh, vamos. ¿Cuál crees que sea muy interesante para ti de todos estos focos?
-
-**ALEXTSU**
-*(dudoso)*
-Supongo que el que parece en forma de foco.
-
-**NICOLAS**
-*(desconcertado)*
-¿En serio, ese?
-
-**ALEXTSU**
-Sí. ¿Qué tiene?
-
-Nicolas duda de sí mismo por un segundo.
-
-**NICOLAS**
-Me convenciste. Me lo llevo.
-
-**VENDEDOR**
-*(suspira)*
-Por fin…
-
-**NICOLAS**
-*(serio)*
-Bueno. Pero necesito ver el papel de información del foco antes de llevarlo, y leer las 30 hojas para estar seguro de que esto vencerá al distrito 3.
-
-El vendedor suspira. Alextsu lo deja.
-
-<!-- §2593-2594 -->
-#### [EVENTO OPCIONAL] Nadia Panini
-
-Nadia, adolorida, trata de coser su ropa.
-
-**NADIA**
-¿Por qué siempre me pasa esto? Tuvo que ser el día de hoy que se tuvo que descoser mi ropa… A ver… ¡auch!
-
-Nadia intenta coser con buena técnica, pero las manos frías no la dejan concentrarse: falla y se pincha las manos.
-
-**NADIA**
-Auch… eso dolió. Esto sería más fácil si no fuera por el frío.
-
-Alextsu observa a Nadia, que se lame el dedo porque le sale sangre. Ella se pone nerviosa al verlo.
-
-Nadia falla de nuevo, vuelve a pincharse el dedo y pierde la aguja.
-
-**NADIA**
-¡Nyaaa!
-
-**ALEXTSU**
-*(desconcertado)*
-Lo siento. No quise molestar…
-
-**NADIA**
-*(suspira)*
-Perdí mi aguja preferida… Ahora tendré que buscarla, a ver si la encuentro. Aunque lo dudo, por la gran cantidad de nieve…
-
-**ALEXTSU**
-¿Necesitas ayuda?
-
-**NADIA**
-*(suspira)*
-No te preocupes. Es mi culpa por usar un suéter de hace 10 años. Ya la encontraré. Tú…
-
-Observa el estado de Alextsu, adolorido.
-
-**NADIA**
-Creo que necesitas subir unas escaleras.
-
-**ALEXTSU**
-*(asiente)*
-Tienes razón… Suerte con la aguja…
-
-**NADIA**
-*(aún adolorida)*
-¡Nyaaa! Creo que me pinché otra vez…
-
-<!-- §2595-2596 -->
-#### [EVENTO OPCIONAL] Fernanda Hernández
-
-Fernanda actúa, tratando de disimular.
-
-**FERNANDA**
-Eres una gran actriz, Fernanda. Rápida como una chita, ligera como mariposa y fuerte como un lobo cuando toma su comida. Disimula y… llegaré a lo más alto de la actuación…
-
-Se pone la mano en la cara.
-
-**FERNANDA**
-Soy Fernanda Hernández, y yo seré la…
-
-Alextsu la mira extrañado, desconcertado.
-
-**ALEXTSU**
-Em…
-
-**FERNANDA**
-*(avergonzada, completa su frase)*
-…nueva estrella de la E.N.M.A.
-
-**ALEXTSU**
-*(incómodo, sin mucho que decir)*
-Es bueno tu entusiasmo.
-
-Fernanda disimula que no vio a Alextsu.
-
-**FERNANDA**
-Bueno, solo él me ha visto, pero nadie más sabrá lo que soy capaz de lograr. Yo, Fernanda Hernández, llenaré de pasión con mi actuación…
-
-Alextsu, desconcertado, simplemente se aleja.
-
-**ALEXTSU**
-Bueno…
-
-<!-- §2597 -->
-**— Distrito 1 —**
-
-<!-- §2598-2599 -->
-#### [EVENTO OPCIONAL] Ivan Kerios
-
-Ivan, alegre, degusta una rica sopa.
-
-**IVAN**
-¡La mejor sopa de todas! Extrañaba la deliciosa sopa de la entrada de la E.N.M.A. Debería ser una ley probarla al menos una vez. De hecho, podríamos hacer una ley para que todos la hagan… Por esto no se lo puede perder ni el mismo rector.
-
-Ivan observa a Alextsu.
-
-**IVAN**
-¡Tú, chico!
-
-**ALEXTSU**
-Yo solo…
-
-**IVAN**
-*(dudoso)*
-Solamente me mirabas cómo comía la sopa, ¿no es así? Debería llevarte al tribunal por acoso…
-
-**ALEXTSU**
-*(desconcertado)*
-¿Eh?
-
-**IVAN**
-*(carcajea)*
-Es un chiste… Pero no te limites a solo ver a las personas comer… Eso es algo grosero, inclusive después de la guerra.
-
-**ALEXTSU**
-*(apenado)*
-Lo siento. Trataré de no molestar de esa manera de nuevo.
-
-**IVAN**
-*(sonríe)*
-Eso es un avance. Mucha suerte… Y ten cuidado con las chicas: cuando menos te lo esperes, ¡pum!, te meten una queja a juicio por robarles el último pan.
-
-**ALEXTSU**
-*(dudoso)*
-¿Lo dices por experiencia?
-
-Ivan se queda en silencio un rato.
-
-**IVAN**
-Bueno… yo seguiré comiendo. Suerte…
-
-<!-- §2600-2601 -->
-#### [EVENTO OPCIONAL] Edward Rutterford
-
-Edward, serio, piensa bajo un árbol con los ojos cerrados; casi parece que está durmiendo.
-
-Alextsu lo observa. Hay una moneda tirada. La intenta tomar, pero, al tratar de tomarla, la moneda es jalada hacia Edward, y Alextsu cae a la nieve.
-
-**EDWARD**
-*(carcajea)*
-El viejo truco de la moneda. Nunca falla con los nuevos.
-
-Alextsu, desconcertado, se levanta y se quita la nieve.
-
-**ALEXTSU**
-Es la primera vez que veo ese truco.
-
-**EDWARD**
-*(sonríe)*
-Hay más trucos con monedas y…
-
-Tose un poco.
-
-**EDWARD**
-¡Ejem! Con dinero… pero eso no lo muestro tan fácil a cualquiera. Así que, si no te molesta… dame permiso para ver si alguien más cae en mi truco.
-
-**ALEXTSU**
-*(dudoso)*
-Bueno…
-
-<!-- §2602-2603 -->
-#### [EVENTO OPCIONAL] Liz Lion
-
-Liz, alegre, trae a su perro consigo.
-
-**LIZ**
-Este año, después de tantos trámites, te han dejado venir a vivir conmigo a la E.N.M.A.
-
-**BOLA DE NIEVE**
-Wof.
-
-**LIZ**
-*(suspira)*
-Aunque odio este clima frío, parece que a ti te sienta bien, con tu pelaje.
-
-**BOLA DE NIEVE**
-Wof.
-
-Alextsu, sorprendido de ver un perro, susurra.
-
-**ALEXTSU**
-*(susurra)*
-Qué raro… creí que las mascotas estaban prohibidas.
-
-**LIZ**
-*(lo observa)*
-Si tienes algo que decir, solo dilo. No porque seamos el club con menos presupuesto puedes hablar frente a nosotros.
-
-**BOLA DE NIEVE**
-¡Wof, wof!
-
-**ALEXTSU**
-*(apenado)*
-No es eso. Solo pensé que es algo raro ver un perro, cuando creo que en la E.N.M.A. no se permiten mascotas…
-
-**LIZ**
-*(sonríe)*
-Así que es eso. Bueno… me tomó dos años lograrlo, pero no es imposible. Después de todo, hasta en la casa de estudios más rigurosa se puede lograr lo imposible. ¿No es así, Bola de Nieve?
-
-Bola de Nieve se sacude el pelaje y llena a Alextsu de nieve.
-
-**LIZ**
-*(carcajea)*
-Parece que le caes bien.
-
-Alextsu simplemente se limpia.
-
-**ALEXTSU**
-Eso creo…
-
-**LIZ**
-*(suspira)*
-Luego nos vemos… Creo que tienes un camino largo con esas maletas.
-
-**BOLA DE NIEVE**
-Wof…
-
-<!-- §2604-2605 -->
-#### [EVENTO OPCIONAL] Damara Linkyn
-
-Damara se limita a observar a las personas.
-
-**DAMARA**
-Wow…
-
-Ve a otra persona.
-
-**DAMARA**
-Woooow…
-
-Ve a Alextsu.
-
-**DAMARA**
-Wooooooow…
-
-**ALEXTSU**
-*(desconcertado)*
-¿Qué es tan impresionante?
-
-**DAMARA**
-*(susurra)*
-Que eres un chico con una mano marcada en la cara. Solo las había visto en las películas, pero la tuya… parece de verdad.
-
-**ALEXTSU**
-*(apenado)*
-Bueno… sí es de verdad.
-
-**DAMARA**
-*(asombrada)*
-El mundo fuera de mi club es realmente increíble… Qué lástima que solo sea una vez al año… Aunque tú… siento que puedes agregar algo a esta escuela…
-
-**ALEXTSU**
-*(dudoso)*
-¿Algo…?
-
-**DAMARA**
-*(sonríe)*
-Sí… ¡algo explosivo!
-
-Damara carcajea.
-
-**DAMARA**
-No te preocupes, me gusta fantasear con lo que ocurriría… Así que solo ignórame…
-
 ### 1.4 · EXT. ENTRADA DE LA E.N.M.A. — ATARDECER
 
 <!-- §2607 -->
@@ -1784,7 +943,7 @@ Perdón, es mi primera vez ayudando a estudiantes… E… es por la puerta A.
 Alextsu está frente a una ventanilla de cristal con adornos de la Navidad pasada. El ambiente huele a impresora y a papeles; hay muchos archiveros para guardar documentación, una iluminación amarilla, y la nieve se apiña a su alrededor.
 
 <!-- §2632 -->
-ROBERT toma un sorbo de café mientras mira la computadora, algo agotado pero decidido.
+ROBERT toma un sorbo de café mientras mira la pantalla verde de una terminal, algo agotado pero decidido.
 
 **ROBERT**
 Me das tu papel de ingreso y tu documentación, por favor.
@@ -1823,12 +982,12 @@ Jamás pensé que tuvieras un pasado tan malo, antigua estrella. El coma, venir 
 <!-- §2639 -->
 **ALEXTSU**
 *(abrumado)*
-¿Antigua estrella? Eres la tercera persona que me dice eso.
+¿Antigua estrella?… Y eres la tercera persona que se pone así por mi historia.
 
 <!-- §2640 -->
 **ROBERT**
 *(sonríe mientras sella los documentos)*
-No tiene nada de malo tener empatía por los demás. Después de la guerra de los 50 o 60 años, creo que vendría algo bien mirar por los demás.
+No tiene nada de malo tener empatía por los demás. Después de la guerra de los 50 años, creo que vendría algo bien mirar por los demás.
 
 <!-- §2641 -->
 **ALEXTSU**
@@ -1836,9 +995,15 @@ No tiene nada de malo tener empatía por los demás. Después de la guerra de lo
 ¿Guerra?
 
 <!-- §2642 -->
+Robert deja el sello a medio camino. Mira de reojo la fila que hay detrás de Alextsu y baja la voz.
+
 **ROBERT**
-*(sorprendido de su desconocimiento, pero comprensivo)*
 Ya veo, así que aún no estás al tanto. En resumidas cuentas, hubo una guerra que duró 50 años en Europa y que sacudió a todo el mundo. Pero es algo que poco a poco entenderás; solo soy un simple administrativo.
+
+<!-- añadido el 26/10/2026 -->
+**ROBERT**
+*(suspira)*
+Un consejo, eso sí: no lo preguntes en voz alta allá afuera. Casi todos perdieron algo en ella… y no todos tienen mi paciencia.
 
 <!-- §2643 -->
 **ALEXTSU**
@@ -1855,11 +1020,17 @@ Puede que sí, o puede que ya las sabías pero aún no las recuerdas. Trata de f
 *(sonríe)*
 Entiendo. Trataré de recordar algo en mi entorno.
 
+<!-- añadido el 26/10/2026 -->
+**[PLANO: el expediente, un instante: «PROMESA DE CLASICAL — INGRESO DIRECTO — RESULTADO: PENDIENTE». Robert lo sella sin leerlo dos veces.]**
+
+**ROBERT**
+Ingreso directo, y con todo el papeleo de la FDPH. Si ellos te pusieron aquí, por algo será. Lo demás se va acomodando solo.
+
 <!-- §2646 -->
 Robert le da sus papeles y sus llaves.
 
 **ROBERT**
-Mira, aquí tienes. Mucha suerte en tu búsqueda, antigua estrella.
+Mira, aquí tienes. Habitación 248; la compartirás con un tal Dorokan. Mucha suerte en tu búsqueda, antigua estrella.
 
 <!-- §2647 -->
 **ALEXTSU**
@@ -1987,7 +1158,7 @@ Alextsu lee el periódico de la E.N.M.A., que es gratuito. Pero en cuanto echa u
 Alextsu se pone algo molesto al recordar el golpe que le dio Itzela en el tren. Sin soltar el periódico:
 
 **ALEXTSU**
-¿Qué tratas de hacer, Itzela?
+¿Qué tratas de hacer, chica del tren?
 
 <!-- §2678 -->
 Itzela sonríe y saluda, negando ser Itzela, con voz ronca y temblando por el frío.
@@ -2068,7 +1239,7 @@ Creo que puedo comprender tu enojo, si yo estuviera en tu lugar.
 <!-- §2691 -->
 **ALEXTSU**
 *(molesto)*
-Encima, ¡por poco me arrestan por un gato que ni siquiera era mío!
+Encima, ¡por poco me arrestan junto a un señor que escondía una gata!
 
 <!-- §2692 -->
 **ITZELA**
@@ -2290,12 +1461,12 @@ Sí. Este distrito es tan hermoso como el distrito dos o el distrito tres, pero 
 <!-- §2727 -->
 **ALEXTSU**
 *(sin poder recordar)*
-¿Qué es un helado?
+Sé lo que es un helado… creo. Pero no recuerdo haber probado uno.
 
 <!-- §2728 -->
 **ITZELA**
 *(desconcertada y preocupada)*
-¡¿No sabes qué es un helado?!
+¡¿No recuerdas haber probado un helado?!
 
 <!-- §2729 -->
 **ALEXTSU**
@@ -2347,7 +1518,7 @@ Ahora que veo…
 <!-- §2737 -->
 **ALEXTSU**
 *(dudoso)*
-Apenas noté tu otra maleta. ¿Eres pianista?
+Apenas noté tu otra maleta. ¿Además del violín, también eres pianista?
 
 <!-- §2738 -->
 **ITZELA**
@@ -2362,7 +1533,7 @@ Había muchos que llevaban dos maletas en el tren.
 <!-- §2740 -->
 **ITZELA**
 *(termina de carcajear)*
-Bueno, yo soy la excepción. Yo soy violinista, ¡y yo seré la próxima estrella de la E.N.M.A.!
+Bueno, yo soy la excepción. Yo solo soy violinista, ¡y yo seré la próxima estrella de la E.N.M.A.!
 
 Un silencio corto.
 
@@ -2425,7 +1596,7 @@ Haré lo mejor para recuperarlos. Tenemos el Jardín de Fa, la cúpula principal
 <!-- §2749 -->
 **ALEXTSU**
 *(aceptando mejor la idea ante la decisión de Itzela)*
-¿Qué es eso?
+¿Y qué tiene de especial ese chocolate?
 
 <!-- §2750 -->
 **ITZELA**
@@ -2447,7 +1618,7 @@ Ya casi llegamos.
 Alextsu observa su papel de inscripción.
 
 **ALEXTSU**
-Edificio 4… Parece que nos tocó hasta la esquina noroeste del Distrito 4.
+Edificio 2, cuarto 248… Parece que nos tocó hasta la esquina noroeste del Distrito 4.
 
 <!-- §2757 -->
 Itzela mira seriamente y cierra el puño; luego levanta la mano al cielo.
@@ -2583,7 +1754,7 @@ Ya adentro. Una vez que ambos ingresan al cuarto de Alextsu, Itzela, que sonreí
 Alextsu, desconcertado, ve un teléfono y lo mira.
 
 **ALEXTSU**
-Ya lo creo, pero… ¿qué es esto?
+Ya lo creo, pero… un teléfono. ¿A quién se supone que llamo?
 
 <!-- §2782 -->
 Itzela, sin hacerle caso, se sienta en una silla.
@@ -2732,6 +1903,47 @@ Alextsu, desconcertado, sin entender su enojo, esquiva todas las cosas que le av
 
 Finalmente, Itzela logra pegarle en la frente con su maleta.
 
+<!-- añadido el 26/10/2026 -->
+### 1.12A · INT. DESPACHO DEL RECTOR / INT. CUARTO 248 — NOCHE (INTERCALADO)
+
+**[CINEMÁTICA]**
+
+Despacho del rector. Una sola lámpara encendida. ARTUR revisa los expedientes de los residentes que llegaron hoy. Mira uno: sobre la foto se cruza, como un pensamiento, lo que pasará si lo deja residir: el chico, años después, tocando en una orquesta de provincia, sin sobresaltos. Artur firma.
+
+Otro: si la deja residir, la chica abandona en marzo. Artur lo aparta sin firmar.
+
+El siguiente trae el sello de esta tarde, de la ventanilla de la puerta A: «PROMESA DE CLASICAL — INGRESO DIRECTO — RESULTADO: PENDIENTE». Artur lee el nombre y se detiene.
+
+**ARTUR** *(para sí)*
+Alextsu…
+
+Espera el pensamiento. No llega nada: solo el papel, la tinta y la foto.
+
+**[SONIDO: el tictac del reloj del despacho se apaga de golpe.]**
+
+Cuarto 248, a oscuras. ITZELA, despierta en la litera de arriba, mira hacia abajo. Alextsu duerme con un chichón en la frente.
+
+**ITZELA** *(susurra)*
+Cuatro años viéndote dormir… y nunca habías roncado.
+
+Alextsu ronca. Itzela se tapa la boca para no reírse.
+
+Despacho. Una queja del Distrito 4: un residente acabó en una habitación de chicas; alguien no está en el cuarto que le toca. Artur intenta ver qué pasa si lo deja estar. Tampoco ve nada.
+
+Se acerca a la ventana: la E.N.M.A. entera bajo la nieve. Sobre cada ventana encendida se cruza un pensamiento, un destino. En el Distrito 4, alrededor de un solo edificio, nada: ventanas sin futuro.
+
+**ARTUR**
+Cuatrocientos años viéndolo todo…
+
+Vuelve al escritorio y escribe a mano.
+
+**ARTUR** *(off, mientras escribe)*
+Para el bi-ministrador del Distrito 4: expulse a la persona que rompió el reglamento.
+
+Sella la carta.
+
+**[TRANSICIÓN: fundido a negro.]**
+
 **[FIN DEL DÍA]**
 
 <!-- §2805-2806 -->
@@ -2739,7 +1951,7 @@ Finalmente, Itzela logra pegarle en la frente con su maleta.
 **[NOTA DE PRODUCCIÓN: después de terminar el Storyboard n.º 2.]**
 
 <!-- §2807 -->
-### 1.13 · INT. EDIFICIO 3, CUARTO 248 (ALEXTSU E ITZELA) — 6:30 AM
+### 1.13 · INT. EDIFICIO 2, CUARTO 248 (ALEXTSU E ITZELA) — 6:30 AM
 
 <!-- §2808 -->
 **[TRANSICIÓN: paso rápido de la noche en la E.N.M.A.]**
@@ -2848,10 +2060,10 @@ De acuerdo. Prepararé mis cosas en lo que te arreglas…
 Alextsu entra al baño y, al entrar, grita (se refiere al brasier de Itzela):
 
 **ALEXTSU**
-¡LA LETRA C!
+¡OTRA VEZ LA LETRA D!
 
 <!-- §2826 -->
-### 1.14 · INT. COMEDOR DEL DISTRITO 4 — MAÑANA, 8:00 AM
+### 1.14 · INT. COMEDOR DEL DISTRITO 4 — MAÑANA, 7:00 AM
 
 <!-- §2827 -->
 **[TRANSICIÓN: pequeña transición del amanecer del Distrito 4.]**
@@ -3009,13 +2221,50 @@ De fondo, Alextsu e Itzela desayunan. Itzela mira a su alrededor, impresionada p
 > **[DISEÑO] Periódico**
 > *Presentación de profesores y lista de cosas de estos.*
 >
-> **Gran inicio de año para la E.N.M.A.** ¡Un nuevo año inicia para la E.N.M.A., puesto que la inscripción de nuevos estudiantes ha superado un récord! El año anterior ingresaron 10,754 estudiantes y en el presente las matrículas aumentaron a 15,000, lo cual es un récord para la E.N.M.A. Asimismo, se espera que este año el consejo, junto con los comités de los respectivos distritos, se abra a los estudiantes y docentes con propuestas de nuevas mejoras para cada distrito. Sin duda, este año se esperan muchas cosas para la E.N.M.A. y para los estudiantes en general.
+> **Gran inicio de año para la E.N.M.A.** ¡Un nuevo año inicia para la E.N.M.A., puesto que la inscripción de nuevos estudiantes ha superado un récord! El año anterior ingresaron 10,754 estudiantes y en el presente las matrículas aumentaron a 11,000, lo cual es un récord para la E.N.M.A. Asimismo, se espera que este año el consejo, junto con los comités de los respectivos distritos, se abra a los estudiantes y docentes con propuestas de nuevas mejoras para cada distrito. Sin duda, este año se esperan muchas cosas para la E.N.M.A. y para los estudiantes en general.
 >
 > Las carreras abren sus puertas a la inscripción de nuevos miembros, así que ¡es tu oportunidad de realizar otra carrera al mismo tiempo que estudias el arte de la música! Los líderes de dichas carreras estarán dando pruebas durante la siguiente semana en presencia de los estudiantes, para mostrar lo que se realiza en cada una de ellas. Únete a una carrera secundaria.
 >
 > El presupuesto del seguro de restauración de edificios se duplicó este año: a pesar de la negativa del consejo y de todos los líderes de las distintas carreras, así como de los comités de los distintos distritos, aceptaron las peticiones del director principal Artur Hosenfield. Todos sospechan que puede ser algún tipo de estrategia para un desvío de recursos. Sin embargo, el consejo lo niega, y el rector de la E.N.M.A. aclaró que le preocupa el futuro de los inmuebles de la E.N.M.A. Aún se investigará la preocupación de Artur ante esta declaración.
 >
-> ¡Este viernes 20 de enero no te pierdas el gran concierto que se llevará a cabo en el Distrito 4! Este año le toca al Distrito 4 llenar a toda la E.N.M.A. con sus melodías encantadoras. Recuerda que la entrada es gratis. Ven a ver el talento de nuestros estudiantes veteranos, una forma de inspiración: ¡para llegar a ser un gran músico se empieza por escuchar a otros!
+> ¡Este sábado 28 de enero no te pierdas el gran concierto de clausura que se llevará a cabo en el Distrito 4! Este año le toca al Distrito 4 llenar a toda la E.N.M.A. con sus melodías encantadoras. Recuerda que la entrada es gratis. Ven a ver el talento de nuestros estudiantes veteranos, una forma de inspiración: ¡para llegar a ser un gran músico se empieza por escuchar a otros!
+
+<!-- añadido el 26/10/2026 -->
+Alextsu baja el periódico, todavía pensativo.
+
+**ALEXTSU**
+*(en voz alta, sin pensar)*
+Oye, Itzela… ¿Tú sabes qué pasó en la guerra de los 50…?
+
+Itzela, con la boca llena de hot cake, le tapa la boca con la mano llena de miel. En las mesas de alrededor, varios se giran a mirarlos.
+
+**ITZELA**
+*(con la boca llena, sonriendo de más)*
+¡La guerra de los hot cakes! ¡Siempre nos peleamos por el último!
+
+Los estudiantes vuelven a lo suyo, salvo una trabajadora del comedor, que se queda mirando a Alextsu un segundo más. Por un instante, Itzela deja de sonreír y mira a su alrededor. Sin quitarle la mano, le susurra.
+
+**ITZELA**
+*(susurra)*
+Aquí no se pregunta eso, ¿entendido?
+
+Alextsu asiente. Itzela le quita la mano: él se queda con la boca llena de miel.
+
+**ALEXTSU**
+*(en voz baja)*
+El señor de la ventanilla me dijo lo mismo.
+
+Se lame la miel, sorprendido.
+
+**ALEXTSU**
+…Está buenísima.
+
+**ITZELA**
+*(incrédula)*
+¿Nunca habías probado la miel?
+
+**ALEXTSU**
+No que yo recuerde.
 
 <!-- §2867 -->
 **[TRANSICIÓN: corta, de reloj.]**
@@ -3335,7 +2584,7 @@ No. Iremos a la plaza principal a ver los clubes. Dicen que el Distrito 1 estar�
 <!-- §2938 -->
 **ALEXTSU**
 *(curioso)*
-¿Clubes? ¿Qué es eso?
+¿Clubes? ¿Qué clase de clubes?
 
 <!-- §2939 -->
 **ITZELA**
@@ -3503,14 +2752,14 @@ Itzela se sorprende al observar que aún no hay nada de los clubes.
 No, solo les di un vistazo a las pancartas. De cualquier manera, preguntemos.
 
 <!-- §2994 -->
-Puesto del club de Economía.
+Puesto del club de Economía. Lo atiende su líder, TAO LING.
 
 **ALEXTSU**
 *(incómodo)*
 Disculpa, perdona. ¿Sabes cuándo se llevará a cabo la…?
 
 <!-- §2995 -->
-**LÍDER DEL CLUB DE ECONOMÍA**
+**TAO**
 *(lo interrumpe)*
 Será mañana, así que no me molestes mientras hago los preparativos. De cualquier manera, esto será igual que en los años anteriores.
 
@@ -3525,13 +2774,13 @@ Creo que ha tenido un mal día.
 Tienes razón, dejémoslo en paz.
 
 <!-- §2999 -->
-Puesto del club de Derecho.
+Puesto del club de Derecho y Ley. Lo atiende su líder, MAXWELL RUTERFORD.
 
 **ALEXTSU**
 Disculpa, ¿aquí se llevará a cabo el evento de clubes?
 
 <!-- §3000 -->
-**LÍDER DEL CLUB DE DERECHO**
+**MAXWELL**
 *(bromea)*
 ¿Aquí? En la plaza principal, como dicen en los panfletos. No lo sé…
 
@@ -3546,21 +2795,21 @@ Qué pregunta más boba, Alextsu.
 Ya entiendo el sarcasmo.
 
 <!-- §3003 -->
-**LÍDER DEL CLUB DE DERECHO**
+**MAXWELL**
 *(sonríe)*
-Dense una vuelta mañana para que vean el club de Derecho; puede que les interese. Hasta entonces estaré ocupado. Buena suerte.
+Dense una vuelta mañana para que vean el club de Derecho y Ley; puede que les interese. Hasta entonces estaré ocupado. Buena suerte.
 
 <!-- §3006 -->
-Puesto del club de Agricultura y Ganadería.
+Puesto del club de Agronomía. Lo atiende su líder, MAX ROYAL.
 
 **ALEXTSU**
 *(curioso)*
 Em… disculpa.
 
 <!-- §3007 -->
-El líder del club busca, preocupado, entre muchas cajas.
+Max busca, preocupado, entre muchas cajas.
 
-**LÍDER DEL CLUB DE AGRICULTURA Y GANADERÍA**
+**MAX**
 No puede ser, olvidé preparar las frutas y verduras para poder mostrarlas mañana. ¿Ahora qué haré?
 
 <!-- §3008 -->
@@ -3570,22 +2819,22 @@ Itzela saluda eufóricamente para llamar su atención.
 ¡Holaaa!
 
 <!-- §3009 -->
-**LÍDER DEL CLUB DE AGRICULTURA Y GANADERÍA**
+**MAX**
 *(alterado)*
 Perdonen, ahorita no puedo ayudarlos. Tengo que ir por un poco de café y recuperar algunas frutas. Lo siento.
 
 Se aleja del lugar.
 
 <!-- §3012 -->
-Puesto del club de Programación. Alextsu, serio, mira el lugar.
+Puesto del club de Tecnología. Lo atiende su líder, DEMIAN LINKIN. Alextsu, serio, mira el lugar.
 
 **ALEXTSU**
 Este… disculpen, ¿qué se va a hacer aquí?
 
 <!-- §3013 -->
-**LÍDER DEL CLUB DE PROGRAMACIÓN**
+**DEMIAN**
 *(nervioso)*
-B-buenas tardes, estudiantes. Aquí realizaremos la presentación del club de Programación… ¿Les interesa?
+B-buenas tardes, estudiantes. Aquí realizaremos la presentación del club de Tecnología… ¿Les interesa?
 
 <!-- §3014 -->
 **ITZELA**
@@ -3593,7 +2842,7 @@ B-buenas tardes, estudiantes. Aquí realizaremos la presentación del club de Pr
 No.
 
 <!-- §3015 -->
-**LÍDER DEL CLUB DE PROGRAMACIÓN**
+**DEMIAN**
 *(triste y desconcertado)*
 ¿Por qué? La programación es el futuro del mañana; puede que revolucione todo lo que conocemos. Ya no necesitaríamos las máquinas de escribir, los mensajeros… Todo en una conexión alterna.
 
@@ -3603,7 +2852,7 @@ No.
 Es que no sabemos qué es la programación.
 
 <!-- §3017 -->
-**LÍDER DEL CLUB DE PROGRAMACIÓN**
+**DEMIAN**
 *(suspira)*
 Bueno, dense una vuelta mañana si quieren saber más. Muchos de los líderes estaremos por aquí, ocupados. Luego nos vemos.
 
@@ -3660,7 +2909,118 @@ Se despide con la mano alzada.
 **[JUGABLE]** El jugador tiene libre albedrío por el distrito y puede interactuar con los distintos futuros lazos.
 
 <!-- §3029 -->
-**[PENDIENTE: aún sin definir.]**
+<!-- añadido el 27/10/2026 -->
+> **[DISEÑO] Primer bloque libre**
+> Dos bloques de tiempo por el Distrito 4 antes de que Alextsu vuelva al cuarto a las 6:30 PM. Se pueden visitar los lugares que nombró Itzela el día anterior:
+> - **Centro deportivo (circuito de ejercicio):** primer entrenamiento de stats por ubicación: Vida Base, 1 bloque.
+> - **Invernadero:** primer contacto con Merie Lamber.
+> - **Cocina principal del comedor:** primer contacto con Julian Duran.
+> - **Jardín de Fa y cúpula principal:** solo exploración por ahora.
+>
+> Cada primer contacto deja al personaje en «Nuevos lazos» de la lista del día.
+
+#### [EVENTO OPCIONAL] Merie Lamber — invernadero
+
+Entre macetas cubiertas de escarcha, MERIE, con una paja entre los dientes, revisa una bandeja de semillas bajo una lámpara de calor. Les habla a las semillas.
+
+**MERIE**
+Vamos, pequeñas… afuera hay nieve, pero ustedes pueden. Florecer en invierno no es imposible, solo es difícil.
+
+Alextsu se asoma por la puerta. Merie da un brinco y casi tira la bandeja.
+
+**MERIE**
+*(nerviosa)*
+¡No toques nada! Perdón… perdón, es que si se enfrían pierdo semanas de trabajo.
+
+**ALEXTSU**
+No toco nada. Solo estaba conociendo el distrito.
+
+Merie lo mira de arriba abajo y se fija en el chichón de su frente.
+
+**MERIE**
+¿Eres nuevo? ¿Y ese chichón?
+
+**ALEXTSU**
+*(suspira)*
+Una maleta. Bueno… la dueña de la maleta.
+
+Merie se ríe, y se le cae la paja de la boca.
+
+**MERIE**
+¡Eso suena a algo que haría mi amiga Itzela!
+
+**ALEXTSU**
+*(sorprendido)*
+¿Conoces a Itzela?
+
+**MERIE**
+*(feliz)*
+¡Desde que éramos así de pequeñas! ¿Ella está aquí? ¡Tenía tanto sin verla! Dile que Merie la espera en el invernadero… y que esta vez no se acerque al huerto.
+
+Recompone la postura, nerviosa.
+
+**MERIE**
+Y si vuelves, cierra bien la puerta, por favor. El calor es lo único que tienen.
+
+#### [EVENTO OPCIONAL] Julian Duran — cocina principal del comedor
+
+**JULIAN** *(off, a lo lejos)*
+¡Carne! ¡Por supuesto, carne!
+
+JULIAN, con el delantal manchado, golpea un filete con un mazo al ritmo de su propio grito. Ve a Alextsu.
+
+**JULIAN**
+¡Tú! ¿Vienes a ayudar? No, espera… ¿has visto al bi-ministrador Ren? Dijo que hoy vendría a hornear y su masa lleva tres horas esperándolo.
+
+**ALEXTSU**
+*(desconcertado)*
+No sé quién es Ren.
+
+**JULIAN**
+*(indignado)*
+¿No conoces a Ren? ¡El mejor panadero de la E.N.M.A.! Y bi-ministrador, pero eso es lo de menos.
+
+Lo mira de arriba abajo, de pronto serio.
+
+**JULIAN**
+Oye… estás en los huesos. ¿Qué comiste hoy?
+
+**ALEXTSU**
+Leche. Y un poco de miel… en la cara.
+
+Julian carcajea y le pone en las manos un sándwich de carne enorme.
+
+**JULIAN**
+Nadie se va con hambre de mi cocina. ¡Carne! ¡Por supuesto, carne!
+
+Desde la alacena se oye un gruñido pequeño. Julian se pone delante de la puerta.
+
+**JULIAN**
+¡Mi estómago! Es mi estómago. El que cocina nunca come, ya sabes.
+
+Alextsu mira la alacena: entre los costales, algo pequeño brilla un instante y desaparece.
+
+#### [EVENTO OPCIONAL] El chico de la maleta — afueras de los dormitorios de chicas
+
+De lejos, una ENCARGADA de dormitorios señala la salida mientras un chico, DOROKAN, baja las escaleras arrastrando su maleta, furioso.
+
+**ENCARGADA**
+Este es un edificio de chicas. No puedes pasar otra noche aquí.
+
+**???**
+*(furioso)*
+¡Mi papel dice habitación 248! ¡Yo no pedí dormir aquí!
+
+**ENCARGADA**
+Pues pon tu queja en la administración.
+
+**???**
+¡Ya la puse anoche! Y la voy a poner otra vez.
+
+El chico se aleja arrastrando la maleta. Alextsu, a lo lejos, se queda helado.
+
+**ALEXTSU** *(pensando)*
+¿La 248…? Entonces ese es… Dorokan.
 
 <!-- §3030 -->
 **[TRANSICIÓN: Alextsu entra a su cuarto; paso de tiempo.]**
@@ -4158,23 +3518,23 @@ No podemos faltar, entonces.
 
 <!-- §3119 -->
 **ALEXTSU**
-*(desconcertado)*
-¿Helados? ¿Qué es eso?
+*(se le ilumina la cara)*
+¿Helados? ¿Por fin?
 
 <!-- §3120 -->
 Itzela termina de comerse su hot cake, con el bigote de mermelada.
 
 **ITZELA**
-Ya lo verás cuando estemos ahí. Es lo mejor que existe en el verano…
+¡Por fin! Te va a encantar. Aunque es todavía mejor en verano…
 
 <!-- §3121 -->
 **ALEXTSU**
-¿Verano?
+¿Y en pleno invierno?
 
 <!-- §3122 -->
 **ITZELA**
-*(abrumada)*
-Sí que necesitas recordar muchas cosas aún…
+*(ofendida)*
+El buen helado no tiene temporada.
 
 <!-- §3123 -->
 ### 1.23 · EXT. PARADA DE LOS SALONES 1 — MAÑANA
@@ -4208,6 +3568,10 @@ Puede que tengas algo de razón, tu memoria es un problema, pero ya te las arreg
 ### 1.24 · INT. AULA DE CLASE, PRIMER GRADO 1M3 — MAÑANA
 
 **[TUTORIAL: introducción al conocimiento — introducción de Kruger.]**
+
+<!-- añadido el 26/10/2026 -->
+> **[DISEÑO] Introducción al conocimiento**
+> Minijuego corto de preguntas durante la explicación de Kruger: las respuestas se dan ahí mismo, en clase, y cada respuesta correcta aumenta el conocimiento.
 
 <!-- §3148 -->
 **KRUGER**
@@ -4355,6 +3719,20 @@ Artur sube a dar su discurso mientras todos lo aplauden.
 
 **ARTUR**
 Buenas tardes, alumnos, maestros, trabajadores de la E.N.M.A. Es un gusto estar con ustedes el día de hoy para dar pie a este evento que se realiza cada año, y que le tocó al Distrito 4 como sede.
+
+<!-- añadido el 26/10/2026 -->
+**[PLANO: PV de Artur.]**
+
+Mientras habla, Artur recorre la plaza con la mirada. Sobre cada rostro se cruza, como un pensamiento, lo que pasaría: un violinista que deja la orquesta si lo cambian de sección; la trabajadora del comedor, que seguirá aquí dentro de treinta años; un profesor que se jubila en paz si nadie le mueve el horario.
+
+Al fondo de la plaza, la mirada se detiene. Alrededor de un punto no se cruza nada: Itzela a su lado, Ren unos metros más allá, Amy entre la gente. Rostros sin pensamiento, solo presente. En medio de ese hueco, Alextsu.
+
+**[SONIDO: el murmullo de la plaza se apaga un instante.]**
+
+Artur no pierde el ritmo.
+
+**ARTUR**
+…porque la E.N.M.A. siempre ha sabido cuidar de los suyos.
 
 <!-- §3176 -->
 Mientras Artur sigue con su discurso, varias personas del consejo y algunos maestros se dan cuenta de la presencia de Alextsu. De repente:
@@ -4509,14 +3887,26 @@ Mmm…
 **ALEXTSU**
 Tienes razón, lo mejor será descansar.
 
-<!-- El original no continúa esta rama. -->
+<!-- añadido el 26/10/2026 -->
+Pero no se mueve: se queda mirando a la nada, todavía con la mano en la sien. Itzela le pasa la mano frente a los ojos.
+
+**ITZELA**
+Oye… ¿estás ahí?
+
+**ALEXTSU**
+*(reacciona)*
+¿Eh? Sí… perdón.
+
+**ITZELA**
+*(carcajea)*
+No tiene caso quedarnos aquí parados… a menos que te guste perder el tiempo. Vamos, de camino al cuarto te invito tu primer helado.
 
 #### Opción B — «No»
 
 <!-- §3207 -->
 **ALEXTSU**
 *(sonríe)*
-No te preocupes, no me gustaría hacerte perder la experiencia. Después me gustaría que me mostraras qué es un helado.
+No te preocupes, no me gustaría hacerte perder la experiencia. Después me gustaría probar ese helado del que tanto hablas.
 
 <!-- §3208 -->
 **ITZELA**
@@ -4540,7 +3930,7 @@ Es mentira. Miremos, vamos al evento.
 
 **[FIN DE LA ELECCIÓN]**
 
-<!-- Todo lo que sigue (heladería, clubes, vuelta al cuarto) da por hecha la rama «No». -->
+<!-- Las dos ramas llegan a la heladería; lo que sigue (clubes, vuelta al cuarto) vale para ambas. -->
 
 <!-- §3212 -->
 ### 1.28 · EXT. LOCAL DE HELADOS DE RIKO — TARDE
@@ -4619,7 +4009,7 @@ Un helado para cualquier temporada siempre es bienvenido. ¿Qué deseas?
 <!-- §3292 -->
 **ALEXTSU**
 *(curioso)*
-Así que esto es un helado…
+Así que así sabe un helado…
 
 <!-- §3293 -->
 **ITZELA**
@@ -4749,6 +4139,188 @@ Gracias por el helado.
 <!-- §3316-3317 -->
 **[PENDIENTE: Preludio Distrito 1 — en proceso (conversaciones Distrito 4).]**
 
+<!-- movido el 26/10/2026 desde la llegada del 23 de enero (1.3): las viñetas van el día en que se presentan sus clubes -->
+<!-- §2597 -->
+**— Distrito 1 —**
+
+<!-- §2598-2599 -->
+#### [EVENTO OPCIONAL] Ivan Kerios
+
+Ivan, alegre, degusta una rica sopa.
+
+**IVAN**
+¡La mejor sopa de todas! Extrañaba la deliciosa sopa del festival de la E.N.M.A. Debería ser una ley probarla al menos una vez. De hecho, podríamos hacer una ley para que todos la hagan… Por esto no se lo puede perder ni el mismo rector.
+
+Ivan observa a Alextsu.
+
+**IVAN**
+¡Tú, chico!
+
+**ALEXTSU**
+Yo solo…
+
+**IVAN**
+*(dudoso)*
+Solamente me mirabas cómo comía la sopa, ¿no es así? Debería llevarte al tribunal por acoso…
+
+**ALEXTSU**
+*(desconcertado)*
+¿Eh?
+
+**IVAN**
+*(carcajea)*
+Es un chiste… Pero no te limites a solo ver a las personas comer… Eso es algo grosero, inclusive después de la guerra.
+
+**ALEXTSU**
+*(apenado)*
+Lo siento. Trataré de no molestar de esa manera de nuevo.
+
+**IVAN**
+*(sonríe)*
+Eso es un avance. Mucha suerte… Y ten cuidado con las chicas: cuando menos te lo esperes, ¡pum!, te meten una queja a juicio por robarles el último pan.
+
+**ALEXTSU**
+*(dudoso)*
+¿Lo dices por experiencia?
+
+Ivan se queda en silencio un rato.
+
+**IVAN**
+Bueno… yo seguiré comiendo. Suerte…
+
+<!-- §2600-2601 -->
+#### [EVENTO OPCIONAL] Edward Rutterford
+
+Edward, serio, piensa bajo un árbol con los ojos cerrados; casi parece que está durmiendo.
+
+Alextsu lo observa. Hay una moneda tirada. La intenta tomar, pero, al tratar de tomarla, la moneda es jalada hacia Edward, y Alextsu cae a la nieve.
+
+**EDWARD**
+*(carcajea)*
+El viejo truco de la moneda. Nunca falla con los nuevos.
+
+Alextsu, desconcertado, se levanta y se quita la nieve.
+
+**ALEXTSU**
+Es la primera vez que veo ese truco.
+
+**EDWARD**
+*(sonríe)*
+Hay más trucos con monedas y…
+
+Tose un poco.
+
+**EDWARD**
+¡Ejem! Con dinero… pero eso no lo muestro tan fácil a cualquiera. Así que, si no te molesta… dame permiso para ver si alguien más cae en mi truco.
+
+**ALEXTSU**
+*(dudoso)*
+Bueno…
+
+<!-- §2602-2603 -->
+#### [EVENTO OPCIONAL] Liz Lion
+
+Liz, alegre, trae a su perro consigo.
+
+**LIZ**
+Este año, después de tantos trámites, te han dejado venir a vivir conmigo a la E.N.M.A.
+
+**BOLA DE NIEVE**
+Wof.
+
+**LIZ**
+*(suspira)*
+Aunque odio este clima frío, parece que a ti te sienta bien, con tu pelaje.
+
+**BOLA DE NIEVE**
+Wof.
+
+Alextsu, sorprendido de ver un perro, susurra.
+
+**ALEXTSU**
+*(susurra)*
+Qué raro… creí que las mascotas estaban prohibidas.
+
+**LIZ**
+*(lo observa)*
+Si tienes algo que decir, solo dilo. No porque seamos el club con menos presupuesto puedes hablar frente a nosotros.
+
+**BOLA DE NIEVE**
+¡Wof, wof!
+
+**ALEXTSU**
+*(apenado)*
+No es eso. Solo pensé que es algo raro ver un perro, cuando creo que en la E.N.M.A. no se permiten mascotas…
+
+**LIZ**
+*(sonríe)*
+Así que es eso. Bueno… me tomó dos años lograrlo, pero no es imposible. Después de todo, hasta en la casa de estudios más rigurosa se puede lograr lo imposible. ¿No es así, Bola de Nieve?
+
+Bola de Nieve se sacude el pelaje y llena a Alextsu de nieve.
+
+**LIZ**
+*(carcajea)*
+Parece que le caes bien.
+
+Alextsu simplemente se limpia.
+
+**ALEXTSU**
+Eso creo…
+
+**LIZ**
+*(suspira)*
+Luego nos vemos… Creo que todavía te falta mucho festival por recorrer.
+
+**BOLA DE NIEVE**
+Wof…
+
+<!-- §2604-2605 -->
+#### [EVENTO OPCIONAL] Demian Linkin
+
+Demian se limita a observar a las personas.
+
+**DEMIAN**
+Wow…
+
+Ve a otra persona.
+
+**DEMIAN**
+Woooow…
+
+Ve a Alextsu.
+
+**DEMIAN**
+Wooooooow…
+
+**ALEXTSU**
+*(desconcertado)*
+¿Qué es tan impresionante?
+
+**DEMIAN**
+*(susurra)*
+Que eres el pianista que volvió de la muerte. Solo los había visto en las películas, pero tú… pareces de verdad.
+
+**ALEXTSU**
+*(apenado)*
+Bueno… sí soy de verdad.
+
+**DEMIAN**
+*(asombrado)*
+El mundo fuera de mi club es realmente increíble… Qué lástima que solo sea una vez al año… Aunque tú… siento que puedes agregar algo a esta escuela…
+
+**ALEXTSU**
+*(dudoso)*
+¿Algo…?
+
+**DEMIAN**
+*(sonríe)*
+Sí… ¡algo explosivo!
+
+Demian carcajea.
+
+**DEMIAN**
+No te preocupes, me gusta fantasear con lo que ocurriría… Así que solo ignórame…
+
 <!-- §3334 -->
 ### 1.29 · EXT. PARADA DEL TRANVÍA — TARDE
 
@@ -4760,7 +4332,7 @@ Antes de subir al tranvía, Itzela le pregunta al jugador:
 ¿Listo para irnos?
 
 <!-- §3336 -->
-**[NOTA DE PRODUCCIÓN: propuesta de posible resolución.]**
+**[NOTA DE PRODUCCIÓN: empieza la secuencia «Propuesta de posible resolución»: la coartada de Ren para que no expulsen a Itzela.]**
 
 <!-- §3337 -->
 ### 1.30 · INT. HABITACIÓN DE ALEXTSU E ITZELA — TARDE
@@ -4770,7 +4342,7 @@ Alextsu e Itzela caminan por el pasillo, quitándose las gorras que los cubrían
 
 **ITZELA**
 *(alegre)*
-¡Imagínate si yo pudiera controlar esos ganados! O… o… poder tener tanto dinero como pudiera con el club de Finanzas.
+¡Imagínate si yo pudiera controlar esos ganados! O… o… poder tener tanto dinero como pudiera con el club de Economía.
 
 **ALEXTSU**
 *(suspira)*
@@ -4934,6 +4506,14 @@ Zzzzz.
 **ALEXTSU**
 *(abrumado)*
 Espero que Ren logre ayudar a Itzela…
+
+<!-- añadido el 26/10/2026 -->
+La habitación queda a oscuras.
+
+**ALEXTSU** *(para sí)*
+No sé quién era antes… pero no me gusta que la gente se pelee por mi culpa.
+
+En la litera de arriba, Itzela abre los ojos. No dice nada.
 
 <!-- §3344 -->
 ## 26 DE ENERO DE 2017 — JUEVES
@@ -5152,6 +4732,204 @@ Parece que estás interesado en conocer todo el mundo del arte. Vamos.
 
 <!-- §3386-3387 -->
 **[PENDIENTE: Preludio del distrito 2 — en proceso.]**
+
+<!-- movido el 26/10/2026 desde la llegada del 23 de enero (1.3): las viñetas van el día en que se presentan sus clubes -->
+<!-- §2588 -->
+**— Distrito 2 —**
+
+<!-- §2589-2590 -->
+#### [EVENTO OPCIONAL] Elian Xosherxe
+
+Elian está molesto. Su estuche está tirado en el suelo.
+
+**ELIAN**
+*(molesto)*
+¡¿Qué se supone que haga con acuarelas de esta calidad?! Mi padre debió pensar en algo mejor antes de darme un regalo de despedida. Después de todo, soy de los pocos con renombre que aún traen algo de honor a la familia. Ya que «No deberías ir a actuación», por favor.
+
+Alextsu observa el estuche tirado.
+
+**ALEXTSU** *(pensando)*
+¿Por qué habrá tirado su estuche aquel chico?
+
+**ELIAN**
+*(suspira)*
+Dios mío, ahora a esperar a que el distrito disponga de material que valga la pena. Pero… me perderé esta hermosa vista. Una lástima, después de todo.
+
+Alextsu se dirige a Elian.
+
+**ALEXTSU**
+Oye, chico… tiraste eso.
+
+Elian, desconcertado, observa su estuche.
+
+**ELIAN**
+¿Eh?
+
+**ALEXTSU**
+*(desconcertado al ver que no lo toma)*
+¿No lo vas a tomar?
+
+**ELIAN**
+*(serio, fanfarronea)*
+No puedo tener esa cosa. No serviría para la calidad de mis obras.
+
+**ALEXTSU**
+*(dudoso)*
+Pero si alguien más lo toma, lo podría usar en nombre tuyo.
+
+**ELIAN**
+*(sorprendido de no haberlo pensado)*
+Es verdad. No puedo dejar que cualquier principiante de manos inexpertas venda obras a base de mis materiales. El renombre que he hecho se perdería en un momento.
+
+**ALEXTSU**
+*(desconcertado)*
+Solo piensa en sus obras.
+
+**ELIAN**
+*(tranquilo)*
+En ese caso, me dispongo a pintar esta bella imagen de la E.N.M.A. Por favor, retírese de mi magnate siguiente obra de arte.
+
+Alextsu simplemente se aleja…
+
+<!-- §2591-2592 -->
+#### [EVENTO OPCIONAL] Nicolas Krikov
+
+Nicolas está indeciso en una tienda.
+
+**NICOLAS**
+Esto… ¿Cree que con esto le logre ganar al distrito 3?
+
+**VENDEDOR**
+¿Eh?
+
+**NICOLAS**
+*(serio)*
+Sí… algo que pueda incluso opacar la integridad de los clubes del distrito 3. Es hora de que el distrito 2 recupere la corona, ¿no cree?
+
+**VENDEDOR**
+*(desconcertado)*
+Chico, nosotros solo vendemos focos.
+
+**NICOLAS**
+*(dudoso)*
+Aunque este, en forma de fogata, podría estar bien para mi cuarto. ¿Tú qué opinas, chico?
+
+**ALEXTSU**
+*(desconcertado)*
+Oh… Lo siento, solo estoy viendo.
+
+**NICOLAS**
+Oh, vamos. ¿Cuál crees que sea muy interesante para ti de todos estos focos?
+
+**ALEXTSU**
+*(dudoso)*
+Supongo que el que parece en forma de foco.
+
+**NICOLAS**
+*(desconcertado)*
+¿En serio, ese?
+
+**ALEXTSU**
+Sí. ¿Qué tiene?
+
+Nicolas duda de sí mismo por un segundo.
+
+**NICOLAS**
+Me convenciste. Me lo llevo.
+
+**VENDEDOR**
+*(suspira)*
+Por fin…
+
+**NICOLAS**
+*(serio)*
+Bueno. Pero necesito ver el papel de información del foco antes de llevarlo, y leer las 30 hojas para estar seguro de que esto vencerá al distrito 3.
+
+El vendedor suspira. Alextsu lo deja.
+
+<!-- §2593-2594 -->
+#### [EVENTO OPCIONAL] Nadia Panini
+
+Nadia, adolorida, trata de coser su ropa.
+
+**NADIA**
+¿Por qué siempre me pasa esto? Tuvo que ser el día de hoy que se tuvo que descoser mi ropa… A ver… ¡auch!
+
+Nadia intenta coser con buena técnica, pero las manos frías no la dejan concentrarse: falla y se pincha las manos.
+
+**NADIA**
+Auch… eso dolió. Esto sería más fácil si no fuera por el frío.
+
+Alextsu observa a Nadia, que se lame el dedo porque le sale sangre. Ella se pone nerviosa al verlo.
+
+Nadia falla de nuevo, vuelve a pincharse el dedo y pierde la aguja.
+
+**NADIA**
+¡Nyaaa!
+
+**ALEXTSU**
+*(desconcertado)*
+Lo siento. No quise molestar…
+
+**NADIA**
+*(suspira)*
+Perdí mi aguja preferida… Ahora tendré que buscarla, a ver si la encuentro. Aunque lo dudo, por la gran cantidad de nieve…
+
+**ALEXTSU**
+¿Necesitas ayuda?
+
+**NADIA**
+*(suspira)*
+No te preocupes. Es mi culpa por usar un suéter de hace 10 años. Ya la encontraré. Tú…
+
+Observa a Alextsu, que mira todos los puestos como un niño.
+
+**NADIA**
+Creo que tú tienes mucho que ver.
+
+**ALEXTSU**
+*(asiente)*
+Tienes razón… Suerte con la aguja…
+
+**NADIA**
+*(aún adolorida)*
+¡Nyaaa! Creo que me pinché otra vez…
+
+<!-- §2595-2596 -->
+#### [EVENTO OPCIONAL] Fernanda Hernández
+
+Fernanda actúa, tratando de disimular.
+
+**FERNANDA**
+Eres una gran actriz, Fernanda. Rápida como una chita, ligera como mariposa y fuerte como un lobo cuando toma su comida. Disimula y… llegaré a lo más alto de la actuación…
+
+Se pone la mano en la cara.
+
+**FERNANDA**
+Soy Fernanda Hernández, y yo seré la…
+
+Alextsu la mira extrañado, desconcertado.
+
+**ALEXTSU**
+Em…
+
+**FERNANDA**
+*(avergonzada, completa su frase)*
+…nueva estrella de la E.N.M.A.
+
+**ALEXTSU**
+*(incómodo, sin mucho que decir)*
+Es bueno tu entusiasmo.
+
+Fernanda disimula que no vio a Alextsu.
+
+**FERNANDA**
+Bueno, solo él me ha visto, pero nadie más sabrá lo que soy capaz de lograr. Yo, Fernanda Hernández, llenaré de pasión con mi actuación…
+
+Alextsu, desconcertado, simplemente se aleja.
+
+**ALEXTSU**
+Bueno…
 
 <!-- §3397 -->
 **ITZELA**
@@ -5529,6 +5307,181 @@ Está bien…
 <!-- §3449 -->
 **[PENDIENTE: Preludio del distrito 3 — en proceso.]**
 
+<!-- movido el 26/10/2026 desde la llegada del 23 de enero (1.3): las viñetas van el día en que se presentan sus clubes -->
+<!-- §2579 -->
+**— Distrito 3 —**
+
+<!-- §2580-2581 -->
+#### [EVENTO OPCIONAL] Han Fan
+
+Han está angustiado por beber tanto café.
+
+**HAN**
+N… No… No… Los cálculos no salen. ¿Por qué no salen? Se supone que deberían funcionar, deben funcionar. ¿O soy yo el que no funciona?
+
+Alextsu escucha, desconcertado.
+
+**ALEXTSU** *(pensando)*
+Ese chico parece algo raro…
+
+Han verifica y cuenta de nuevo.
+
+**HAN**
+A ver, si agrego esto y resto esto… La ecuación debería dar, pero parece que no da con el resultado que me había dicho mi asesora. ¡No! ¿Por qué no da?
+
+Alextsu intenta tocarle el hombro.
+
+**ALEXTSU**
+Oye, chico…
+
+Han se altera y tira el café al piso.
+
+**HAN**
+¡Rayos!
+
+**ALEXTSU**
+Lo siento, no quería alterarte.
+
+A Han no le importa eso más que sus cálculos: tiene la mirada clavada en las hojas llenas de números.
+
+**HAN**
+No te preocupes, es mi culpa… Llamo tanto la atención que te preocupaste. No te preocupes por el café, ya me había tomado 5 tazas.
+
+**ALEXTSU**
+*(dudoso)*
+¿Seguro?
+
+Han suspira: pensó que le había salido la ecuación.
+
+**HAN**
+Sí, no te preocupes. Ahora solo déjame terminar esto, por favor.
+
+<!-- §2582-2583 -->
+#### [EVENTO OPCIONAL] Olivia Drimur
+
+Olivia toma fotos de los puestos del festival, emocionada por dentro.
+
+**OLIVIA**
+*(para sí)*
+¡Esta vez me voy a ganar un ascenso! Ya no seré la típica chica que tiene que tomarle fotos a los aburridos eventos jurídicos del consejo. ¡No! Ya no más, niña. Yo seré la que haga las primeras planas, como lo fue una vez la inauguración del parque del Distrito 4.
+
+Olivia piensa un momento.
+
+**OLIVIA**
+Ahora que lo pienso, incluso puedo sustituir al líder si le llevo una exclusiva. Pero como casi no pasa nada en la E.N.M.A., probablemente me mande a corregir los textos de los editores. Qué triste… Bueno, creo que si me tomo una foto desde aquí, tal vez la guarde como recuerdo.
+
+Olivia se toma una foto, y Alextsu sale de fondo.
+
+**OLIVIA**
+*(molesta)*
+¡Oye, chico!
+
+**ALEXTSU**
+*(desconcertado)*
+¿Yo?
+
+**OLIVIA**
+*(seria)*
+Arruinaste mi foto, ahora voy a tener que tener que…
+
+Olivia trata de guardar el equilibrio, pero se cae a la nieve.
+
+**ALEXTSU**
+*(dudoso)*
+¿Estás bien?
+
+**OLIVIA**
+*(disgustada)*
+Ay, no… se mojaron las fotos. Voy a tener que quedarme un rato más. Ahora dame permiso, chico, antes de que empeores mi día, que iba fabuloso.
+
+**ALEXTSU**
+*(extrañado por lo que sucedió)*
+De acuerdo…
+
+<!-- §2584-2585 -->
+#### [EVENTO OPCIONAL] Sabrina Jiménez
+
+Sabrina sonríe, optimista. No lleva abrigo, pero parece que no tiene frío.
+
+**SABRINA**
+Veamos. Parece que este año será uno muy productivo, tanto académicamente como para mi cuerpo. Si logro terminar el proyecto que nos encargó la E.N.M.A., puede que hasta me dedique a esto por completo. Ya no más circuitos tontos que hacen perder el tiempo.
+
+Sabrina gira, alegre y emocionada.
+
+**SABRINA**
+Después de todo, es lo que me tocó a mí.
+
+Alextsu observa a Sabrina, impresionado. Ella se da cuenta de su mirada.
+
+**SABRINA**
+*(alegre)*
+¿Impresionado de ver a alguien que no tiene frío?
+
+**ALEXTSU**
+*(impresionado)*
+Por supuesto. Estamos a −8 grados.
+
+**SABRINA**
+*(carcajea)*
+Si entrenas mucho, puedes llegar a tener esta resistencia. Claro está que mis zapatos, que fabriqué con última tecnología, me brindan calor en mis patitas.
+
+**ALEXTSU**
+Bueno, creo que de cualquier manera deberías tener un abrigo, por si te llega a dar un resfriado.
+
+**SABRINA**
+*(estornuda)*
+No es nece… ¡Achú! Bueno, creo que tienes algo de razón… Buscaré un abrigo. Luego te veo… ¡Achú!…
+
+<!-- §2586-2587 -->
+#### [EVENTO OPCIONAL] Samato Kutoro
+
+Samato carga con dificultad una caja que le acaba de llegar.
+
+**SAMATO**
+Maldición… Le dije a mi papá que no me mandara ropa y peluches de mi infancia. Ahora se me hará imposible subir las escaleras.
+
+Alextsu observa a la chica que está a su lado. Los dos lo dicen al mismo tiempo.
+
+**ALEXTSU Y SAMATO**
+*(a la vez)*
+Odio las escaleras con esta condición.
+
+**SAMATO**
+*(suspira)*
+¿Y a ti por qué no te gustan?
+
+**ALEXTSU**
+*(suspira)*
+¿A ti por qué no te gustan?
+
+**SAMATO**
+*(seria)*
+¿No es obvio?
+
+Alextsu se avergüenza al notar la estatura de Samato y no haberse dado cuenta.
+
+**ALEXTSU**
+Lo siento, a veces malinterpreto lo que es obvio a simple vista.
+
+**SAMATO**
+*(carcajea levemente, a pesar de su seriedad)*
+Es lo que muchos dicen cuando ven mi tamaño. ¿Por qué no te gustan las escaleras a ti?
+
+**ALEXTSU**
+Digamos que alguien se fue corriendo a ver los puestos y me dejó cargando todas sus compras.
+
+**SAMATO**
+*(suspira)*
+Es más fácil eliminar esas compras con ácido clorítico y subir tú solo. Y así llevar mi caja.
+
+**ALEXTSU**
+*(desconcertado)*
+¿Ácido qué?
+
+**SAMATO**
+*(suspira)*
+No lo entenderías… Bueno, intentaré pensar en cómo subir las escaleras. Suerte con tus compras.
+
 <!-- §3450 -->
 **ITZELA**
 ¿Listo para ir a comprar la partitura?
@@ -5561,7 +5514,7 @@ Tienes razón, ya habrá tiempo para mostrarte estos hermosos y maravillosos lug
 ### 1.42 · INT. LIBRERÍA DE MIKE — TARDE
 
 <!-- §3454 -->
-MIKE, un hombre de 55 años, toma un té mientras observa algunos libros.
+MIKE, un hombre de 58 años, toma un té mientras observa algunos libros.
 
 **MIKE**
 Mmm… este no debería estar aquí…
@@ -6087,6 +6040,195 @@ Alextsu mira a Itzela, pero ella responde con un gesto de que Ren está loco. Al
 
 <!-- §3538-3539 -->
 **[PENDIENTE: Preludio del distrito 4 — «Evento de clausura pre», en proceso.]**
+
+<!-- movido el 26/10/2026 desde la llegada del 23 de enero (1.3): las viñetas van el día en que se presentan sus clubes -->
+<!-- §2570 -->
+**— Distrito 4 —**
+
+<!-- §2571-2572 -->
+#### [EVENTO OPCIONAL] Thomas Soto
+
+Thomas está comprando unas postales y una carta para escribir. Piensa en voz alta, alegre y emocionado.
+
+**THOMAS**
+¿Qué debería escribir? Debe ser algo importante… No sé. ¿Usted qué opina, cartero?
+
+**CARTERO**
+*(ocupado)*
+Simplemente escribe lo que te nazca.
+
+**THOMAS**
+*(algo disgustado por la respuesta)*
+Ya lo sé, pero… ya pensé en mucho.
+
+**CARTERO**
+*(aún ocupado, lo escucha)*
+¿Cómo que has pensado?
+
+**THOMAS**
+*(alegre al recordar lo que ha pensado)*
+He pensado cosas como… «Eres el sistema nervioso que me mueve todos los días. Eres los glóbulos rojos que laten mi corazón cada vez que te veo»… Ya sabes, cosas así.
+
+**CARTERO**
+*(suspira)*
+¿Por qué no le escribes eso?
+
+**THOMAS**
+*(serio)*
+No puedo decirle eso… Además, ya se lo dije con anterioridad.
+
+Thomas hace bola la hoja de papel y la tira hacia atrás, en dirección al bote de basura; pero en ese momento Alextsu está ahí, y la bola de papel choca con él. Thomas se percata y voltea.
+
+**THOMAS**
+¡Ni se te ocurra abrir ese bosquejo!
+
+**ALEXTSU**
+*(desconcertado)*
+No te preocupes… solo lo voy a tirar a la basura.
+
+**THOMAS**
+*(mirándolo fijamente)*
+Más te vale. Mi corazoncito de chocolate es la única que puede ver mis cartas.
+
+Suspira y vuelve a escribir.
+
+**THOMAS**
+Como sea, espero poder encontrar alguna idea.
+
+<!-- §2573-2574 -->
+#### [EVENTO OPCIONAL] Hilda Delionor
+
+Hilda está parada cerca de una de las estatuas de los fundadores, mirando unos documentos.
+
+**HILDA**
+*(dudosa)*
+¿Acaso dejé encendido el calentador del invernadero?
+
+**HILDA**
+*(un poco más asustada)*
+¿No será que generé un incendio por accidente?
+
+Gira la cabeza de un lado a otro, negando.
+
+**HILDA**
+No, no, no, eso es imposible. Chequé todas las posibles posibilidades, como en aquella película donde podía ver todas las posibilidades, pero… si ni siquiera puedo cuidar de mí misma, no creo que pueda lograrlo con las plantas.
+
+Se golpea las mejillas con las palmas de las manos.
+
+**HILDA**
+No digas eso… Simplemente, ten seguridad en ti misma.
+
+Abre las manos y las levanta, y en el proceso golpea a Alextsu.
+
+**HILDA**
+Solo debo confiar en que podré cui…
+
+Se percata de Alextsu en el suelo y voltea a mirarlo.
+
+**HILDA**
+Este… ¿Escuchaste lo que dije?
+
+**ALEXTSU**
+*(confundido por el golpe)*
+¿Qué?
+
+**HILDA**
+*(lo mira seriamente)*
+¿O simplemente eres uno de esos espías que roban las semillas de la E.N.M.A. para otros distritos y así ganar la feria del año?
+
+**ALEXTSU**
+*(nervioso)*
+¿Qué? No… Solo pasaba por aquí…
+
+Hilda suspira mientras toma sus cosas.
+
+**HILDA**
+Qué alivio… De cualquier manera, ¡no me sigas!
+
+<!-- §2575-2576 -->
+#### [EVENTO OPCIONAL] Uwin Wednes
+
+**ENTREVISTADORA**
+Buenos días, Uwin Wednes. Queríamos saber si podías ayudarnos con una entrevista para el periódico de la escuela.
+
+**UWIN**
+No te preocupes, el placer es mío. Dime qué quieres preguntarme, pequeño aperitivo.
+
+**ENTREVISTADORA**
+¿Tiene proyectos planeados para el club de gastronomía?
+
+**UWIN**
+*(sonríe)*
+Por supuesto. Después de todo, somos líderes en comida de toda la E.N.M.A., y creo que lo mejor de todo es que tenemos planeado algo grandioso.
+
+**ENTREVISTADORA**
+*(intrigada)*
+Claro. ¿Puedes decirnos qué tiene planeado?
+
+Uwin se dirige a Alextsu.
+
+**UWIN**
+Tú, chico. Dime, ¿qué crees que haremos este año?
+
+**ALEXTSU**
+*(dudoso)*
+Em… ¿yo?
+
+**UWIN**
+*(sonríe)*
+Claro que sí. Adivina.
+
+**ALEXTSU**
+¿Leche de vainilla?
+
+**UWIN**
+*(carcajea)*
+Buen intento. Pero lo que realmente realizaremos son… ¡cupcakes de brócoli!
+
+La entrevistadora queda decepcionada.
+
+**ENTREVISTADORA**
+Bueno… creo que la leche no está mal después de todo…
+
+**UWIN**
+*(sonríe)*
+Claro, soy un genio… Espera, ¿qué? Mejor retírate, chico: tus sugerencias me están dejando mal ante mi entrevista…
+
+**ALEXTSU**
+*(simplemente acepta)*
+Bueno… como tú digas.
+
+<!-- §2577-2578 -->
+#### [EVENTO OPCIONAL] Remilia Mendelov
+
+Remilia está sentada en un banco, cantando.
+
+**REMILIA**
+*(cantando)*
+Las noches que vienes… nunca olvidaré… Las cosas divertidas que una vez hicimos. Las cartas que hiciste… las fotos que lograste… jamás olvidarán tu paso en este mundo…
+
+Alextsu solo observa.
+
+**ALEXTSU** *(pensando)*
+Qué linda canción.
+
+**REMILIA**
+*(sonríe)*
+Veo que me llevas un rato mirando cómo canto…
+
+**ALEXTSU**
+*(avergonzado)*
+Perdón, no quise molestar.
+
+**REMILIA**
+*(carcajea alegremente)*
+No te preocupes, puedes seguir oyendo si gustas. Pero solo puedes oír. Nada de preguntas…
+
+Alextsu asiente. Remilia continúa.
+
+**REMILIA**
+*(cantando)*
+Los libros que leíste… los objetos que encontraste… Las veces que me contaste que siempre estarás conmigo… Lalalalalalaaaa.
 
 <!-- §3563 -->
 **ITZELA**
